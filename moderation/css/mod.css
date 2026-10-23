@@ -215,3 +215,21 @@ body:not(.locked) #app{padding-top:var(--app-head-h,190px);padding-bottom:var(--
 #app .app-head .inline-msg{color:#FDEEF2}
 #app .app-head .confirm-strip.danger{color:#3D1226}
 /* ===== END STATIC BARS ===== */
+/* ===== HEADER SWAP (24 Oct 2026): logo + Moderation pill moved up into the top bar (left of Lock);
+   the tagline moved down into the masthead, first item, on ONE line (never wraps; smaller type on narrow phones).
+   Static: no transform, transition or animation. ===== */
+#app .app-head .topbar .container{flex-wrap:nowrap;padding-top:.5rem;padding-bottom:.5rem}
+#app .app-head .topbar .brand{min-width:0;flex:0 1 auto}
+#app .app-head .topbar .lockbtn{flex:0 0 auto}
+#app .app-head .masthead .tagline{font-family:var(--f-hand);font-size:1rem;letter-spacing:1.5px;color:#fff;text-transform:uppercase;
+  white-space:nowrap;flex:0 0 auto;max-width:100%;line-height:1.55}
+@media(max-width:575px){
+  #app .app-head .masthead .tagline{font-size:.85rem;flex-basis:100%}
+  #app .app-head .topbar .mod-pill{margin-left:.5rem;padding-left:.6rem;padding-right:.6rem;letter-spacing:1.5px}
+}
+@media(max-width:359px){
+  #app .app-head .masthead .tagline{font-size:.78rem;letter-spacing:.6px}
+  #app .app-head .topbar .wordmark.small .script{font-size:2rem}#app .app-head .topbar .wordmark.small .serif{font-size:1.7rem}
+  #app .app-head .topbar .mod-pill{font-size:.85rem;padding-left:.45rem;padding-right:.45rem;letter-spacing:1px}
+}
+/* ===== END HEADER SWAP ===== */
