@@ -278,7 +278,8 @@
   function tune(g) {
     curGenre = g;
     var pl = pool(g.key);
-    if (!pl.length) { status.textContent = g.label + ': nothing on this station yet.'; return; }
+    if (!pl.length) { status.textContent = g.label + ' is tuning in soon ✨ Try another station, or come back later.'; wrap.setAttribute('data-soon', g.key); return; }
+    wrap.removeAttribute('data-soon');
     status.textContent = '';
     if (!player || panel.hidden) return;                 // nothing plays until the listener presses Play
     var pick = pl[rnd(pl.length)];
@@ -292,7 +293,7 @@
   play.addEventListener('click', function () {
     audio(); if (ac && ac.resume) try { ac.resume(); } catch (x) {}
     var m = mainList();
-    if (!m) { status.textContent = "Bonnie's playlist isn't linked yet."; return; }
+    if (!m) { status.textContent = "Bonnie's playlist is tuning in soon \u2728 Turn the dial while you wait."; wrap.setAttribute('data-soon', 'main'); return; }
     openPlayer(m, "Bonnie's playlist");
   });
   bNext.addEventListener('click', function () { if (ready) { want = true; next(); } });

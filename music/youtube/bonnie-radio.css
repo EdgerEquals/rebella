@@ -43,3 +43,4 @@
 .br-legal{margin:auto 0 0;font-size:.7rem;line-height:1.35;color:#E9DDF0}
 .br-legal a{color:#fff;text-decoration:underline}
 @media (prefers-reduced-motion:reduce){.br-sway{animation:none!important}.br-needle{transition:none!important}}
+.br[data-soon] .br-status{color:#B0416A;font-weight:600}
