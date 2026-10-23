@@ -48,7 +48,7 @@ def rebel_quote(seed):
             f'<a class="rq-src" href="{e(q["source"])}" rel="noopener">Source: {e(q["context"])}</a></figcaption></figure></aside>')
 TEAR=''  # torn dividers removed Oct 2026 (neat content); kept as a no-op so the generator interface is unchanged
 def ransom(text):
-    """Was cut-out letters; now plain, tidy heading text (Florence asked for neat content, Oct 2026). Kept for interface compatibility."""
+    """Was cut-out letters; now plain, tidy heading text (Bonnie asked for neat content, Oct 2026). Kept for interface compatibility."""
     return _html.escape(_html.unescape(text))
 # Items approved on the moderation dashboard (written by /workspace/rebella-pipeline/publish.py). Newest first.
 _PJ=os.path.join(OUT,'_pipeline_articles.json')
@@ -218,7 +218,7 @@ NEWSLETTER='''<section class="newsletter container" id="newsletter"><h2>Join our
 FOLLOW='<section class="follow container" id="follow"><h2>Follow us</h2><p class="motto">Be curious. Be bold. Be you.</p><div class="icons"><a href="#" aria-label="Facebook (placeholder)"><svg><use href="#i-fb"/></svg></a><a href="#" aria-label="Instagram (placeholder)"><svg><use href="#i-ig"/></svg></a></div><div class="tiles" aria-label="Photo tiles">'+''.join(
     f'<img class="tile" src="{CRED[f]["file"]}" alt="{CRED[f]["alt"]}" loading="lazy" decoding="async" width="{CRED[f]["w"]}" height="{CRED[f]["h"]}">' for f in ['img/library/'+n+'.jpg' for n in ['sunflower','pink-cupcakes','night-sky','kitten-daisies','watercolours','tulips','hot-air-balloon','bookshop','strawberries','great-wave']])+'</div></section>'
 
-# Florence's About me (approved 23 Oct 2026). Same text as about.note in js/recs.js (Picks page): keep both in sync.
+# Bonnie's About me (approved 23 Oct 2026). Same text as about.note in js/recs.js (Picks page): keep both in sync.
 ABOUT_ME=["Hello!!", "My name is Florence and I created this website!", "I play soccer, and I love camping and swimming at the beach (even though I'm deathly scared of sharks!!). I paint, and I play the viola, the guitar and a range of other instruments.", "I'm a proud Aussie girl!! I love learning about nutrition, herbal medicines and botany, and I adore everlasting flowers!", "I hope you have a wonderful day. Sending you all love xx", "Be brave. Be different. Be a rebel."]
 ABOUT_CARD='<section class="container about-home" aria-labelledby="about-home-title"><div class="about-me about-card c-world"><h2 id="about-home-title">About me <span class="about-by">by Florence</span></h2><div class="rec-body">'+''.join(f'<p>{_html.escape(l)}</p>' for l in ABOUT_ME)+'</div></div></section>'
 HOME_FIRST=[p['slug'] for p in PIPE[:3]]+['t-shirt-tote-bag','why-is-the-sky-blue','five-minute-wind-down','start-a-coding-club','six-adventure-books']

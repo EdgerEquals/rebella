@@ -2,6 +2,8 @@
 
 Live: https://edgerequals.github.io/rebella/ (public). The moderation dashboard in `moderation/` is separate, passcode-locked, and is NOT touched by `_generator.py`.
 
+**Naming rule:** Always refer to her as Bonnie.
+
 Open with any static server from this folder, e.g. `python3 -m http.server 8765`, then visit http://localhost:8765/
 
 - `index.html` (home), `category.html` (all articles), `category-<section>.html` (one page per section: make, questions, mind, world, rwl, voice), `articles/<slug>.html` (one page per article), `recommendations.html`, `submit.html` (how Your Voice sharing will work), `create.html` (board maker), `credits.html` (photo credits)
@@ -20,7 +22,7 @@ Open with any static server from this folder, e.g. `python3 -m http.server 8765`
 - `recommendations.html` reads everything from `js/recs.js` (rendered by `js/recs-render.js`). To update the picks, edit `js/recs.js` only, then commit and push. No need to run the generator.
 - Any field left as `""` shows a "coming soon" placeholder for that section.
 - Links must start with `https://`. Songs are links only, never upload audio. The `celebrity` block is shown as **Rightfully Famous** (key name unchanged); add a `source` news link so it can be checked, or leave it empty. `deed` is optional. Empty `why` notes are simply left out; an empty quote `by` shows "Author unknown".
-- About me: Florence's approved text (23 Oct 2026) is `about.note` in `js/recs.js` (\n = new line) AND `ABOUT_ME` in `_generator.py` (home page About me card + no-JS copy on the Picks page). Keep the two in sync. Interests only otherwise. No name, school, suburb, age or photos. Bonnie checks every update before it goes live.
+- About me: Bonnie's approved text (23 Oct 2026) is `about.note` in `js/recs.js` (\n = new line) AND `ABOUT_ME` in `_generator.py` (home page About me card + no-JS copy on the Picks page). Keep the two in sync. Interests only otherwise. No name, school, suburb, age or photos. Bonnie checks every update before it goes live.
 
 Example:
 ```js
@@ -38,7 +40,7 @@ window.REBELLA_RECS = {
 ```
 
 ## Search (SEO)
-- Home title and meta description use the phrases (the visible intro is now Florence's own note, kept verbatim in `_generator.py`; class `.creator-note`) "learn what you love", "fun websites for teens" and "educational and cool sites for girls".
+- Home title and meta description use the phrases (the visible intro is now Bonnie's own note, kept verbatim in `_generator.py`; class `.creator-note`) "learn what you love", "fun websites for teens" and "educational and cool sites for girls".
 - Every page has its own title, meta description, meta keywords, canonical URL, Open Graph and Twitter tags (articles also have Article JSON-LD). `sitemap.xml` lists every public page (not `moderation/`). `robots.txt` keeps `Disallow: /moderation/` and has a `Sitemap:` line.
 - Note: crawlers only read robots.txt at the domain root (edgerequals.github.io/robots.txt), so submit the sitemap in Google Search Console as well.
 
@@ -63,7 +65,7 @@ window.REBELLA_RECS = {
 - The moderation dashboard (`moderation/`) keeps its own passcode gate and is excluded from the sitemap and disallowed in robots.txt.
 - No social features (comments, profiles, DMs, follower counts) and no personal details anywhere on the public site.
 
-## Look: neat content, fun background (Oct 2026, Florence's request; replaces the Moxie scrapbook styling on content)
+## Look: neat content, fun background (Oct 2026, Bonnie's request; replaces the Moxie scrapbook styling on content)
 - `css/zine.css` loads AFTER `css/styles.css`. Content is straight and aligned (no tilts, tape, torn/cut edges, dividers or halftone). Cards, headings, article text, sidebar widgets and page headers sit on solid/near-solid panels so contrast matches the pastel design.
 - The zine personality is ONLY in the background: `body.zine::before` is a fixed, decorative layer (`pointer-events:none`, `z-index:-1`, hidden in forced-colors/print) showing `img/zine-bg.svg`: watercolour splashes, abstract fake-newsprint cut-outs (no real newspaper text or images), stickers and hand-drawn doodles. Original Rebella artwork, ~38 KB.
 - **Class names:** nothing renamed. `.zine-tear` and the `.ransom`/`.rl*` letter spans are no longer output (`TEAR` is now `''` and `ransom(text)` returns plain text; both kept so `_generator.py` callers still work). Still used: `body.zine`, `.ransom-h` (home h1 size), `.creator-note`/`.cn-*`, `.rebel-quote`/`.rq-*`, `.quote-row`.

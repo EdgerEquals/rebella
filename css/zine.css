@@ -1,4 +1,4 @@
-/* Rebella "neat content, fun background" (Oct 2026, Florence's request).
+/* Rebella "neat content, fun background" (Oct 2026, Bonnie's request).
    Content is straight and tidy again: no tilts, tape, torn/cut edges, dividers or halftone on content.
    The zine personality lives ONLY in a fixed, decorative background layer (img/zine-bg.svg: watercolour splashes,
    fake/abstract newspaper cut-outs, stickers, hand-drawn doodles), painted behind everything (z-index:-1, pointer-events:none).
@@ -38,7 +38,7 @@
 .site-intro .ransom-h{font-size:2.6rem;margin:.4rem 0 1rem}
 @media(max-width:575px){.site-intro .ransom-h{font-size:2rem}}
 
-/* Note from the creator (home intro, Florence's own words): straight lined-paper card */
+/* Note from the creator (home intro, Bonnie's own words): straight lined-paper card */
 .creator-note{max-width:760px;margin:0 auto;padding:1.8rem 2.2rem 1.5rem;text-align:left;background:#fff;color:var(--ink);border-radius:8px;
   border-top:8px solid var(--blush);box-shadow:var(--panel-shadow,0 4px 14px rgba(58,43,53,.1));
   background-image:repeating-linear-gradient(transparent 0 33px,rgba(91,58,80,.08) 33px 34px)}
@@ -68,7 +68,7 @@
 @media(forced-colors:active){.zine::before{display:none}}
 @media print{.zine::before{display:none}}
 
-/* About me card by Florence (home page + Picks page): straight, tidy */
+/* About me card by Bonnie (home page + Picks page): straight, tidy */
 .about-home{margin-bottom:2.5rem}
 .about-card{max-width:760px}
 .about-me .about-by{font-family:var(--f-hand);text-transform:none;font-weight:400;letter-spacing:1px;color:var(--heading);font-size:1.05rem;margin-left:.4rem}
