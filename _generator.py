@@ -46,16 +46,10 @@ def rebel_quote(seed):
             f'<blockquote class="rq-text" cite="{e(q["source"])}"><p>{e(q["quote"])}</p></blockquote>'
             f'<figcaption class="rq-cap"><span class="rq-person">{e(q["person"])}</span><span class="rq-who">{e(q["who"])}</span>'
             f'<a class="rq-src" href="{e(q["source"])}" rel="noopener">Source: {e(q["context"])}</a></figcaption></figure></aside>')
-TEAR='<div class="zine-tear" aria-hidden="true"></div>'
+TEAR=''  # torn dividers removed Oct 2026 (neat content); kept as a no-op so the generator interface is unchanged
 def ransom(text):
-    """Cut-out-letter (ransom note) heading text. Screen readers get the plain text; letters are decorative."""
-    t=_html.unescape(text); i=0; words=[]
-    for w in t.split(' '):
-        letters=''
-        for ch in w:
-            letters+=f'<span class="rl rl{(i*7+3)%6}">{_html.escape(ch)}</span>'; i+=1
-        words.append(f'<span class="rw">{letters}</span>')
-    return f'<span class="sr-only">{_html.escape(t)}</span><span class="ransom" aria-hidden="true">{" ".join(words)}</span>'
+    """Was cut-out letters; now plain, tidy heading text (Florence asked for neat content, Oct 2026). Kept for interface compatibility."""
+    return _html.escape(_html.unescape(text))
 # Items approved on the moderation dashboard (written by /workspace/rebella-pipeline/publish.py). Newest first.
 _PJ=os.path.join(OUT,'_pipeline_articles.json')
 PIPE=json.load(open(_PJ)) if os.path.exists(_PJ) else []
@@ -156,7 +150,7 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&family=Special+Elite&display=swap">
 <link rel="stylesheet" href="css/styles.css?v=4">
-<link rel="stylesheet" href="css/zine.css?v=3">
+<link rel="stylesheet" href="css/zine.css?v=4">
 <script src="js/main.js"></script>
 <script src="js/quotes.js" defer></script>
 <script src="js/quotes-render.js" defer></script>{extra_head}
