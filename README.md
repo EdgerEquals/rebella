@@ -80,3 +80,6 @@ window.REBELLA_RECS = {
   They live in `_pipeline_articles.json` (same fields as `_articles.py` plus source/licence info), with photos in
   `img/articles/<slug>.jpg`, credits in `img/credits.json` + `CREDITS.md`, and `_generator.py` builds their pages,
   home/section cards, credits table and sitemap. Don't hand-edit those entries; republished text must stay unedited.
+
+## Rhythm preview (`rhythm/`, Oct 2026)
+A single-page Rebella in which drifting physics-driven shortcuts replace the menu. Live at https://edgerequals.github.io/rebella/rhythm/. It is self-contained in `rhythm/` (see `rhythm/README.md`: load tiers, MOTION_BASIS, where φ is used). Spec: `SPEC_LOCKED.md` (locked by Edger, 23 Oct 2026). It doesn't touch any existing page, and `_generator.py` doesn't know about it.
