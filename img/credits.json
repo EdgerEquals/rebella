@@ -551,5 +551,18 @@
   "h": 948,
   "licLabel": "CC0",
   "via": "Wikimedia Commons"
+ },
+ {
+  "group": "articles",
+  "file": "img/articles/how-do-we-know-what-dinosaurs-looked-like.jpg",
+  "alt": "Dinosaur Pinata",
+  "title": "File:Dinosaur Pinata.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Dinosaur_Pinata.jpg",
+  "artist": "Klaus-Dieter Keller",
+  "lic": "CC0",
+  "w": 900,
+  "h": 900,
+  "licLabel": "CC0",
+  "via": "Wikimedia Commons"
  }
 ]

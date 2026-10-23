@@ -26,6 +26,7 @@ Stickers (`img/stickers/*.svg`) are original artwork made for Rebella. Word stic
 | `img/articles/scissors.jpg` | A pair of blue craft scissors | Karen Arnold | CC0 1.0 (public domain dedication) | [File:Safety scissors blue.jpg](https://commons.wikimedia.org/wiki/File:Safety_scissors_blue.jpg) |
 | `img/articles/moon.jpg` | The full Moon in a dark sky | Tumeiyo1 | CC0 1.0 (public domain dedication) | [File:Full moon. 010226.jpg](https://commons.wikimedia.org/wiki/File:Full_moon._010226.jpg) |
 | `img/articles/can-an-insect-larva-change-its-mind.jpg` | Aleyrodes-larva-limago-front | Nikita Kluge | CC0 (via Wikimedia Commons) | [Aleyrodes-larva-limago-front.jpg](https://commons.wikimedia.org/wiki/File:Aleyrodes-larva-limago-front.jpg) |
+| `img/articles/how-do-we-know-what-dinosaurs-looked-like.jpg` | Dinosaur Pinata | Klaus-Dieter Keller | CC0 (via Wikimedia Commons) | [Dinosaur Pinata.jpg](https://commons.wikimedia.org/wiki/File:Dinosaur_Pinata.jpg) |
 
 ## Create page photo library (`img/library/`)
 
@@ -68,3 +69,4 @@ Articles added through the moderation dashboard after approval. Each keeps its o
 | Page | Source | Licence | Approved |
 |---|---|---|---|
 | `articles/can-an-insect-larva-change-its-mind.html` | [Can An Insect Larva Change Its Mind?](https://kids.frontiersin.org/articles/10.3389/frym.2026.1681331) (Frontiers for Young Minds) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | 2026-10-23 |
+| `articles/how-do-we-know-what-dinosaurs-looked-like.html` | [How do we know what dinosaurs looked like?](https://theconversation.com/how-do-we-know-what-dinosaurs-looked-like-288231) (The Conversation) | [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/) | 2026-10-23 |
