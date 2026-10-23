@@ -1,406 +1,228 @@
-/* Bonnie's music: a small, visible YouTube mini-player for Bonnie's playlist.
-   Uses only the documented YouTube IFrame Player API on the privacy-enhanced host (www.youtube-nocookie.com).
-   No API key, no OAuth, no Data API: the playlist must be Public or Unlisted.
-
-   Rules this file keeps (YouTube API Terms, Developer Policies, Required Minimum Functionality):
-   - the player is always on screen while it plays, 200x200 CSS px (the documented minimum), nothing is drawn over it
-     (it sits on the top layer of the page), and it is never hidden, off-screen, see-through or audio-only;
-   - it pauses whenever the tab or app is hidden (document.hidden), so it is never a background player;
-   - one player per page; it only starts after a tap, and only once more than half of it is visible;
-   - the random track and start point use only documented calls: setShuffle, setLoop, playVideoAt, getPlaylist,
-     getPlaylistIndex, getDuration, seekTo;
-   - the page keeps its no-referrer policy, but the player iframe itself sends the origin as Referer
-     (strict-origin-when-cross-origin), which YouTube requires to identify the embedding site.
-
-   Hook: <link rel="stylesheet" href=".../bonnie-music.css"> and
-         <script src=".../bonnie-music.js" data-page="chat|dash|rebella" defer></script>
-   Testing: add ?list=<playlist id> to the page URL to try any public playlist without editing this file. */
+/* Bonnie's music (dashboard): the music button at the top of Bonnie's Dashboard plays music generated in the browser
+   with plain Web Audio. No audio files, no YouTube or streaming, no API, no key, no network request of any kind.
+   (Danny 24 Oct 2026 03:20 AWST: "get the music button working so that when pressed it plays something audible".)
+   The old YouTube mini-player (commit 0f3607d) is HELD and kept, unloaded, in js/bonnie-music-youtube.js; the restore
+   note is at the top of that file.
+   Engine: ported from Dad's generated auto-DJ (simmie-chat 124550d, previews/shared/dad-autodj-quiz.js), retuned to
+   Bonnie's side: ONE KEY, C major / A minor (the music-layer key of simmie-chat 175e3b0), so it sits with the sound layer.
+   Timing (/home/box/.config/phi-timing-rules.md), Bonnie's ladder (not Simmie's faster one):
+     s           = the page's weather sweep (PhiTiming.sweep(), rule 6); with no weather state, the Perth time of day
+                   (day 0 | evening 18-21 +0.5 | night 21-24 +1.5 | deep night 00-05 +2)
+     BPM         = 60 / PHI^(-1 + s/2), clamped 62-130         crossfade = PHI^(5 + s) s (loop-effect slot), 6.85-29.03 s
+     track       = PHI^(9 + s) s, then a new piece crossfades in   volume = 0.5 x PHI^(-s/4), clamped 0.25-0.6 (quieter at night)
+     first tap   = PHI^1 s fade-in; tap again = PHI^0 s fade-out    boundaries on multiples of the crossfade period from
+                   PhiTiming.T0; s is re-read only at a boundary, never mid-fade.
+   Starts only from a tap on the button (autoplay rules); pauses while the tab is hidden; nothing is stored.
+   While it plays <html data-bm="playing"> is set, so the generated sound layer (bonnie-sound.js) ducks under it.
+   Test hook: window.BonnieMusic.level() (output RMS), .graph, .playing. */
 (function () {
   'use strict';
-
-  // ===== THE ONE SETTING: Bonnie's playlist ID (the part after "list=" in the playlist link). =====
-  var PLAYLIST_ID = 'REPLACE_WITH_BONNIE_PLAYLIST';
-  // ================================================================================================
-
-  var HOST = 'https://www.youtube-nocookie.com';
+  var PHI = 1.6180339887;
   var me = document.currentScript || document.querySelector('script[src*="bonnie-music.js"]');
-  var PAGE = (me && me.getAttribute('data-page')) || 'chat';
-  var BUTTON_MODE = PAGE === 'rebella';                    // Rebella: nothing until the listener presses play
-  var STORE = 'preview.bonnieMusic.v1';                    // preview-only on/off memory (not used on Rebella)
-  var SIZE = 200;                                          // documented minimum player viewport: 200 x 200
-  var ID_RE = /^[A-Za-z0-9_-]{12,64}$/;
+  var PAGE = (me && me.getAttribute('data-page')) || 'dash';
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
 
-  function listId() {
-    var q = null;
-    // live dashboard: no ?list= override (YouTube player needs Danny's yes)
-    if (q && ID_RE.test(q)) return q;
-    if (PLAYLIST_ID.indexOf('REPLACE_') === 0 || !ID_RE.test(PLAYLIST_ID)) return '';
-    return PLAYLIST_ID;
+  // ---------- pumps ----------
+  function perthHour() { try { return +new Intl.DateTimeFormat('en-AU', { timeZone: 'Australia/Perth', hour: 'numeric', hourCycle: 'h23' }).format(new Date()) % 24; } catch (e) { return new Date().getHours(); } }
+  function timePump() { var h = perthHour(); return h < 5 ? 2 : h >= 21 ? 1.5 : h >= 18 ? 0.5 : 0; }
+  function sweep() { try { var T = window.PhiTiming, v = T && T.sweep ? +T.sweep() : 0; return isFinite(v) && v !== 0 ? v : timePump(); } catch (e) { return timePump(); } }
+  function compute() {
+    var s = sweep();
+    return { s: s, bpm: clamp(60 / Math.pow(PHI, -1 + s / 2), 62, 130), fade: clamp(Math.pow(PHI, 5 + s), 6.854, 29.03),
+             trackLen: Math.pow(PHI, 9 + s), vol: clamp(0.5 * Math.pow(PHI, -s / 4), 0.25, 0.6),
+             pool: s >= 1.5 ? ['lofi', 'piano', 'ambient'] : s >= 0.5 ? ['lofi', 'ambient', 'pop'] : ['pop', 'lofi', 'ambient'] };
   }
-  function pref(v) {
-    if (BUTTON_MODE) return null;
-    try { if (v) localStorage.setItem(STORE, v); return localStorage.getItem(STORE); } catch (e) { return null; }
+
+  // ---------- one key: C major / A minor (every scale below uses only the white notes) ----------
+  var SCALES = { major: [0, 2, 4, 5, 7, 9, 11], minor: [0, 2, 3, 5, 7, 8, 10] };
+  var GEN = {
+    lofi:    { scale: 'minor', root: 45, progs: [[0, 5, 2, 6], [0, 3, 5, 4]], bars: 1, sev: 1, chords: 'ep', steps: [0, 6, 10], bass: 'walk', bwave: 'triangle', mel: 0.16, lead: 'ep',
+               kick: 'x......o..x.....', snare: '....x.......x...', hat: 'o.o.o.o.o.o.o.o.', swing: 0.12, rev: 0.3 },
+    ambient: { scale: 'major', root: 48, progs: [[0, 4, 5, 3], [0, 5, 3, 4]], bars: 2, chords: 'pad', wave: 'sine', cut: 1500, bass: 'hold', bwave: 'sine', mel: 0.12, lead: 'bell', rev: 0.55 },
+    pop:     { scale: 'major', root: 48, progs: [[0, 4, 5, 3], [5, 3, 0, 4]], bars: 1, chords: 'stab', steps: [0, 3, 6, 10, 12], wave: 'square', cut: 1800, bass: 'eighths', bwave: 'triangle', mel: 0.26, lead: 'square',
+               kick: 'x.....x.x.......', snare: '....x.......x...', hat: 'x.o.x.o.x.o.x.o.', rev: 0.2 },
+    piano:   { scale: 'minor', root: 45, progs: [[0, 5, 3, 4], [0, 3, 4, 0]], bars: 1, chords: 'arp', bass: 'hold', bwave: 'piano', mel: 0.22, lead: 'piano', rev: 0.4 }
+  };
+  function mtof(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+  function rng(seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function chordNotes(sc, root, deg, sev) { var n = [], c = sev ? 4 : 3; for (var i = 0; i < c; i++) { var d = deg + i * 2; n.push(root + sc[d % 7] + 12 * Math.floor(d / 7)); } return n; }
+
+  // ---------- audio graph (built on the first tap) ----------
+  var AC = window.AudioContext || window.webkitAudioContext;
+  var ctx = null, master = null, bus = null, revIn = null, noise = null, meter = null;
+  function ensure() {
+    if (ctx || !AC) return ctx;
+    try {
+      ctx = new AC();
+      master = ctx.createGain(); master.gain.value = 0.8;                  // modest overall level
+      bus = ctx.createGain(); bus.gain.value = 0.0001;                     // the pump volume
+      var comp = ctx.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 3;
+      var conv = ctx.createConvolver(), L = Math.floor(ctx.sampleRate * 2.2), ir = ctx.createBuffer(2, L, ctx.sampleRate);
+      for (var c = 0; c < 2; c++) { var d = ir.getChannelData(c); for (var i = 0; i < L; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / L, 3); }
+      conv.buffer = ir; revIn = ctx.createGain(); revIn.gain.value = 0.35; revIn.connect(conv); conv.connect(bus);
+      bus.connect(master); master.connect(comp); comp.connect(ctx.destination);
+      meter = ctx.createAnalyser(); meter.fftSize = 2048; comp.connect(meter);                 // level read-out for tests only
+      var n = ctx.sampleRate, b = ctx.createBuffer(1, n, n), nd = b.getChannelData(0); for (var j = 0; j < n; j++) nd[j] = Math.random() * 2 - 1; noise = b;
+    } catch (e) { ctx = null; }
+    return ctx;
   }
+
+  // ---------- instruments ----------
+  function env(g, t, a, peak, dur, rel) { g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(peak, t + a); g.gain.setTargetAtTime(0.0001, t + Math.max(a, dur), rel); }
+  function osc(type, f, t, end) { var o = ctx.createOscillator(); o.type = type; o.frequency.setValueAtTime(f, t); o.start(t); o.stop(end); return o; }
+  function voice(tr, type, f, t, dur, vel, opt) {
+    opt = opt || {};
+    var end = t + dur + (opt.rel || 0.2) * 5, g = ctx.createGain(), lp = ctx.createBiquadFilter();
+    lp.type = 'lowpass'; lp.frequency.setValueAtTime(opt.cut || 2400, t); if (opt.sweep) lp.frequency.setTargetAtTime(opt.cut * 0.25, t, opt.sweep);
+    var o = osc(type, f, t, end); o.connect(lp);
+    if (opt.det) { var o2 = osc(type, f, t, end); o2.detune.value = opt.det; o2.connect(lp); }
+    lp.connect(g); env(g, t, opt.a || 0.005, vel, opt.hold != null ? opt.hold : 0.01, opt.rel || 0.2); g.connect(tr.out);
+    if (opt.rev) { var s = ctx.createGain(); s.gain.value = opt.rev; g.connect(s); s.connect(tr.rev); }
+  }
+  var INST = {
+    pad:   function (tr, f, t, d, v) { voice(tr, tr.g.wave, f, t, d, v * 0.10, { a: d * 0.35, hold: d * 0.6, rel: d * 0.25, cut: tr.g.cut, det: 9, rev: 0.8 }); },
+    pluck: function (tr, f, t, d, v) { voice(tr, tr.g.wave || 'triangle', f, t, d, v * 0.16, { a: 0.003, hold: 0.01, rel: 0.22, cut: (tr.g.cut || 2400) * 1.6, sweep: 0.08, rev: 0.4 }); },
+    stab:  function (tr, f, t, d, v) { voice(tr, tr.g.wave, f, t, d, v * 0.07, { a: 0.004, hold: d * 0.5, rel: 0.06, cut: tr.g.cut, det: 7, rev: 0.25 }); },
+    ep:    function (tr, f, t, d, v) {
+      var end = t + d + 1.5, c = osc('sine', f, t, end), m = osc('sine', f * 2, t, end), mg = ctx.createGain(), g = ctx.createGain();
+      mg.gain.setValueAtTime(f * 1.2, t); mg.gain.setTargetAtTime(f * 0.1, t, 0.25); m.connect(mg); mg.connect(c.frequency);
+      c.connect(g); env(g, t, 0.004, v * 0.12, d * 0.7, 0.35); g.connect(tr.out); var s = ctx.createGain(); s.gain.value = 0.4; g.connect(s); s.connect(tr.rev); },
+    piano: function (tr, f, t, d, v) { voice(tr, 'triangle', f, t, d, v * 0.14, { a: 0.003, hold: 0.02, rel: 0.6, cut: 3200, sweep: 0.5, rev: 0.6 });
+                                       voice(tr, 'sine', f * 2, t, d, v * 0.04, { a: 0.003, hold: 0.01, rel: 0.3, cut: 5000 }); },
+    bell:  function (tr, f, t, d, v) { voice(tr, 'sine', f, t, d, v * 0.08, { a: 0.01, hold: 0.02, rel: 0.9, cut: 6000, rev: 1 }); voice(tr, 'sine', f * 3.01, t, d, v * 0.015, { a: 0.005, rel: 0.4, cut: 8000, rev: 1 }); },
+    square:function (tr, f, t, d, v) { voice(tr, 'square', f, t, d, v * 0.045, { a: 0.004, hold: d * 0.6, rel: 0.08, cut: 2600, rev: 0.3 }); },
+    bass:  function (tr, f, t, d, v) { if (tr.g.bwave === 'piano') return INST.piano(tr, f, t, d, v * 1.2);
+                                       voice(tr, tr.g.bwave, f, t, d, v * (tr.g.bwave === 'sine' ? 0.22 : 0.16), { a: 0.006, hold: d * 0.8, rel: 0.08, cut: 600 }); }
+  };
+  function hit(tr, kind, t, v) {
+    var g = ctx.createGain(); g.connect(tr.out);
+    if (kind === 'kick') {
+      var o = ctx.createOscillator(); o.frequency.setValueAtTime(130, t); o.frequency.exponentialRampToValueAtTime(42, t + 0.12); o.connect(g);
+      g.gain.setValueAtTime(v * 0.55, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.3); o.start(t); o.stop(t + 0.36);
+      return;
+    }
+    var src = ctx.createBufferSource(), f = ctx.createBiquadFilter(); src.buffer = noise; src.connect(f); f.connect(g);
+    var len = kind === 'snare' ? 0.16 : 0.035;
+    f.type = kind === 'snare' ? 'bandpass' : 'highpass'; f.frequency.value = kind === 'snare' ? 1800 : 7500;
+    g.gain.setValueAtTime(v * (kind === 'snare' ? 0.22 : 0.06), t); g.gain.exponentialRampToValueAtTime(0.0001, t + len);
+    src.start(t, Math.random() * 0.5); src.stop(t + len + 0.02);
+  }
+
+  // ---------- a piece: genre + BPM + seed (always in the one key: no root shift) ----------
+  function makeTrack(genre, bpm, seed) {
+    var g = GEN[genre], r = rng(seed), sc = SCALES[g.scale], root = g.root;
+    var prog = g.progs[Math.floor(r() * g.progs.length)], mel = [], deg = 7 + Math.floor(r() * 3);
+    for (var i = 0; i < 32; i++) {
+      var strong = i % 4 === 0, p = strong ? g.mel * 2.2 : (i % 2 ? g.mel * 0.6 : g.mel);
+      if (r() < p) { deg = clamp(deg + [-2, -1, -1, 0, 1, 1, 2, 3][Math.floor(r() * 8)], 4, 13); mel.push(deg); } else mel.push(null);
+    }
+    var out = ctx.createGain(); out.gain.value = 0.0001; out.connect(bus);
+    var wet = ctx.createGain(); wet.gain.value = 0.0001; wet.connect(revIn);
+    var rv = ctx.createGain(); rv.gain.value = g.rev; rv.connect(wet);
+    return { genre: genre, bpm: bpm, g: g, sc: sc, root: root, prog: prog, mel: mel, r: r, out: out, wet: wet, rev: rv, step: 0, next: ctx.currentTime + 0.06, born: Date.now() };
+  }
+  function playStep(tr, t) {
+    var g = tr.g, st = tr.step, s16 = st % 16, bar = Math.floor(st / 16), dur16 = 60 / tr.bpm / 4, v;
+    var deg = tr.prog[Math.floor(bar / g.bars) % tr.prog.length], ch = chordNotes(tr.sc, tr.root, deg, g.sev);
+    var barLen = dur16 * 16 * g.bars, first = s16 === 0 && bar % g.bars === 0;
+    if (g.chords === 'pad' && first) ch.forEach(function (n) { INST.pad(tr, mtof(n + 12), t, barLen, 1); });
+    if ((g.chords === 'stab' || g.chords === 'ep') && g.steps.indexOf(s16) >= 0)
+      ch.forEach(function (n) { (g.chords === 'ep' ? INST.ep : INST.stab)(tr, mtof(n + 12), t, dur16 * (g.chords === 'ep' ? 5 : 2), s16 ? 0.8 : 1); });
+    if (g.chords === 'arp' && s16 % 2 === 0) { var an = ch.concat([ch[0] + 12]); INST.piano(tr, mtof(an[(s16 / 2) % an.length] + 12), t, dur16 * 2, s16 % 8 ? 0.6 : 0.9); }
+    var bn = ch[0] - 12;
+    if (g.bass === 'hold' && first) INST.bass(tr, mtof(bn), t, barLen * 0.9, 1);
+    if (g.bass === 'walk' && [0, 3, 6, 8, 11, 14].indexOf(s16) >= 0) INST.bass(tr, mtof(s16 === 0 ? bn : ch[[0, 1, 2, 1, 2, 0][[0, 3, 6, 8, 11, 14].indexOf(s16)]] - 12), t, dur16 * 2, 0.9);
+    if (g.bass === 'eighths' && s16 % 2 === 0) INST.bass(tr, mtof(bn), t, dur16 * 1.5, s16 % 4 ? 0.7 : 1);
+    var md = tr.mel[st % 32];
+    if (md != null) { if (tr.r() < 0.12) md += tr.r() < 0.5 ? 1 : -1; md = Math.max(0, md); INST[g.lead](tr, mtof(tr.root + tr.sc[md % 7] + 12 * Math.floor(md / 7) + 12), t, dur16 * (g.lead === 'bell' ? 6 : 2), 0.8); }
+    ['kick', 'snare', 'hat'].forEach(function (k) { var pat = g[k]; if (pat && (v = pat[s16]) !== '.') hit(tr, k, t, v === 'x' ? 1 : 0.55); });
+  }
+  function stepLen(tr) { var d = 60 / tr.bpm / 4, sw = tr.g.swing || 0; return tr.step % 2 ? d * (1 - sw) : d * (1 + sw); }
+
+  // ---------- look-ahead scheduler + equal-power fades ----------
+  var tracks = [], sched = 0;
+  function tick() {
+    if (!ctx) return;
+    var horizon = ctx.currentTime + 0.15;
+    tracks.forEach(function (tr) {
+      if (tr.next < ctx.currentTime - 0.5) tr.next = ctx.currentTime + 0.02;   // resumed after being hidden
+      while (tr.next < horizon && !tr.dead) { playStep(tr, tr.next); tr.next += stepLen(tr); tr.step++; }
+    });
+  }
+  function curve(up) { var n = 64, a = new Float32Array(n); for (var i = 0; i < n; i++) { var x = i / (n - 1); a[i] = Math.max(0.0001, up ? Math.sin(x * Math.PI / 2) : Math.cos(x * Math.PI / 2)); } return a; }
+  function fadeGain(gn, up, t, len) { try { gn.gain.cancelScheduledValues(t); gn.gain.setValueCurveAtTime(curve(up), t, len); } catch (e) { gn.gain.setTargetAtTime(up ? 1 : 0.0001, t, len / 3); } }
+  function fadeTrack(tr, up, t, len) { fadeGain(tr.out, up, t, len); fadeGain(tr.wet, up, t, len); }
+
+  var playing = false, cur = null, fadingUntil = 0, clock = 0, flip = 0;
+  function T0() { return (window.PhiTiming && window.PhiTiming.T0) || 0; }
+  function kill(tr) { tr.dead = true; tracks = tracks.filter(function (x) { return x !== tr; }); setTimeout(function () { try { tr.out.disconnect(); tr.wet.disconnect(); tr.rev.disconnect(); } catch (e) {} }, 400); }
+  function startTrack(c, fade) {
+    var genre = c.pool[(flip++) % c.pool.length], tr = makeTrack(genre, c.bpm, (Math.random() * 1e9) | 0), t = ctx.currentTime + 0.05;
+    var old = tracks.filter(function (x) { return !x.dead && !x.leaving; }), len = fade || c.fade;
+    fadeTrack(tr, true, t, len);
+    old.forEach(function (o) { o.leaving = true; fadeTrack(o, false, t, len); setTimeout(function () { kill(o); }, len * 1000 + 300); });
+    tracks.push(tr); tr.trackLen = c.trackLen; fadingUntil = Date.now() + len * 1000;
+    return tr;
+  }
+  function boundary() {
+    var c = compute();
+    if (!playing || !ctx) return;
+    if (Date.now() < fadingUntil) { schedule(c.fade); return; }       // never mid-fade
+    var tr = tracks.filter(function (x) { return !x.leaving && !x.dead; })[0];
+    var changed = !tr || c.pool.indexOf(tr.genre) < 0 || Math.abs(tr.bpm - c.bpm) > 0.5;
+    var old = tr && (Date.now() - tr.born) / 1000 >= tr.trackLen;
+    if (changed || old) tr = startTrack(c);
+    bus.gain.setTargetAtTime(c.vol, ctx.currentTime, c.fade / 3);
+    cur = c; cur.genre = tr.genre; paint();
+    schedule(c.fade);
+  }
+  function schedule(period) { clearTimeout(clock); var P = period * 1000, now = Date.now(); clock = setTimeout(boundary, P - ((now - T0()) % P) + 5); }
+
+  function start() {
+    if (!ensure()) { paint(); return; }
+    try { if (ctx.resume) ctx.resume(); } catch (e) {}
+    playing = true; var c = compute(), t = ctx.currentTime;
+    bus.gain.cancelScheduledValues(t); bus.gain.setValueAtTime(c.vol, t);
+    var tr = startTrack(c, PHI); cur = c; cur.genre = tr.genre;           // first tap: PHI^1 s fade-in
+    if (!sched) sched = setInterval(tick, 25); tick();
+    document.documentElement.setAttribute('data-bm', 'playing');          // the sound layer ducks under the music
+    paint(); schedule(c.fade);
+  }
+  function stop() {
+    playing = false; clearTimeout(clock);
+    if (ctx) { var t = ctx.currentTime, len = Math.pow(PHI, 0); tracks.forEach(function (o) { o.leaving = true; fadeTrack(o, false, t, len); setTimeout(function () { kill(o); }, len * 1000 + 300); }); }
+    document.documentElement.setAttribute('data-bm', 'idle');
+    fadingUntil = 0; paint();
+  }
+
+  // ---------- the button (same .bm / .bm-pill markup and spot as before, so styling and the glow are unchanged) ----------
   function el(tag, cls, txt) { var n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; }
-  function rnd(n) { return Math.floor(Math.random() * n); }
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  // ---------- UI ----------
-  var root = el('div', 'bm bm-' + PAGE);
-  root.setAttribute('data-state', 'idle');
-  var pill = el('button', 'bm-pill');
-  pill.type = 'button';
-  pill.setAttribute('aria-expanded', 'false');
-  pill.setAttribute('aria-controls', 'bm-panel');
-  var pillIco = el('span', 'bm-pill-ico', BUTTON_MODE ? '\u25B6' : '\u266A');
-  pillIco.setAttribute('aria-hidden', 'true');
-  var pillTxt = el('span', 'bm-pill-txt');
-  pill.appendChild(pillIco); pill.appendChild(pillTxt);
-
-  var panel = el('section', 'bm-panel bm-p-' + PAGE);
-  panel.id = 'bm-panel'; panel.hidden = true;
-  panel.setAttribute('aria-label', "Bonnie's music");
-  var frame = el('div', 'bm-frame');
-  var side = el('div', 'bm-side');
-  var title = el('p', 'bm-title', "Bonnie's music");
-  var status = el('p', 'bm-status'); status.setAttribute('role', 'status'); status.setAttribute('aria-live', 'polite');
-  var ctl = el('div', 'bm-ctl'); ctl.setAttribute('role', 'group'); ctl.setAttribute('aria-label', 'Music controls');
-  function cbtn(cls, label, glyph) { var b = el('button', 'bm-btn ' + cls); b.type = 'button'; b.setAttribute('aria-label', label); b.title = label; var g = el('span', '', glyph); g.setAttribute('aria-hidden', 'true'); b.appendChild(g); return b; }
-  var bMute = cbtn('bm-mute', 'Mute', '\uD83D\uDD0A');
-  var bNext = cbtn('bm-next', 'Next song (random)', '\u23ED');
-  var bOff = cbtn('bm-off', 'Stop the music and close', '\u2715');
-  ctl.appendChild(bMute); ctl.appendChild(bNext); ctl.appendChild(bOff);
-  var legal = el('p', 'bm-legal');
-  legal.appendChild(document.createTextNode('Plays from YouTube \u00B7 '));
-  var aT = el('a', '', 'YouTube Terms'); aT.href = 'https://www.youtube.com/t/terms';
-  var aP = el('a', '', 'Google Privacy'); aP.href = 'https://policies.google.com/privacy';
-  [aT, aP].forEach(function (a) { a.target = '_blank'; a.rel = 'noopener'; });
-  legal.appendChild(aT); legal.appendChild(document.createTextNode(' \u00B7 ')); legal.appendChild(aP);
-  side.appendChild(title); side.appendChild(status); side.appendChild(ctl); side.appendChild(legal);
-  panel.appendChild(frame); panel.appendChild(side);
-
-  function setState(s, msg) {
-    root.setAttribute('data-state', s);
-    document.documentElement.setAttribute('data-bm', s);
-    if (msg != null) status.textContent = msg;
-    var label;
-    if (BUTTON_MODE) label = s === 'idle' ? "Play Bonnie's playlist (from YouTube)" : "Bonnie's playlist is on (YouTube)";
-    else if (s === 'unset') label = 'music: coming soon';
-    else if (s === 'idle') label = pref() === 'on' ? "tap for Bonnie's music" : "tap for Bonnie's music";
-    else label = "Bonnie's music";
-    pillTxt.textContent = label;
-    pill.setAttribute('aria-label', label);
-    pill.title = label;
+  var root = el('div', 'bm bm-' + PAGE), pill = el('button', 'bm-pill'), ico = el('span', 'bm-pill-ico', '\u266A'), txt = el('span', 'bm-pill-txt');
+  pill.type = 'button'; ico.setAttribute('aria-hidden', 'true'); pill.appendChild(ico); pill.appendChild(txt); root.appendChild(pill);
+  function paint() {
+    var label = !AC ? 'music: no sound in this browser' : playing ? "Bonnie's music on (tap to stop)" : "tap for Bonnie's music";
+    root.setAttribute('data-state', !AC ? 'unset' : playing ? 'playing' : 'idle');
+    if (cur && playing) root.setAttribute('data-genre', cur.genre); else root.removeAttribute('data-genre');
+    txt.textContent = playing ? "Bonnie's music on" : !AC ? 'music: no sound here' : "tap for Bonnie's music";
+    pill.setAttribute('aria-pressed', playing ? 'true' : 'false'); pill.setAttribute('aria-label', label); pill.title = label;
+    pill.disabled = !AC;
   }
-
-  // ---------- placement ----------
-  // chat:  wide screens -> fixed in the empty right gutter; short landscape -> fixed right column, chat column shrinks
-  //        to make room; portrait -> in the page flow just above the play row (the message list gets shorter).
-  // dash:  wide screens -> fixed in the right gutter above the footer bar; otherwise sticky at the top of the queue,
-  //        just under the preview band, so it stays fully on screen while the queue scrolls underneath it;
-  //        short landscape -> fixed bottom-left just above the footer bar (Ask Dad stays clear at top right).
-  // rebella: in the page flow, right under the play button.
-  var mode = '';
-  function q(s) { return document.querySelector(s); }
-  function place() {
-    if (panel.hidden && mode) return;
-    var W = window.innerWidth, H = window.innerHeight, want, host = null, before = null;
-    var PW = SIZE + 24;
-    if (PAGE === 'chat') {
-      var scr = q('#screen-chat'), sw = scr ? scr.getBoundingClientRect().width : 640;
-      if (scr && scr.classList.contains('bm-side-room')) sw += 0;
-      if (W - Math.min(sw, 640) >= 2 * (PW + 24)) want = 'gutter';
-      else if (W > H && H < 560) want = 'side';
-      else { want = 'flow'; host = scr; before = q('#typing') ? q('#typing').nextSibling : q('#send-form'); }
-    } else if (PAGE === 'dash') {
-      var main = q('#main'), mw = main ? Math.min(main.getBoundingClientRect().width, 980) : 980;
-      if ((W - mw) / 2 >= 218 && H >= 600) want = 'gutter';
-      else if (H < 560) want = 'dock';               // short landscape: fixed bottom-left, above the footer bar
-      else { want = 'sticky'; host = main; before = main ? main.firstChild : null; }
-    } else {
-      want = 'flow';
-    }
-    var scrEl = q('#screen-chat');
-    if (scrEl) scrEl.classList.toggle('bm-side-room', want === 'side' && !panel.hidden);
-    if (want === mode && panel.parentNode) { measure(); return; }
-    mode = want;
-    panel.setAttribute('data-mode', mode);
-    if ((mode === 'flow' || mode === 'sticky') && host) host.insertBefore(panel, before || null);
-    else if (PAGE !== 'rebella') document.body.appendChild(panel);
-    measure();
-  }
-  function measure() {
-    // keep fixed placements clear of the sticky preview band, the chat header and the fixed footer bar
-    var top = 8, bottom = 8, r;
-    var band = q('.preview-band, .pv-band'); if (band && (r = band.getBoundingClientRect()).height && getComputedStyle(band).position !== 'static') top = Math.max(top, r.bottom + 8);
-    if (PAGE === 'chat') { var hd = q('.chat-head'); if (hd) top = Math.max(top, hd.getBoundingClientRect().bottom + 8); }
-    if (PAGE === 'dash') {
-      var ft = q('#il-foot'), fb = q('#wx-foot'), t = window.innerHeight;
-      [ft, fb].forEach(function (n) { if (n && n.getBoundingClientRect().height) t = Math.min(t, n.getBoundingClientRect().top); });
-      bottom = Math.max(bottom, window.innerHeight - t + 10);
-      if (band) panel.style.setProperty('--bm-sticky-top', Math.round(band.getBoundingClientRect().height + 6) + 'px');
-    }
-    panel.style.setProperty('--bm-top', Math.round(top) + 'px');
-    panel.style.setProperty('--bm-bottom', Math.round(bottom) + 'px');
-  }
+  pill.addEventListener('click', function () { if (playing) stop(); else start(); });
+  document.addEventListener('visibilitychange', function () { if (!ctx) return; try { if (document.hidden) ctx.suspend(); else if (playing) ctx.resume(); } catch (e) {} });
 
   function mount() {
-    if (PAGE === 'chat') {
-      var head = q('.chat-head'), lock = q('#lock-btn');
-      if (!head) return false;
-      head.insertBefore(root, lock || null);
-    } else if (PAGE === 'dash') {
-      var tb = q('.tb-right'), lk = q('#lock');
-      if (!tb) return false;
-      tb.insertBefore(root, lk || tb.firstChild);
-    } else {
-      var spot = q('[data-bonnie-music]');
-      if (!spot) return false;
-      spot.appendChild(root);
-    }
-    root.appendChild(pill);
-    if (PAGE === 'rebella') root.appendChild(panel);
+    var tb = document.querySelector('.tb-right'), lk = document.querySelector('#lock');
+    if (!tb) return false;
+    tb.insertBefore(root, lk && lk.parentNode === tb ? lk : tb.firstChild);
     return true;
   }
-
-  // ---------- player ----------
-  var player = null, ready = false, wantPlay = false, randomized = {}, lastIdx = -1, visRatio = 0, pausedForHidden = false,
-      blockTimer = 0, listLen = 0, started = false, reqIdx = -1, ID = listId();
-
-  function loadApi(cb) {
-    if (window.YT && window.YT.Player) return cb();
-    var prev = window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady = function () { if (typeof prev === 'function') try { prev(); } catch (e) {} cb(); };
-    if (!document.getElementById('bm-yt-api')) {
-      var s = document.createElement('script');
-      s.id = 'bm-yt-api'; s.src = 'https://www.youtube.com/iframe_api'; s.async = true;
-      s.referrerPolicy = 'strict-origin-when-cross-origin';
-      document.head.appendChild(s);
-    }
-  }
-
-  function buildPlayer() {
-    var src = HOST + '/embed/videoseries?list=' + encodeURIComponent(ID) +
-      '&enablejsapi=1&playsinline=1&rel=0&origin=' + encodeURIComponent(location.origin);
-    var f = document.createElement('iframe');
-    f.id = 'bm-yt'; f.className = 'bm-yt';
-    f.width = String(SIZE); f.height = String(SIZE);
-    f.title = "Bonnie's music (YouTube player)";
-    f.setAttribute('allow', 'autoplay; encrypted-media');
-    f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');  // YouTube needs the Referer; page stays no-referrer
-    f.setAttribute('frameborder', '0');
-    f.src = src;
-    frame.appendChild(f);
-    setState('loading', 'Loading the playlist\u2026');
-    loadApi(function () {
-      player = new window.YT.Player('bm-yt', {
-        events: {
-          onReady: function () { ready = true; prime(); },
-          onStateChange: onState,
-          onError: onErr,
-          onAutoplayBlocked: function () { blocked(); }
-        }
-      });
-    });
-  }
-
-  function playlist() { try { var p = player.getPlaylist(); return (p && p.length) ? p : null; } catch (e) { return null; } }
-
-  var primeTries = 0;
-  function prime() {
-    var p = playlist();
-    if (!p) {
-      if (++primeTries < 16) return setTimeout(prime, 250);
-      return setState('error', "This playlist can't play here. Check it is set to Public or Unlisted (not Private).");
-    }
-    listLen = p.length; curList = ID;
-    try { player.setLoop(true); player.setShuffle(true); } catch (e) {}
-    if (wantPlay) startWhenVisible();
-  }
-
-  function startWhenVisible() {
-    if (!ready || !wantPlay) return;
-    if (visRatio <= 0.5) { setState('waiting', 'Scroll so the player is on screen to start.'); return; }
-    if (document.hidden) return;
-    var p = playlist(); if (!p) return;
-    lastIdx = -1; randomized = {};
-    reqIdx = rnd(p.length);
-    try { player.playVideoAt(reqIdx); } catch (e) {}
-    clearTimeout(blockTimer);
-    blockTimer = setTimeout(function () { if (!started) blocked(); }, 4000);
-  }
-  function blocked() {
-    if (started) return;
-    setState('blocked', 'Tap \u25B6 on the player to start the music.');
-  }
-
-  function randomSeek(tries) {
-    if (!player) return;
-    var idx = -1; try { idx = player.getPlaylistIndex(); } catch (e) {}
-    var pl = playlist(), key = idx + ':' + (pl && pl[idx] ? pl[idx] : '');
-    if (randomized[key]) return;
-    var d = 0; try { d = player.getDuration(); } catch (e) {}
-    if (!(d > 0)) { if ((tries || 0) < 12) setTimeout(function () { randomSeek((tries || 0) + 1); }, 250); return; }
-    randomized[key] = true;
-    var at = d * (0.10 + Math.random() * 0.60);              // somewhere between 10% and 70% of the song
-    try { player.seekTo(at, true); } catch (e) {}
-  }
-
-  function onState(e) {
-    var S = window.YT.PlayerState;
-    if (e.data === S.PLAYING) {
-      clearTimeout(blockTimer);
-      if (!started) {
-        started = true;
-        if (!wantPlay) { wantPlay = true; }
-        // first play came from YouTube's own play button (the browser blocked our scripted start): go to our random song once
-        var idx0 = -1; try { idx0 = player.getPlaylistIndex(); } catch (x) {}
-        if (listLen > 1 && (reqIdx === -1 || idx0 !== reqIdx)) {
-          if (reqIdx === -1) reqIdx = rnd(listLen);
-          try { player.playVideoAt(reqIdx); } catch (x) {}
-          return;
-        }
-      }
-      var idx = -1; try { idx = player.getPlaylistIndex(); } catch (x) {}
-      lastIdx = idx;
-      randomSeek(0);
-      setState('playing', 'Playing from YouTube');
-      syncMute();
-    } else if (e.data === S.PAUSED) {
-      if (!pausedForHidden) setState('paused', 'Paused');
-    } else if (e.data === S.ENDED) {
-      if (wantPlay) next();
-    }
-  }
-  function onErr(e) {
-    // 100 removed/private video, 101/150 owner blocks embedding, 2/5 bad id/HTML5 issue: try another song
-    var code = e && e.data;
-    if ((code === 100 || code === 101 || code === 150 || code === 5) && listLen > 1 && wantPlay) {
-      setState('playing', 'Skipped a song that can\u2019t play here');
-      return setTimeout(next, 600);
-    }
-    if (code === 153) return setState('error', 'YouTube needs this page\u2019s address (Referer) to play.');
-    setState('error', "This playlist can't play here. Check it is set to Public or Unlisted (not Private).");
-  }
-  function next() {
-    var p = playlist(); if (!p) return;
-    var cur = -1; try { cur = player.getPlaylistIndex(); } catch (e) {}
-    var i = rnd(p.length); if (p.length > 1 && i === cur) i = (i + 1 + rnd(p.length - 1)) % p.length;
-    try { player.playVideoAt(i); } catch (e) {}
-  }
-  function syncMute() {
-    var m = false; try { m = player.isMuted(); } catch (e) {}
-    bMute.setAttribute('aria-pressed', m ? 'true' : 'false');
-    bMute.setAttribute('aria-label', m ? 'Unmute' : 'Mute'); bMute.title = m ? 'Unmute' : 'Mute';
-    bMute.firstChild.textContent = m ? '\uD83D\uDD07' : '\uD83D\uDD0A';
-  }
-
-  // ---------- single-player crossfade (used by dad-dj.js) ----------
-  // Equal-power fade-out (cos) -> load the next random track -> fade-in (sin), via setVolume only, half the length each,
-  // so the total equals the requested crossfade length. Playback speed is never touched.
-  var curList = '', fadeT = 0, baseVol = 100;
-  function ramp(sec, f, done) {
-    clearInterval(fadeT);
-    var t0 = performance.now(), ms = Math.max(50, sec * 1000);
-    fadeT = setInterval(function () {
-      var x = Math.min(1, (performance.now() - t0) / ms);
-      try { player.setVolume(Math.round(Math.max(0, Math.min(100, f(x))))); } catch (e) {}
-      if (x >= 1) { clearInterval(fadeT); if (done) done(); }
-    }, 50);
-  }
-  function swap(list, sec, vol, cb) {
-    if (!player || !ready || !ID_RE.test(list || '')) return false;
-    var v0 = baseVol, v1 = Math.round(Math.max(0, Math.min(1, vol == null ? 1 : vol)) * 100), half = Math.max(0.5, sec / 2);
-    ramp(half, function (x) { return v0 * Math.cos(x * Math.PI / 2); }, function () {
-      var go = function () {
-        var p = playlist(); if (!p) return;
-        listLen = p.length; reqIdx = rnd(p.length); randomized = {};
-        try { player.playVideoAt(reqIdx); } catch (e) {}
-        baseVol = v1;
-        ramp(half, function (x) { return v1 * Math.sin(x * Math.PI / 2); }, cb);
-      };
-      if (list === curList) return go();
-      curList = list;
-      var before = (playlist() || [])[0], tries = 0;
-      try { player.cuePlaylist({ listType: 'playlist', list: list }); } catch (e) {}
-      (function wait() {
-        var p = playlist();
-        if ((p && p[0] !== before) || ++tries > 20) return go();
-        setTimeout(wait, 200);
-      })();
-    });
-    return true;
-  }
-
-  // ---------- open / close ----------
-  function open() {
-    if (!ID) { setState('unset', BUTTON_MODE ? '' : "Bonnie's playlist isn't linked yet."); return; }
-    panel.hidden = false;
-    pill.setAttribute('aria-expanded', 'true');
-    document.documentElement.classList.add('bm-open');
-    mode = ''; place();
-    wantPlay = true; started = false;
-    pref('on');
-    if (!player) buildPlayer();
-    else if (ready) startWhenVisible();
-  }
-  function close() {
-    wantPlay = false;
-    if (player) { try { player.pauseVideo(); } catch (e) {} }
-    panel.hidden = true;
-    pill.setAttribute('aria-expanded', 'false');
-    document.documentElement.classList.remove('bm-open');
-    var scr = q('#screen-chat'); if (scr) scr.classList.remove('bm-side-room');
-    pref('off');
-    setState('idle', '');
-    pill.focus();
-  }
-  pill.addEventListener('click', function () { if (panel.hidden) open(); else if (started && root.getAttribute('data-state') === 'paused') { try { player.playVideo(); } catch (e) {} } else close(); });
-  bOff.addEventListener('click', close);
-  bNext.addEventListener('click', function () { if (ready) { wantPlay = true; next(); } });
-  bMute.addEventListener('click', function () { if (!player) return; try { if (player.isMuted()) player.unMute(); else player.mute(); } catch (e) {} setTimeout(syncMute, 60); });
-  panel.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
-
-  // never a background player: pause when the tab/app is hidden, resume only if it was playing and is on screen
-  document.addEventListener('visibilitychange', function () {
-    if (!player || !ready) return;
-    if (document.hidden) {
-      var st = -1; try { st = player.getPlayerState(); } catch (e) {}
-      if (st === 1 || st === 3) { pausedForHidden = true; try { player.pauseVideo(); } catch (e) {} setState('paused', 'Paused while the page was hidden'); }
-    } else if (pausedForHidden) {
-      pausedForHidden = false;
-      if (wantPlay && !panel.hidden && visRatio > 0.5) { try { player.playVideo(); } catch (e) {} }
-    }
-  });
-  // more-than-half-visible check before any start; pause if it ever leaves the screen
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function (es) {
-      es.forEach(function (en) {
-        visRatio = en.isIntersecting ? en.intersectionRatio : 0;
-        if (visRatio > 0.5 && wantPlay && ready && !started) startWhenVisible();
-        if (visRatio < 0.5 && player && started) { var st = -1; try { st = player.getPlayerState(); } catch (e) {} if (st === 1) { try { player.pauseVideo(); } catch (e) {} } }
-      });
-    }, { threshold: [0, 0.25, 0.5, 0.51, 0.75, 1] }).observe(frame);
-  } else visRatio = 1;
-
-  var rt = 0;
-  function relayout() { clearTimeout(rt); rt = setTimeout(function () { if (!panel.hidden) { place(); } }, 120); }
-  window.addEventListener('resize', relayout);
-  window.addEventListener('orientationchange', relayout);
-  window.addEventListener('scroll', function () { if (!panel.hidden && mode === 'gutter') measure(); }, { passive: true });
-
   function boot() {
     if (!mount()) return;
-    setState(ID ? 'idle' : 'unset', ID ? '' : "Bonnie's playlist isn't linked yet.");
-    if (!BUTTON_MODE && ID && pref() === 'on') root.classList.add('bm-remembered');   // gentle "tap for music" nudge
-    if (reduce && reduce.matches) root.classList.add('bm-still');
+    paint();
     window.BonnieMusic = {
-      open: open, close: close, get mode() { return mode; },
-      // for Dad's auto-DJ (dad-dj.js, chat preview): same single visible player, documented calls only
-      get playing() { return !!(player && ready && started && wantPlay && root.getAttribute('data-state') === 'playing'); },
-      get list() { return curList; }, get defaultList() { return ID; },
-      position: function () { try { return { t: player.getCurrentTime(), d: player.getDuration() }; } catch (e) { return null; } },
-      swap: swap
+      open: start, close: stop, get playing() { return playing; }, get now() { return cur; }, compute: compute, GEN: Object.keys(GEN),
+      level: function () { if (!meter) return 0; var a = new Float32Array(meter.fftSize); meter.getFloatTimeDomainData(a); var q = 0; for (var i = 0; i < a.length; i++) q += a[i] * a[i]; return Math.sqrt(q / a.length); },
+      get graph() { return ctx ? { state: ctx.state, tracks: tracks.length, bus: bus.gain.value, master: master.gain.value, sampleRate: ctx.sampleRate } : null; }
     };
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
