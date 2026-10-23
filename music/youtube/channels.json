@@ -1,0 +1,36 @@
+{
+  "_about": "Bonnie's radio (YouTube) registry. One entry per playlist or channel. Only entries with approvedByDad true AND a passed age check are ever loaded; everything else is ignored when the page is regenerated (python3 _generator.py). No YouTube Data API key is used anywhere: a channel plays through its uploads playlist (UU + the channel id without its leading UC). Never guess an id: copy it from the real playlist or channel page. See README.md.",
+  "schemaVersion": 1,
+  "genres": [
+    { "key": "pop",         "label": "Pop" },
+    { "key": "indie-local", "label": "Indie / Local" },
+    { "key": "lofi",        "label": "Lo-fi" },
+    { "key": "rock",        "label": "Rock" },
+    { "key": "hiphop",      "label": "Hip-hop" },
+    { "key": "electronic",  "label": "Electronic" },
+    { "key": "acoustic",    "label": "Acoustic" },
+    { "key": "chill",       "label": "Chill" }
+  ],
+  "entries": [
+    {
+      "id": "bonnie-main",
+      "name": "Bonnie's playlist",
+      "type": "playlist",
+      "youtubeId": "REPLACE_WITH_BONNIE_PLAYLIST",
+      "genres": ["main"],
+      "note": "Bonnie's own playlist. The big play button plays this one. Placeholder until Dad sends the Public or Unlisted playlist link.",
+      "addedBy": "Simmie",
+      "approvedByDad": false,
+      "ageCheck": { "madeForKids": null, "ageSuitable": null, "checkedBy": null, "checkedOn": null, "how": "" },
+      "addedOn": "2026-10-24"
+    },
+    { "id": "slot-pop",         "name": "Pop station",           "type": "playlist", "youtubeId": "REPLACE_WITH_POP_PLAYLIST",         "genres": ["pop"],         "note": "Placeholder slot: waiting for a real playlist id.", "addedBy": "Simmie", "approvedByDad": false, "ageCheck": { "madeForKids": null, "ageSuitable": null, "checkedBy": null, "checkedOn": null, "how": "" }, "addedOn": "2026-10-24" },
+    { "id": "slot-indie-local", "name": "Indie / Local station", "type": "playlist", "youtubeId": "REPLACE_WITH_INDIE_LOCAL_PLAYLIST", "genres": ["indie-local"], "note": "Placeholder slot: waiting for a real playlist id. Approved indie channels also join this station.", "addedBy": "Simmie", "approvedByDad": false, "ageCheck": { "madeForKids": null, "ageSuitable": null, "checkedBy": null, "checkedOn": null, "how": "" }, "addedOn": "2026-10-24" },
+    { "id": "slot-lofi",        "name": "Lo-fi station",         "type": "playlist", "youtubeId": "REPLACE_WITH_LOFI_PLAYLIST",        "genres": ["lofi"],        "note": "Placeholder slot: waiting for a real playlist id.", "addedBy": "Simmie", "approvedByDad": false, "ageCheck": { "madeForKids": null, "ageSuitable": null, "checkedBy": null, "checkedOn": null, "how": "" }, "addedOn": "2026-10-24" },
+    { "id": "slot-rock",        "name": "Rock station",          "type": "playlist", "youtubeId": "REPLACE_WITH_ROCK_PLAYLIST",        "genres": ["rock"],        "note": "Placeholder slot: waiting for a real playlist id.", "addedBy": "Simmie", "approvedByDad": false, "ageCheck": { "madeForKids": null, "ageSuitable": null, "checkedBy": null, "checkedOn": null, "how": "" }, "addedOn": "2026-10-24" },
+    { "id": "slot-hiphop",      "name": "Hip-hop station",       "type": "playlist", "youtubeId": "REPLACE_WITH_HIPHOP_PLAYLIST",      "genres": ["hiphop"],      "note": "Placeholder slot: waiting for a real playlist id (clean versions only).", "addedBy": "Simmie", "approvedByDad": false, "ageCheck": { "madeForKids": null, "ageSuitable": null, "checkedBy": null, "checkedOn": null, "how": "" }, "addedOn": "2026-10-24" },
+    { "id": "slot-electronic",  "name": "Electronic station",    "type": "playlist", "youtubeId": "REPLACE_WITH_ELECTRONIC_PLAYLIST",  "genres": ["electronic"],  "note": "Placeholder slot: waiting for a real playlist id.", "addedBy": "Simmie", "approvedByDad": false, "ageCheck": { "madeForKids": null, "ageSuitable": null, "checkedBy": null, "checkedOn": null, "how": "" }, "addedOn": "2026-10-24" },
+    { "id": "slot-acoustic",    "name": "Acoustic station",      "type": "playlist", "youtubeId": "REPLACE_WITH_ACOUSTIC_PLAYLIST",    "genres": ["acoustic"],    "note": "Placeholder slot: waiting for a real playlist id.", "addedBy": "Simmie", "approvedByDad": false, "ageCheck": { "madeForKids": null, "ageSuitable": null, "checkedBy": null, "checkedOn": null, "how": "" }, "addedOn": "2026-10-24" },
+    { "id": "slot-chill",       "name": "Chill station",         "type": "playlist", "youtubeId": "REPLACE_WITH_CHILL_PLAYLIST",       "genres": ["chill"],       "note": "Placeholder slot: waiting for a real playlist id.", "addedBy": "Simmie", "approvedByDad": false, "ageCheck": { "madeForKids": null, "ageSuitable": null, "checkedBy": null, "checkedOn": null, "how": "" }, "addedOn": "2026-10-24" }
+  ]
+}
