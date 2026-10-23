@@ -106,3 +106,6 @@
 }
 @media(forced-colors:active){.zine .card::before,.zine .rebel-quote::before,.zine-tear{display:none}}
 @media print{.zine{background:#fff}.zine *{transform:none!important;clip-path:none!important}}
+/* Quote cards inside article bodies: undo the article's own .entry blockquote styling */
+.entry .rebel-quote blockquote.rq-text{margin:0 0 1rem;padding:0;background:none;color:var(--ink);font-family:inherit;text-transform:none;letter-spacing:normal;font-size:inherit;text-align:left;border-radius:0}
+.entry .rebel-quote .rq-paper{background-color:var(--aqua)}

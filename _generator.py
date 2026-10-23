@@ -156,7 +156,7 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&family=Special+Elite&display=swap">
 <link rel="stylesheet" href="css/styles.css?v=4">
-<link rel="stylesheet" href="css/zine.css?v=1">
+<link rel="stylesheet" href="css/zine.css?v=2">
 <script src="js/main.js"></script>
 <script src="js/quotes.js" defer></script>
 <script src="js/quotes-render.js" defer></script>{extra_head}
