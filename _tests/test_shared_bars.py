@@ -117,7 +117,7 @@ with sync_playwright() as p:
     pg.screenshot(path=f'{SHOTS}/help_orb_answer.png')
     # cookies phrase
     pg.wait_for_timeout(23000)
-    ok(pg.text_content('#bar-greet').strip() == 'Hey there, welcome to Rebella' and pg.text_content('#bar-line').strip() == 'Made for curious minds like you', 'orb: original text restored')
+    ok(pg.text_content('#bar-greet').strip() == 'Hey there, welcome to Rebella' and pg.evaluate("!document.getElementById('bar-line').hasAttribute('data-help-busy') && !document.getElementById('app-foot').classList.contains('help-answering')") and len(pg.text_content('#bar-line').strip()) > 0, 'orb: header restored, footer line handed back to the ticker')
     ok(not errs, f'orb: no page errors {errs}')
     ctx.close(); b.close()
 
