@@ -380,6 +380,19 @@
    "title": "Pause motion",
    "text": "Stops everything moving at the bottom of the page: the facts, the animals, the lights and the wave. Your device remembers your choice.",
    "try": "Press it again to start things moving."
+  },
+  "hd-emoji": {
+   "title": "Today's emoji",
+   "text": "A little emoji mood for the weather in Perth, where Rebella is made, and the time of day on your device. It only changes when the weather or the part of the day changes. It's worked out on your device."
+  },
+  "db-hello": {
+   "title": "Your greeting",
+   "text": "This says hello for the time of day on your device. If you've picked a name at the bottom of the page, it uses that too. It's worked out on your device and never sent anywhere."
+  },
+  "db-weather": {
+   "title": "Perth weather",
+   "text": "The weather in Perth right now, where Rebella is made. It comes from Open-Meteo, for Perth only. Rebella never asks where you are. Tap it to open the Bureau of Meteorology's Perth forecast in a new tab.",
+   "try": "Check if it's a hoodie day or an ice-cream day."
   }
  },
  "targets": [

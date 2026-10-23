@@ -53,6 +53,19 @@ FOOT_VISITOR = (
   '<script src="js/footbar.js?v=1" defer></script>'
 )
 
+# HEADER ITEMS (live 24 Oct 2026, Danny): the public, static items from the dashboard header. Filled on the device by
+# js/dashbars.js (css/dashbars.css): still emoji set (Perth weather + time of day), greeting chip, Perth weather chip
+# linking to the Bureau of Meteorology Perth forecast. Hidden until filled; no request of their own.
+HEAD_ITEMS = (
+  '<link rel="stylesheet" href="css/dashbars.css?v=1">'
+  '<div class="hd-items" data-guard="header-items">'
+  '<span class="hd-emoji" data-help="hd-emoji" aria-hidden="true" hidden></span>'
+  '<span class="db-chip db-hello" data-help="db-hello" hidden></span>'
+  '<a class="db-chip db-wx" data-help="db-weather" href="https://www.bom.gov.au/places/wa/perth/forecast/" target="_blank" rel="noopener noreferrer" hidden>Perth weather</a>'
+  '</div>'
+  '<script src="js/dashbars.js?v=1" defer></script>'
+)
+
 WORDING = {
   'bonnie': dict(
     tagline='Keep Rebella safe, fun and cool', greet_help='dash-tagline',
@@ -67,7 +80,7 @@ WORDING = {
     top_right='<span class="bar-right"><nav class="bar-links" aria-label="Utility">'
               '<a href="category.html" data-help="all-articles">All articles</a><a href="submit.html" data-help="submit">Share your work</a></nav>' + RADIO_MINI + '</span>',
     wordmark=WORDMARK_SITE, pill='Learn what you love',
-    actions='',   # Create and Picks removed from the header (Danny, 24 Oct 2026); still in the phone menu and page bodies
+    actions=HEAD_ITEMS,   # Create and Picks removed from the header (Danny, 24 Oct 2026); still in the phone menu and page bodies
     # FOOTER (live 24 Oct 2026, Danny's yes): the dashboard footer items, adapted for the public and personalised on the
     # device only. Status lights (Sky / Time / Radio / Device), waveform, time-of-day gauge, fun-fact ticker (also the help
     # orb's footer slot), animal lane, the terminal-style line holding the optional nickname, and Pause motion.

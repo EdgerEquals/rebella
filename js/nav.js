@@ -11,7 +11,7 @@
   'use strict';
   if (!window.fetch || !window.history || !history.pushState || !window.DOMParser) return;
   var me = document.currentScript, ROOT = new URL('../', me ? me.src : location.href).href;
-  var COMMON = /\/js\/(main|bars|footbar|help-orb|help-init|quotes|quotes-render|nav)\.js|\/music\/youtube\/(stations|bonnie-radio)\.js/;
+  var COMMON = /\/js\/(main|bars|footbar|help-orb|help-init|quotes|quotes-render|nav|dashbars)\.js|\/music\/youtube\/(stations|bonnie-radio)\.js/;
   var RERUN = /\/(music\/music|js\/recs|js\/recs-render|js\/library)\.js/;   // only bind to their own page content: safe to run again
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ran = {};   // page scripts that have run in this document

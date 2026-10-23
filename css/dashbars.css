@@ -1,0 +1,25 @@
+/* Rebella header items (live 24 Oct 2026, Danny): the public, STATIC items from Bonnie's Dashboard header.
+   Emoji set (one still state for the Perth weather + time of day), greeting chip, Perth weather chip (links to the
+   Bureau of Meteorology Perth forecast in a new tab). Adds to css/bars.css and uses its visitor colours only; no new
+   colours. Nothing here moves: no animation, no transitions (css/bars.css already forces that for #app-head).
+   Contrast: chip text #5B3A50 on #FFFFFF / #FDEEF2 = 9.0:1+, link hover #8E2350 = 8.6:1+ (WCAG AA). */
+#app-head[data-audience=visitor] .masthead .container{flex-wrap:nowrap}
+#app-head[data-audience=visitor] .brand{flex:0 0 auto}
+#app-head[data-audience=visitor] .head-actions{width:auto;flex:0 1 auto;min-width:0;overflow:hidden;flex-wrap:nowrap;justify-content:flex-end;align-items:center;gap:.5rem}
+#app-head .hd-items{display:flex;align-items:center;gap:.5rem;min-width:0;white-space:nowrap}
+#app-head .hd-items [hidden]{display:none!important}
+#app-head .hd-emoji{font-size:1.25rem;line-height:1;letter-spacing:.12em;white-space:nowrap;user-select:none}
+#app-head .db-chip{font:700 .78rem/1 var(--f-body);letter-spacing:.6px;color:var(--bar-tag);background:var(--pk-pale);
+  border:1px dotted var(--bar-mast-border);border-radius:999px;padding:.4rem .65rem;white-space:nowrap;display:inline-flex;align-items:center;gap:.25rem}
+#app-head a.db-wx{text-decoration:none}
+#app-head a.db-wx:hover{color:var(--pk-raspberry);text-decoration:underline;text-underline-offset:2px}
+#app-head .db-wx-go{font-size:.9em}
+@media(max-width:1099px){#app-head .db-hello{display:none!important}}
+@media(max-width:767px){#app-head .db-wx-l,#app-head .db-wx-go{display:none}#app-head .hd-emoji .g1,#app-head .hd-emoji .g2{display:none}}
+@media(max-width:575px){#app-head .db-wx-p{display:none}#app-head .hd-emoji{font-size:1.05rem;letter-spacing:0}#app-head .hd-emoji .g1,#app-head .hd-emoji .w{display:none}
+  #app-head .db-chip{padding:.32rem .4rem;font-size:.74rem;letter-spacing:0;gap:.15rem}#app-head .hd-items,#app-head[data-audience=visitor] .head-actions{gap:.3rem}
+  /* phones: the pill gets a little more compact so the chips fit on the same line (same colours, same words) */
+  #app-head[data-audience=visitor] .mod-pill{font-size:.8rem;letter-spacing:1px;padding:.22rem .5rem .12rem;margin-left:.4rem}
+  #app-head[data-audience=visitor] .masthead .container{gap:.5rem}}
+@media(max-width:374px){#app-head .hd-emoji{display:none!important}}
+@media(max-width:359px){#app-head .hd-items{display:none!important}}

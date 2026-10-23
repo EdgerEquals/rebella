@@ -20,7 +20,7 @@ COOKIES_BODY = '''<main id="main" class="container article-wrap cookies-page">
 <li><strong>Your nickname</strong>, if you choose one at the bottom of the page. It's saved with the date you saved it, and that's all.</li>
 <li><strong>Your mood board</strong>, if you press Save on the Create page, so it's still there next time.</li>
 <li><strong>Pause motion</strong>, if you press it at the bottom of the page, so things stay still next time too.</li>
-<li><strong>The Perth weather</strong> shown at the bottom of the page, kept for half an hour so it isn't fetched on every page.</li>
+<li><strong>The Perth weather</strong> shown at the top and bottom of the page, kept for half an hour so it isn't fetched on every page.</li>
 </ul>
 <p>They all stay on this device, in this browser. They're never sent to us or to anyone else. Tap "forget my name" or Clear on the Create page, or clear your browser's site data, and they're gone.</p>
 <p>When the Music Playground opens, it will remember your sound settings in the same way: on your device only.</p>
@@ -32,6 +32,7 @@ COOKIES_BODY = '''<main id="main" class="container article-wrap cookies-page">
 <li><strong>A podcast player</strong> on one dinosaur article comes from Captivate. Once it loads, it can save its own notes, under its own rules.</li>
 <li><strong>YouTube videos.</strong> Where Rebella shows a video, it uses YouTube's privacy-enhanced mode. YouTube says it doesn't save cookies until you press play. Once a video plays, YouTube may save its own notes in your browser, under YouTube's rules.</li>
 <li><strong>The weather</strong> at the bottom of the page comes from Open-Meteo, a free weather service. Your browser asks it for Perth's weather only. Rebella never asks where you are, and no cookies are used.</li>
+<li><strong>The weather chip</strong> at the top of the page is a link to the Bureau of Meteorology's Perth forecast. Nothing is sent to them unless you tap it, and it opens in a new tab. The greeting and the emoji next to it are worked out on your device.</li>
 </ul>
 
 <h2>Why do some sites use tracking cookies?</h2>
