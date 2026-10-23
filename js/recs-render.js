@@ -24,7 +24,7 @@
     var s = R.song || {}; if (!has(s.title)) return false;
     b.appendChild(el('p', 'rec-title', s.title));
     if (has(s.artist)) b.appendChild(el('p', 'rec-sub', 'by ' + s.artist));
-    why(b, s.why, null, true);
+    why(b, s.why);
     var a = safeLink(s.link, 'Listen (opens another site)'); if (a) b.appendChild(a);
     return true;
   });
@@ -41,13 +41,13 @@
     var q = R.quote || {}; if (!has(q.text)) return false;
     var bq = el('blockquote', 'rec-quote', '\u201C' + q.text + '\u201D'); b.appendChild(bq);
     b.appendChild(el('p', 'rec-sub', '\u2014 ' + (has(q.by) ? q.by : 'Author unknown')));
-    why(b, q.why, null, true);
+    why(b, q.why);
     return true;
   });
   fill('goal', function (b) {
     var g = R.goal || {}; if (!has(g.goal)) return false;
     b.appendChild(el('p', 'rec-title', g.goal));
-    why(b, g.why, null, true);
+    why(b, g.why);
     return true;
   });
   fill('other', function (b) {

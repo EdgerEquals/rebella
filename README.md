@@ -19,7 +19,7 @@ Open with any static server from this folder, e.g. `python3 -m http.server 8765`
 ## Recommendations page (edit ONE file: `js/recs.js`)
 - `recommendations.html` reads everything from `js/recs.js` (rendered by `js/recs-render.js`). To update the picks, edit `js/recs.js` only, then commit and push. No need to run the generator.
 - Any field left as `""` shows a "coming soon" placeholder for that section.
-- Links must start with `https://`. Songs are links only, never upload audio. The `celebrity` block is shown as **Rightfully Famous** (key name unchanged); add a `source` news link so it can be checked, or leave it empty. `deed` is optional. Empty `why` notes show "coming soon"; an empty quote `by` shows "Author unknown".
+- Links must start with `https://`. Songs are links only, never upload audio. The `celebrity` block is shown as **Rightfully Famous** (key name unchanged); add a `source` news link so it can be checked, or leave it empty. `deed` is optional. Empty `why` notes are simply left out; an empty quote `by` shows "Author unknown".
 - About me: interests only. No name, school, suburb, age or photos. Bonnie checks every update before it goes live.
 
 Example:
@@ -38,7 +38,7 @@ window.REBELLA_RECS = {
 ```
 
 ## Search (SEO)
-- Home title, meta description and the visible intro use the phrases "learn what you love", "fun websites for teens" and "educational and cool sites for girls".
+- Home title and meta description use the phrases (the visible intro is now Florence's own note, kept verbatim in `_generator.py`; class `.creator-note`) "learn what you love", "fun websites for teens" and "educational and cool sites for girls".
 - Every page has its own title, meta description, meta keywords, canonical URL, Open Graph and Twitter tags (articles also have Article JSON-LD). `sitemap.xml` lists every public page (not `moderation/`). `robots.txt` keeps `Disallow: /moderation/` and has a `Sitemap:` line.
 - Note: crawlers only read robots.txt at the domain root (edgerequals.github.io/robots.txt), so submit the sitemap in Google Search Console as well.
 

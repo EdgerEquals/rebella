@@ -109,3 +109,13 @@
 /* Quote cards inside article bodies: undo the article's own .entry blockquote styling */
 .entry .rebel-quote blockquote.rq-text{margin:0 0 1rem;padding:0;background:none;color:var(--ink);font-family:inherit;text-transform:none;letter-spacing:normal;font-size:inherit;text-align:left;border-radius:0}
 .entry .rebel-quote .rq-paper{background-color:var(--aqua)}
+/* Note from the creator (home intro, Florence's own words): taped lined-paper note */
+.creator-note{position:relative;max-width:760px;margin:1.2rem auto 0;padding:2rem 2.4rem 1.6rem;text-align:left;background:#fff;color:var(--ink);
+  background-image:repeating-linear-gradient(transparent 0 33px,rgba(91,58,80,.10) 33px 34px),linear-gradient(90deg,transparent 2.6rem,rgba(180,67,108,.25) 2.6rem,rgba(180,67,108,.25) calc(2.6rem + 2px),transparent calc(2.6rem + 2px));
+  transform:rotate(-.6deg);clip-path:var(--cut,none);filter:drop-shadow(0 8px 10px rgba(58,43,53,.14))}
+.creator-note::before{content:"";position:absolute;top:-6px;left:50%;width:120px;height:28px;margin-left:-60px;background:var(--tape-c,rgba(248,207,219,.9));transform:rotate(-3deg);z-index:2}
+.site-intro .creator-note p{margin:0 0 .8rem;padding-left:1.4rem;font-size:1.2rem;line-height:1.6}
+.creator-note .cn-hi{font-family:var(--f-hand);font-size:1.6rem!important;letter-spacing:1px;color:var(--heading)}
+.creator-note .cn-motto{font-family:"Special Elite",monospace;font-size:1.25rem!important;color:#7A2448;letter-spacing:.5px}
+.creator-note .cn-sign{font-family:var(--f-script);font-size:1.7rem!important;color:var(--accent);text-align:right;margin-bottom:0!important}
+@media(max-width:575px){.creator-note{padding:1.6rem 1.1rem 1.2rem;background-image:repeating-linear-gradient(transparent 0 33px,rgba(91,58,80,.10) 33px 34px)}.site-intro .creator-note p{padding-left:0;font-size:1.1rem}}

@@ -9,7 +9,7 @@
    - "Rightfully Famous" (the celebrity block): add a "source" link to a
      trustworthy news article so readers (and Bonnie) can check it's true.
      Leave "source" empty rather than guess.
-   - Any "why" left as "" shows "coming soon" for that note.
+   - "why" notes are optional: leave one as "" and that pick simply shows without it.
    - About me: interests only. NO name, school, suburb, age or photos.
    - Bonnie checks every update before it goes live.
    ========================================================================== */
@@ -19,7 +19,7 @@ window.REBELLA_RECS = {
   song: {
     title: "Tattoos",     // song name
     artist: "Natalie Jane", // who sings it
-    why: "",              // why I chose this (coming soon)
+    why: "",              // optional: why I chose this
     link: "https://www.youtube.com/watch?v=Zw8r03tVVFg"  // official video (NatalieJaneVEVO)
   },
 

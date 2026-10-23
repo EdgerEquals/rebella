@@ -156,7 +156,7 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&family=Special+Elite&display=swap">
 <link rel="stylesheet" href="css/styles.css?v=4">
-<link rel="stylesheet" href="css/zine.css?v=2">
+<link rel="stylesheet" href="css/zine.css?v=3">
 <script src="js/main.js"></script>
 <script src="js/quotes.js" defer></script>
 <script src="js/quotes-render.js" defer></script>{extra_head}
@@ -230,7 +230,12 @@ moon=BY['moon-garden']
 home=f'''<main id="main">
 <section class="site-intro container">
   <h1 class="hand ransom-h">{ransom("Learn what you love.")}</h1>
-  <p>Rebella is an online magazine for teen girls: a safe, fun and cool place to learn and grow with things you actually want to. Make-it projects, big questions about space and science, books, feel-good ideas and real advice. If you've been searching for <strong>fun websites for teens</strong>, or <strong>educational and cool sites for girls</strong>, welcome. You're in the right place.</p>
+  <div class="creator-note" aria-label="A note from Rebella's creator">
+    <p class="cn-hi">Hi all!!</p>
+    <p>My name is Florence and I am the creator of this website. I made Rebella for teenage girls (older are always welcome!) to feel welcome and safe online, to have a platform to express yourself and learn the things you want to, not the things that everyone else wants you to learn at school. I hope that this site helps you realise that the world is waiting for you. And that nobody else can replicate the wonders that you might bring to it.</p>
+    <p class="cn-motto">Be brave. Be different. Be a rebel.</p>
+    <p class="cn-sign">Live it up sis.</p>
+  </div>
 </section>
 <section class="hero container c-questions">
   <a class="hero-art" href="{ahref(moon)}" aria-label="Read the featured post: {moon['title']}">{HERO_ART}</a>
@@ -388,7 +393,7 @@ HOME_JSONLD='\n<script type="application/ld+json">'+json.dumps({"@context":"http
 
 PAGES=[]  # (path, title, body, desc, active, extra, og_img, og_type, canonical, keywords, head_more, in_sitemap, priority)
 PAGES.append(('index.html','Rebella | Learn what you love: fun websites for teens',home,
-  "Learn what you love with Rebella, an online magazine for teen girls. Make-it projects, big questions, books and real advice: one of the fun websites for teens, and an educational and cool site for girls.",
+  "Learn what you love with Rebella, an online magazine for teen girls. Make-it projects, big questions, books and real advice: one of the fun websites for teens, and one of the educational and cool sites for girls.",
   None,'','img/articles/moon.jpg','website',None,KEYWORDS,HOME_JSONLD,True,'1.0'))
 PAGES.append(('category.html','All articles | Rebella',all_page(),'Every Rebella article in one place: crafts, science, books, friendships and feel-good ideas for teens who want to learn what they love.','all','','img/articles/pencils.jpg','website',None,KEYWORDS,'',True,'0.8'))
 for k,n in CATS:
