@@ -36,7 +36,7 @@
       if (!window.crypto || !crypto.subtle) { msg.textContent = 'This page needs a secure (https) connection to unlock.'; return; }
       btn.disabled = true; msg.textContent = 'Checking\u2026';
       try {
-        if (safeEq(await derive(input.value), CFG.hash)) {
+        if (safeEq(await derive(input.value.trim()), CFG.hash)) {
           sessionStorage.setItem(KEY, CFG.hash); input.value = ''; msg.textContent = ''; fails = 0; apply(); window.scrollTo(0, 0);
         } else {
           fails++; input.value = ''; msg.textContent = 'That passcode didn\u2019t work.';

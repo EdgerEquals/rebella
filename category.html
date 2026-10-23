@@ -11,8 +11,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&display=swap">
 <link rel="stylesheet" href="css/styles.css">
 <style>html:not(.unlocked) #site{display:none!important}</style>
-<script src="js/config.js"></script>
-<script src="js/gate.js"></script>
+<script src="js/config.js?v=2"></script>
+<script src="js/gate.js?v=2"></script>
 <script src="js/main.js"></script>
 </head>
 <body>
@@ -29,7 +29,7 @@
     <p class="gate-intro">Rebella is private for now. Enter the passcode to come in.</p>
     <form id="gate-form" autocomplete="off">
       <label for="passcode" class="sr-only">Passcode</label>
-      <input id="passcode" class="gate-field dots-mustard" type="password" autocomplete="current-password" placeholder="Passcode" required>
+      <input id="passcode" class="gate-field dots-mustard" type="password" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Passcode" required>
       <button class="btn btn-primary btn-block" type="submit">Come in</button>
       <p id="gate-msg" class="gate-msg" role="alert" aria-live="polite"></p>
     </form>

@@ -37,7 +37,7 @@
     if(!window.crypto || !crypto.subtle){ msg.textContent="This page needs HTTPS to check the passcode."; return; }
     var btn = this.querySelector("button"); btn.disabled = true; msg.textContent = "Checking...";
     try{
-      var h = await derive(input.value);
+      var h = await derive(input.value.trim());
       if(safeEq(h, CFG.hash)){ sessionStorage.setItem(SKEY, CFG.hash); input.value=""; msg.textContent=""; fails=0; show(); }
       else { fails++; input.value=""; msg.textContent="That passcode didn't work."; await new Promise(function(r){setTimeout(r, Math.min(4000, 400*fails));}); }
     } finally { btn.disabled = false; if(!isUnlocked()) input.focus(); }
