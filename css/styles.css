@@ -449,3 +449,19 @@ html:not(.unlocked) body{background:#E3CFA6;padding-bottom:0}
 @media(min-width:1230px){.menu a.navlink{padding:1rem .85rem}.menu a.navlink::after{left:.85rem;right:.85rem}}
 @media(min-width:992px) and (max-width:1229px){.menu a.navlink{padding:1rem .5rem;font-size:.95rem;letter-spacing:1px}.menu a.navlink::after{left:.5rem;right:.5rem}.nav-right .sub-link{display:none}.nav-right{gap:.4rem}}
 .recs-pill svg{filter:drop-shadow(0 0 1.5px #745800)}
+/* ===== CONTENT WIDTH (24 Oct 2026, approved by Danny): content boxes ~14% narrower so more page background shows
+   left and right. ONE shared rule for every page on the main layout; the locked header/footer bars (#app-head/#app-foot)
+   keep their own full-width backgrounds. Old max-widths: 800 / 740 / 1000 / 1230 px. New: x0.86, capped at 88vw. ===== */
+:root{--rb-gutter:max(1rem,4vw)}
+.container{padding-left:var(--rb-gutter);padding-right:var(--rb-gutter)}
+@media(min-width:576px){.container{max-width:min(88vw,688px)}}
+@media(min-width:768px){.container{max-width:min(88vw,636px)}}
+@media(min-width:992px){.container{max-width:min(88vw,860px)}}
+@media(min-width:1230px){.container{max-width:min(88vw,1058px)}}
+/* the section menu is navigation, not a content box: it keeps its old widths so every link still fits on one line */
+.mainnav .container{padding-left:15px;padding-right:15px}
+@media(min-width:576px){.mainnav .container{max-width:800px}}
+@media(min-width:768px){.mainnav .container{max-width:740px}}
+@media(min-width:992px){.mainnav .container{max-width:1000px}}
+@media(min-width:1230px){.mainnav .container{max-width:1230px}}
+/* ===== END CONTENT WIDTH ===== */
