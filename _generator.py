@@ -228,6 +228,8 @@ ABOUT_CARD='<section class="container about-home" aria-labelledby="about-home-ti
 HOME_FIRST=[p['slug'] for p in PIPE[:3]]+['t-shirt-tote-bag','why-is-the-sky-blue','five-minute-wind-down','start-a-coding-club','six-adventure-books']
 HOME_LATER=['talk-money-with-your-family','no-bake-oat-cookies','living-on-mars','desk-stretches','group-chat-drama']
 moon=BY['moon-garden']
+import sys as _sys; _sys.path.insert(0, os.path.join(OUT,'music','youtube')); import _yt_music  # Bonnie's radio (YouTube): music/youtube/
+_yt_music.build(); BONNIE_RADIO=_yt_music.section()
 home=f'''<main id="main">
 <section class="site-intro container">
   <h1 class="hand ransom-h">{ransom("Learn what you love.")}</h1>
@@ -238,6 +240,7 @@ home=f'''<main id="main">
     <p class="cn-sign">Live it up sis.</p>
   </div>
 </section>
+{BONNIE_RADIO}
 <section class="hero container c-questions">
   <a class="hero-art" href="{ahref(moon)}" aria-label="Read the featured post: {moon['title']}">{HERO_ART}</a>
   <div class="hero-text"><span class="cat-chip kicker">Featured · Big Questions</span><h2 class="dots-aqua">{moon['title']}</h2><a class="btn dots-aqua" href="{ahref(moon)}">Read it</a></div>
@@ -396,7 +399,7 @@ HOME_JSONLD='\n<script type="application/ld+json">'+json.dumps({"@context":"http
 PAGES=[]  # (path, title, body, desc, active, extra, og_img, og_type, canonical, keywords, head_more, in_sitemap, priority)
 PAGES.append(('index.html','Rebella | Learn what you love: fun websites for teens',home,
   "Learn what you love with Rebella, an online magazine for teen girls. Make-it projects, big questions, books and real advice: one of the fun websites for teens, and one of the educational and cool sites for girls.",
-  None,'','img/articles/moon.jpg','website',None,KEYWORDS,HOME_JSONLD,True,'1.0'))
+  None,_yt_music.HEAD,'img/articles/moon.jpg','website',None,KEYWORDS,HOME_JSONLD,True,'1.0'))
 PAGES.append(('category.html','All articles | Rebella',all_page(),'Every Rebella article in one place: crafts, science, books, friendships and feel-good ideas for teens who want to learn what they love.','all','','img/articles/pencils.jpg','website',None,KEYWORDS,'',True,'0.8'))
 for k,n in CATS:
     first=[a for a in ARTICLES if a['cat']==k][0]
