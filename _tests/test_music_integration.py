@@ -57,12 +57,12 @@ with sync_playwright() as pw:
                 ok(resp and resp.status == 200, f'{tag}: HTTP 200 ({resp.status if resp else None})')
                 r = pg.evaluate("""() => { const h=document.getElementById('app-head'), f=document.getElementById('app-foot');
                     return {orbs:document.querySelectorAll('.help-orb').length, ht:h?h.getBoundingClientRect().top:null, fb:f?innerHeight-f.getBoundingClientRect().bottom:null,
-                      dials:document.querySelectorAll('.br-dial,[role=slider].pg-dial').length, sw:document.documentElement.scrollWidth, iw:innerWidth,
-                      script:h?getComputedStyle(h.querySelector('.wordmark .script')).color:null, mast:h?getComputedStyle(h.querySelector('.masthead')).backgroundColor:null,
+                      dials:document.querySelectorAll('.br-dial').length, sw:document.documentElement.scrollWidth, iw:innerWidth,
+                      script:h&&h.querySelector('.wm-logo img')?'logo':null, mast:h?getComputedStyle(h.querySelector('.masthead')).backgroundColor:null,
                       foot:f?getComputedStyle(f).backgroundColor:null} }""")
                 ok(r['orbs'] == 1, f'{tag}: exactly one help orb ({r["orbs"]})')
                 ok(r['ht'] is not None and abs(r['ht']) < 1 and abs(r['fb']) < 1, f'{tag}: bars pinned')
-                ok(r['mast'] == 'rgb(255, 255, 255)' and r['script'] == 'rgb(180, 67, 108)' and r['foot'] == 'rgb(253, 238, 242)', f'{tag}: light visitor bars ({r["mast"]}, {r["script"]}, {r["foot"]})')
+                ok(r['mast'] == 'rgb(255, 255, 255)' and r['script'] == 'logo' and r['foot'] == 'rgb(253, 238, 242)', f'{tag}: light visitor bars ({r["mast"]}, {r["script"]}, {r["foot"]})')
                 ok(r['sw'] <= r['iw'] + 1, f'{tag}: no horizontal overflow ({r["sw"]}>{r["iw"]})')
                 pg.mouse.wheel(0, 3000); pg.wait_for_timeout(300)
                 r2 = pg.evaluate("() => [document.getElementById('app-head').getBoundingClientRect().top, innerHeight-document.getElementById('app-foot').getBoundingClientRect().bottom]")
