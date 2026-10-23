@@ -5,14 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Make It | Rebella</title>
 <meta name="description" content="Rebella prototype">
-<meta name="robots" content="noindex,nofollow">
 <meta name="referrer" content="no-referrer">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&display=swap">
 <link rel="stylesheet" href="css/styles.css">
-<style>html:not(.unlocked) #site{display:none!important}</style>
-<script src="js/config.js?v=2"></script>
-<script src="js/gate.js?v=2"></script>
 <script src="js/main.js"></script>
 </head>
 <body>
@@ -21,22 +17,7 @@
   <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M15 2h18l13 13v18L33 46H15L2 33V15z" fill="#fff"/><path d="M16.5 6h15L42 16.5v15L31.5 42h-15L6 31.5v-15z" fill="#B23A35"/><rect x="13" y="20.5" width="22" height="7" rx="3.5" fill="#fff"/></svg>
   <span class="label"><strong>Get me out</strong><small>Tap to go Home</small></span>
 </a>
-<section id="gate" class="gate" aria-labelledby="gate-title">
-  <div class="gate-card dots-brick">
-    <div class="wordmark" aria-label="Rebella"><span class="script">rebel</span><span class="serif">la</span></div>
-    <p class="gate-kicker">Learn what you love.</p>
-    <h1 id="gate-title" class="hand">Coming soon</h1>
-    <p class="gate-intro">Rebella is private for now. Enter the passcode to come in.</p>
-    <form id="gate-form" autocomplete="off">
-      <label for="passcode" class="sr-only">Passcode</label>
-      <input id="passcode" class="gate-field dots-mustard" type="password" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="Passcode" required>
-      <button class="btn btn-primary btn-block" type="submit">Come in</button>
-      <p id="gate-msg" class="gate-msg" role="alert" aria-live="polite"></p>
-    </form>
-    <noscript><p class="gate-msg">Rebella needs JavaScript turned on to unlock.</p></noscript>
-  </div>
-</section>
-<div id="site" hidden>
+<div id="site">
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <symbol id="i-star" viewBox="0 0 100 100"><path d="M50 4l12 30 32 2-25 21 8 32-27-18-27 18 8-32L6 36l32-2z" fill="#fff"/></symbol>
 <symbol id="i-sparkle" viewBox="0 0 100 100"><path d="M50 0c4 30 16 42 50 50-34 8-46 20-50 50-4-30-16-42-50-50 34-8 46-20 50-50z" fill="currentColor"/></symbol>
@@ -55,7 +36,7 @@
 <symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
 <symbol id="blob" viewBox="0 0 100 100"><path d="M52 3c20 0 40 12 44 32 5 22-4 44-22 55-17 10-41 9-57-4C2 74-1 52 5 35 11 17 32 3 52 3z"/></symbol>
 </svg>
-<div class="topbar"><div class="container"><span class="tagline">Learn what you love.</span><button class="lock-site" type="button" data-lock aria-label="Lock Rebella">&#128274; Lock</button><nav aria-label="Utility"><a href="#newsletter">Newsletter</a><a href="article.html">Submit your work</a><a href="#follow">Instagram</a></nav></div></div>
+<div class="topbar"><div class="container"><span class="tagline">Learn what you love.</span><nav aria-label="Utility"><a href="#newsletter">Newsletter</a><a href="article.html">Submit your work</a><a href="#follow">Instagram</a></nav></div></div>
 <header class="masthead"><div class="container">
   <a class="wordmark" href="index.html" aria-label="Rebella home"><span class="script">rebel</span><span class="serif">la</span><svg class="spark" aria-hidden="true"><use href="#i-sparkle"/></svg></a>
   <div class="head-promo"><div class="promo-text"><p>Get the print edition <span class="example">Example</span></p><a class="btn btn-primary dots-brick" href="#join">Find out more</a></div><a class="cover-thumb" href="#join" aria-label="Current issue (example cover)"><svg viewBox="0 0 120 160" aria-hidden="true" style="width:100%;height:100%;display:block"><rect width="120" height="160" fill="#B5E3E0"/><rect y="118" width="120" height="42" fill="#FBE7B0"/><circle cx="60" cy="88" r="30" fill="#F8C8D5"/><circle cx="60" cy="76" r="12" fill="#FCD9C0"/><path d="M36 112c4-18 44-18 48 0z" fill="#DCD0F2"/><text x="8" y="26" font-family="Kaushan Script,cursive" font-size="22" fill="#B4436C">rebel</text><text x="66" y="26" font-family="Lora,serif" font-size="20" fill="#5B3A50">la</text><text x="8" y="136" font-family="Gochi Hand,cursive" font-size="9" fill="#5B3A50">ISSUE 01 · EXAMPLE</text><path d="M96 40l3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z" fill="#E9C25A"/></svg></a></div>
@@ -78,7 +59,7 @@
   <button class="icon-btn close" data-close-drawer aria-label="Close menu"><svg><use href="#i-close"/></svg></button>
   <a class="wordmark" href="index.html" aria-label="Rebella home"><span class="script">rebel</span><span class="serif">la</span><svg class="spark" aria-hidden="true"><use href="#i-sparkle"/></svg></a>
   <ul><li class="c-create"><a href="create.html">&#10024; Create a board</a></li><li class="c-make"><a href="category.html">Make It</a></li><li class="c-questions"><a href="category.html">Big Questions</a></li><li class="c-mind"><a href="category.html">Mind &amp; Body</a></li><li class="c-world"><a href="category.html">Your World</a></li><li class="c-rwl"><a href="category.html">Read Watch Listen</a></li><li class="c-voice"><a href="category.html">Your Voice</a></li></ul>
-  <div class="drawer-sub"><a class="btn btn-primary dots-brick" href="#newsletter">Join the newsletter</a><a class="btn btn-secondary dots-mustard" href="#join">Get the magazine</a><button class="btn btn-secondary" type="button" data-lock>&#128274; Lock Rebella</button></div>
+  <div class="drawer-sub"><a class="btn btn-primary dots-brick" href="#newsletter">Join the newsletter</a><a class="btn btn-secondary dots-mustard" href="#join">Get the magazine</a></div>
 </nav>
 <main id="main" class="c-make">
 <header class="page-header container"><span class="cat-chip">Section</span><h1 class="page-title">Make It</h1><p class="lead-banner">Crafts, DIY, art and cooking: learn by doing, mess allowed. (Example copy)</p></header>
