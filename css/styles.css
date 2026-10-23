@@ -391,3 +391,61 @@ html:not(.unlocked) body{background:#E3CFA6;padding-bottom:0}
 .lock-site:hover{color:var(--accent);border-color:var(--accent)}
 .drawer-sub button.btn{width:100%}
 @media(max-width:649px){.topbar .container{justify-content:space-between}}
+
+/* ===== Oct 2026 additions: home intro, Recommendations, article extras ===== */
+.site-intro{text-align:center;max-width:900px;margin:0 auto 2.2rem;padding-top:.5rem}
+.site-intro h1{font-size:2.6rem;color:var(--heading);margin:.4rem 0 .6rem}
+.site-intro p{font-size:1.2rem;margin:0}
+.site-intro strong{color:var(--accent);font-weight:700}
+.hero-text h2{font-family:var(--f-hand);font-weight:400;letter-spacing:2px;font-size:2rem;color:var(--heading);background-color:var(--aqua-tint);border-radius:6px;padding:.6rem 1.2rem .5rem;margin:0 0 1rem}
+@media(max-width:991px){.hero-text h2{font-size:1.6rem;background:none!important;padding:0}}
+@media(max-width:575px){.site-intro h1{font-size:2rem}.site-intro p{font-size:1.1rem}}
+.all-link{text-align:center;margin:0 0 3rem}
+.all-section{margin-bottom:1rem}
+.all-section .section-title a{color:var(--cat-text)}
+.recs-pill{background:var(--butter)}
+.nav-right .social{display:none}
+.recs-pill .long{display:none}
+@media(max-width:420px){.recs-pill svg{display:none}}
+.recs-ad{background-color:var(--butter)!important}
+.crumbs{font-size:1rem;margin:1rem 0 0;text-align:center;color:#6A5560}
+.crumbs a{text-decoration:underline;color:var(--cat-text)}
+.entry a:not(.btn):not(.cat-chip){color:var(--cat-text);text-decoration:underline}
+.support-box{background:#fff;border-left:8px solid var(--mint);border-radius:6px;padding:1.4rem 1.6rem;margin:2.5rem 0}
+.support-box h2{margin-top:0!important;font-size:1.35rem;color:#2E6B47}
+.support-box ul{padding-left:1.2rem}
+.support-box .small{font-size:1rem;margin-bottom:0}
+.related{background:#fff;border-radius:6px;padding:1.4rem 1.6rem;margin-bottom:3rem}
+.related h2{margin-top:0!important;color:var(--heading)!important}
+.related ul{list-style:none;padding:0;margin:0 0 1rem;display:grid;gap:.6rem}
+.related li a{display:block;padding:.7rem .9rem;border-radius:6px;background:var(--cat);color:var(--ink)!important;text-decoration:none!important;font-weight:700}
+.related .rel-cat{display:block;font-family:var(--f-hand);font-weight:400;text-transform:uppercase;letter-spacing:1.5px;font-size:.9rem;opacity:.85}
+.back-links{display:flex;flex-wrap:wrap;gap:1.2rem;margin:0}
+.back-links a{color:var(--accent)!important}
+.moved{text-align:center;padding-bottom:3rem}
+/* Recommendations */
+.recs-updated{text-align:center;font-family:var(--f-hand);text-transform:uppercase;letter-spacing:1.5px;color:var(--heading);margin:-1.5rem 0 2rem}
+.recs-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-bottom:2rem}
+.rec,.about-me{background:#fff;border-radius:10px;border-top:10px solid var(--cat);padding:1.4rem 1.6rem 1.6rem;box-shadow:0 6px 18px rgba(var(--shadow),.07)}
+.rec-wide{grid-column:1/-1}
+.rec h2,.about-me h2{font-size:1.25rem;color:var(--cat-text);margin-bottom:.9rem}
+.rec-body p{margin:0 0 .6rem}
+.rec-title{font-weight:700;font-size:1.3rem;color:var(--heading)}
+.rec-sub{font-style:italic;color:#6A5560}
+.rec-quote{margin:0 0 .5rem;font-family:var(--f-serif);font-size:1.35rem;color:var(--heading)}
+.rec-link{display:inline-block;margin-top:.3rem;color:var(--accent);text-decoration:underline}
+.rec-list{list-style:none;padding:0;margin:0;display:grid;gap:1rem}
+.rec-list li{background:var(--bg);border-radius:6px;padding:.8rem 1rem}
+.rec-type{display:inline-block;background:var(--cat);border-radius:999px;font-family:var(--f-hand);text-transform:uppercase;letter-spacing:1px;font-size:.85rem;padding:.1rem .6rem;margin-right:.5rem}
+.placeholder{color:#6A5560;font-style:italic}
+.ph-chip{display:inline-block;font:700 .7rem/1 var(--f-body);font-style:normal;letter-spacing:1px;text-transform:uppercase;background:var(--butter);color:var(--butter-text);padding:.3rem .5rem;border-radius:3px;margin-right:.4rem;vertical-align:middle}
+.about-me{max-width:700px;margin:0 auto 2rem;text-align:center}
+.interest-chips{list-style:none;padding:0;margin:.5rem 0 0;display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center}
+.interest-chips li{background:var(--cat);border-radius:999px;padding:.2rem .9rem}
+.recs-note{text-align:center;font-size:1rem;color:#6A5560;margin:0 auto 3rem;max-width:700px}
+@media(max-width:767px){.recs-grid{grid-template-columns:1fr}}
+/* room for the Picks pill */
+.menu{flex-shrink:0}
+@media(min-width:1230px){.menu a.navlink{padding:1rem .85rem}.menu a.navlink::after{left:.85rem;right:.85rem}}
+@media(min-width:992px) and (max-width:1229px){.menu a.navlink{padding:1rem .5rem;font-size:.95rem;letter-spacing:1px}.menu a.navlink::after{left:.5rem;right:.5rem}.nav-right .sub-link{display:none}.nav-right{gap:.4rem}}
+.recs-pill svg{filter:drop-shadow(0 0 1.5px #745800)}

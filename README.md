@@ -1,12 +1,46 @@
-# Rebella: static homepage prototype (example content only)
+# Rebella: learn what you love
+
+Live: https://edgerequals.github.io/rebella/ (public). The moderation dashboard in `moderation/` is separate, passcode-locked, and is NOT touched by `_generator.py`.
 
 Open with any static server from this folder, e.g. `python3 -m http.server 8765`, then visit http://localhost:8765/
 
-- `index.html` (home), `category.html` (Make It stub), `article.html` (article stub), `create.html` (board maker), `credits.html` (photo credits)
+- `index.html` (home), `category.html` (all articles), `category-<section>.html` (one page per section: make, questions, mind, world, rwl, voice), `articles/<slug>.html` (one page per article), `recommendations.html`, `submit.html` (how Your Voice sharing will work), `create.html` (board maker), `credits.html` (photo credits)
+- `article.html` is only a "this page has moved" redirect to `articles/moon-garden.html` (kept so old links still work).
 - `css/styles.css` (all styling, pastel palette variables at the top), `css/create.css` (board maker), `js/main.js` (small vanilla JS), `js/create.js` + `js/library.js` (board maker)
 - `img/articles/` (article photos), `img/library/` (photo library for Create), `img/stickers/` (original SVG stickers), `img/credits.json` (credit data used to build credits.html). Full list with sources and licences: `CREDITS.md`.
 - Fonts: Google Fonts (Alegreya Sans, Gochi Hand, Kaushan Script, Lora). Fallbacks apply offline.
-- `_generator.py` regenerates all five HTML files from shared header/footer blocks (`_create_body.html` holds the Create page body). Edit it and run `python3 _generator.py`, or edit the HTML directly; there is no build step.
+- `_generator.py` regenerates every HTML page plus `sitemap.xml` and `robots.txt` from shared header/footer blocks. Article text lives in `_articles.py`, the Create page body in `_create_body.html`, the hero artwork in `_hero_art.svg`. Edit, then run `python3 _generator.py` from this folder. Plain static output, no build step needed to serve it.
+
+## Articles
+- Each entry in `_articles.py` (slug, section, title, card excerpt, meta description, photo, lead, body HTML, support flag) becomes `articles/<slug>.html`, its card on the home/section/all-articles pages, and a sitemap entry.
+- `support=True` adds the "Need to talk?" box (ReachOut, Kids Helpline 1800 55 1800, headspace). Use it on any health, feelings or online-safety article. Rebella doesn't give medical advice.
+- Rules: original writing only, check every fact, no invented statistics or quotes, no diet/weight-loss/appearance-rating content, photos CC0/public domain and credited in `img/credits.json`, `CREDITS.md` and (generated) `credits.html`.
+
+## Recommendations page (edit ONE file: `js/recs.js`)
+- `recommendations.html` reads everything from `js/recs.js` (rendered by `js/recs-render.js`). To update the picks, edit `js/recs.js` only, then commit and push. No need to run the generator.
+- Any field left as `""` shows a "coming soon" placeholder for that section.
+- Links must start with `https://`. Songs are links only, never upload audio. Add a `source` news link for the celebrity's kind deed so it can be checked.
+- About me: interests only. No name, school, suburb, age or photos. Bonnie checks every update before it goes live.
+
+Example:
+```js
+window.REBELLA_RECS = {
+  updated: "Week of 26 October 2026",
+  song: { title: "Song name", artist: "Artist name", why: "It always cheers me up on the bus.", link: "https://example.com/song" },
+  celebrity: { name: "Person's name", who: "Singer and songwriter", deed: "What they did, in one or two sentences.", why: "It shows small acts matter.", source: "https://example.com/news-story" },
+  quote: { text: "The quote goes here", by: "Who said it", why: "Why I like it." },
+  goal: { goal: "Say something kind to three people this week.", why: "Kindness is contagious." },
+  other: [
+    { title: "A book, show, hobby or website", type: "Book", why: "Why I recommend it.", link: "https://example.com" }
+  ],
+  about: { interests: ["drawing", "space", "baking"], note: "I love making things and finding out how stuff works." }
+};
+```
+
+## Search (SEO)
+- Home title, meta description and the visible intro use the phrases "learn what you love", "fun websites for teens" and "educational and cool sites for girls".
+- Every page has its own title, meta description, meta keywords, canonical URL, Open Graph and Twitter tags (articles also have Article JSON-LD). `sitemap.xml` lists every public page (not `moderation/`). `robots.txt` keeps `Disallow: /moderation/` and has a `Sitemap:` line.
+- Note: crawlers only read robots.txt at the domain root (edgerequals.github.io/robots.txt), so submit the sitemap in Google Search Console as well.
 
 ## Colours (Oct 2026: pastel)
 - Site: blush #F8CFDB, peach #FCD9C0, butter #FBE7B0, mint #C8EBD5, aqua #B5E3E0, lavender #DCD0F2 on #FFF8F4, text #3A2B35, headings #5B3A50, accent #B4436C. All text/button pairs meet WCAG AA.
@@ -24,9 +58,7 @@ Open with any static server from this folder, e.g. `python3 -m http.server 8765`
 - With JS: `location.replace(index.html)`, so the escaped page is replaced in history.
 - Without JS: a plain relative link to `index.html`, so it works from a subpath (e.g. GitHub Pages /rebella/) and from file://.
 
-## Passcode gate (site-wide)
-- Every page shows only a passcode screen (and the Get me out button) until unlocked. Page content sits in `<div id="site" hidden>` and is also hidden by CSS until `html.unlocked` is set.
-- `js/gate.js` checks the passcode with Web Crypto (PBKDF2-HMAC-SHA256, 250k iterations) against the salted hash in `js/config.js`. Unlock lasts for the browser tab session (sessionStorage). "Lock" (top bar, and in the mobile menu) forgets it and returns to the home gate.
-- Set the hash: `REBELLA_SITE_PASSCODE='...' python3 build_gate.py` (never commit plaintext). `python3 build_gate.py --unset` restores the placeholder, which locks everyone out.
-- `noindex,nofollow` meta on every page + `robots.txt` Disallow.
-- Limit: this is a client-side gate on a public static host. It stops casual visitors, but the HTML (and `_generator.py`) are public in the repo, so don't put anything truly private in it.
+## Public site (no gate)
+- Rebella is public: every page has `class="unlocked"` on `<html>` (the CSS hides content without it) and is indexable. The old site-wide passcode gate was removed in Oct 2026.
+- The moderation dashboard (`moderation/`) keeps its own passcode gate and is excluded from the sitemap and disallowed in robots.txt.
+- No social features (comments, profiles, DMs, follower counts) and no personal details anywhere on the public site.

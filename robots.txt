@@ -1,3 +1,5 @@
 User-agent: *
 Disallow: /rebella/moderation/
 Disallow: /moderation/
+
+Sitemap: https://edgerequals.github.io/rebella/sitemap.xml

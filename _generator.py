@@ -33,13 +33,32 @@ def cover():
     # placeholder magazine cover (CSS/SVG only)
     return '''<svg viewBox="0 0 120 160" aria-hidden="true" style="width:100%;height:100%;display:block"><rect width="120" height="160" fill="#B5E3E0"/><rect y="118" width="120" height="42" fill="#FBE7B0"/><circle cx="60" cy="88" r="30" fill="#F8C8D5"/><circle cx="60" cy="76" r="12" fill="#FCD9C0"/><path d="M36 112c4-18 44-18 48 0z" fill="#DCD0F2"/><text x="8" y="26" font-family="Kaushan Script,cursive" font-size="22" fill="#B4436C">rebel</text><text x="66" y="26" font-family="Lora,serif" font-size="20" fill="#5B3A50">la</text><text x="8" y="136" font-family="Gochi Hand,cursive" font-size="9" fill="#5B3A50">ISSUE 01 · EXAMPLE</text><path d="M96 40l3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z" fill="#E9C25A"/></svg>'''
 
+import re, html as _html
+from _articles import ARTICLES
+SITE='https://edgerequals.github.io/rebella/'
+UPDATED='2026-10-23'
+CATNAME=dict(CATS)
+CAT_INFO={
+ 'make':('Crafts, DIY, art and cooking: learn by doing, mess allowed.','Make It: crafts, DIY projects, art and easy recipes for teens on Rebella.'),
+ 'questions':('Space, science and the "wait, why?" questions about how the world works.','Big Questions: space, science and curious questions explained for teens on Rebella.'),
+ 'mind':('Feeling good, sleeping well and looking after yourself, inside and out.','Mind & Body: wind-downs, stretches and feel-good ideas for teens, with links to real support.'),
+ 'world':('Friends, family, money and getting along online and off.','Your World: friendships, family, money and staying kind online, for teens on Rebella.'),
+ 'rwl':('Books, shows and music worth your time.','Read Watch Listen: book lists and picks for teens on Rebella.'),
+ 'voice':('Speak up, start something, make something and share it.','Your Voice: start something, make something, and how sharing with Rebella will work.'),
+}
+KEYWORDS='learn what you love, fun websites for teens, educational and cool sites for girls, online magazine for teen girls, teen magazine Australia, Rebella'
+def esc(s): return _html.escape(_html.unescape(s), quote=True)
+def strip(s): return _html.unescape(re.sub('<[^>]+>','',s))
+
 WORDMARK='<a class="wordmark" href="index.html" aria-label="Rebella home"><span class="script">rebel</span><span class="serif">la</span><svg class="spark" aria-hidden="true"><use href="#i-sparkle"/></svg></a>'
+def catlink(k): return f'category-{k}.html'
 
 def header(active=None):
-    items=''.join(f'<li class="c-{k}"><a class="navlink" href="category.html"{" aria-current=\"page\"" if active==k else ""}>{n}</a></li>' for k,n in CATS)
-    ditems=''.join(f'<li class="c-{k}"><a href="category.html">{n}</a></li>' for k,n in CATS)
+    cur=lambda k: ' aria-current="page"' if active==k else ''
+    items=''.join(f'<li class="c-{k}"><a class="navlink" href="{catlink(k)}"{cur(k)}>{n}</a></li>' for k,n in CATS)
+    ditems=''.join(f'<li class="c-{k}"><a href="{catlink(k)}">{n}</a></li>' for k,n in CATS)
     return f'''{ICONS}
-<div class="topbar"><div class="container"><span class="tagline">Learn what you love.</span><button class="lock-site" type="button" data-lock aria-label="Lock Rebella">&#128274; Lock</button><nav aria-label="Utility"><a href="#newsletter">Newsletter</a><a href="article.html">Submit your work</a><a href="#follow">Instagram</a></nav></div></div>
+<div class="topbar"><div class="container"><span class="tagline">Learn what you love.</span><nav aria-label="Utility"><a href="recommendations.html"{cur("recs")}>Recommendations</a><a href="category.html"{cur("all")}>All articles</a><a href="#newsletter">Newsletter</a><a href="submit.html">Submit your work</a></nav></div></div>
 <header class="masthead"><div class="container">
   {WORDMARK}
   <div class="head-promo"><div class="promo-text"><p>Get the print edition <span class="example">Example</span></p><a class="btn btn-primary dots-brick" href="#join">Find out more</a></div><a class="cover-thumb" href="#join" aria-label="Current issue (example cover)">{cover()}</a></div>
@@ -48,7 +67,8 @@ def header(active=None):
   <button class="icon-btn burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><svg><use href="#i-burger"/></svg></button>
   <ul class="menu">{items}</ul>
   <div class="nav-right">
-    <a class="create-pill" href="create.html"{" aria-current=\"page\"" if active=="create" else ""}><svg aria-hidden="true"><use href="#i-sparkle"/></svg>Create</a>
+    <a class="create-pill" href="create.html"{cur("create")}><svg aria-hidden="true"><use href="#i-sparkle"/></svg>Create</a>
+    <a class="create-pill recs-pill" href="recommendations.html"{cur("recs")} aria-label="Recommendations"><svg aria-hidden="true"><use href="#i-star"/></svg><span class="long">Recommendations</span><span class="short" aria-hidden="true">Picks</span></a>
     <a class="social" href="#follow" aria-label="Facebook (placeholder)"><svg><use href="#i-fb"/></svg></a>
     <a class="social" href="#follow" aria-label="Instagram (placeholder)"><svg><use href="#i-ig"/></svg></a>
     <a class="sub-link" href="#newsletter">Join</a>
@@ -61,8 +81,8 @@ def header(active=None):
 <nav class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
   <button class="icon-btn close" data-close-drawer aria-label="Close menu"><svg><use href="#i-close"/></svg></button>
   {WORDMARK}
-  <ul><li class="c-create"><a href="create.html">&#10024; Create a board</a></li>{ditems}</ul>
-  <div class="drawer-sub"><a class="btn btn-primary dots-brick" href="#newsletter">Join the newsletter</a><a class="btn btn-secondary dots-mustard" href="#join">Get the magazine</a><button class="btn btn-secondary" type="button" data-lock>&#128274; Lock Rebella</button></div>
+  <ul><li class="c-create"><a href="create.html">&#10024; Create a board</a></li><li class="c-create"><a href="recommendations.html">&#9733; Recommendations</a></li>{ditems}<li><a href="category.html">All articles</a></li></ul>
+  <div class="drawer-sub"><a class="btn btn-primary dots-brick" href="#newsletter">Join the newsletter</a><a class="btn btn-secondary dots-mustard" href="#join">Get the magazine</a></div>
 </nav>'''
 
 FOOTER=f'''<footer>
@@ -71,50 +91,46 @@ FOOTER=f'''<footer>
     <div class="copy"><h3>Rebella in print</h3><p><span class="example">Example copy</span> A quarterly mag of make-it projects, big questions and real stories, posted to your door.</p>
       <div class="btns"><a class="btn btn-primary dots-brick" href="#">Subscribe</a><a class="btn btn-secondary dots-mustard" href="#">Latest issue</a></div></div>
   </div></section>
-  <div class="strip"><a href="article.html">Got something to share? Submit to Your Voice &rarr;</a></div>
+  <div class="strip"><a href="submit.html">Got something to share? How Your Voice will work &rarr;</a></div>
   <div class="footer-dark"><div class="container">
     <div class="footer-cols">
-      <div><h6>Rebella</h6><ul><li><a href="#">About</a></li><li><a href="#">Contact</a></li><li><a href="#">Community guidelines</a></li><li><a href="#">Submit your work</a></li><li><a href="create.html">Create a board</a></li><li><a href="credits.html">Photo credits</a></li></ul></div>
-      <div><h6>Explore</h6><ul>{''.join(f'<li><a href="category.html">{n}</a></li>' for k,n in CATS)}</ul></div>
-      <div><h6>Help &amp; safety</h6><ul><li><a href="#">Talk to someone (helplines)</a></li><li><a href="#">Staying safe online</a></li><li><a href="#">For parents &amp; carers</a></li><li><a href="#">Privacy</a></li></ul></div>
+      <div><h6>Rebella</h6><ul><li><a href="index.html">Home</a></li><li><a href="recommendations.html">Recommendations</a></li><li><a href="category.html">All articles</a></li><li><a href="create.html">Create a board</a></li><li><a href="submit.html">Submit your work</a></li><li><a href="credits.html">Photo credits</a></li></ul></div>
+      <div><h6>Explore</h6><ul>{''.join(f'<li><a href="{catlink(k)}">{n}</a></li>' for k,n in CATS)}</ul></div>
+      <div><h6>Help &amp; safety</h6><ul><li><a href="https://au.reachout.com/" rel="noopener">ReachOut</a></li><li><a href="https://kidshelpline.com.au/" rel="noopener">Kids Helpline 1800 55 1800</a></li><li><a href="https://headspace.org.au/" rel="noopener">headspace</a></li><li><a href="https://www.esafety.gov.au/young-people" rel="noopener">eSafety: staying safe online</a></li></ul></div>
     </div>
-    <p class="legal">&copy; 2026 Rebella. Prototype with example content only. <a href="#">Privacy</a> | <a href="#">Terms</a> | <a href="credits.html">Photo credits</a></p>
+    <p class="legal">&copy; 2026 Rebella. A safe, fun place for teens to learn what you love. <a href="credits.html">Photo credits</a></p>
     <p class="legal photo-note">Photos are CC0 / public domain from Wikimedia Commons, credited on the <a href="credits.html">credits page</a>. Stickers are original Rebella artwork.</p>
   </div></div>
 </footer>'''
 
-GATE='''<section id="gate" class="gate" aria-labelledby="gate-title">
-  <div class="gate-card dots-brick">
-    <div class="wordmark" aria-label="Rebella"><span class="script">rebel</span><span class="serif">la</span></div>
-    <p class="gate-kicker">Learn what you love.</p>
-    <h1 id="gate-title" class="hand">Coming soon</h1>
-    <p class="gate-intro">Rebella is private for now. Enter the passcode to come in.</p>
-    <form id="gate-form" autocomplete="off">
-      <label for="passcode" class="sr-only">Passcode</label>
-      <input id="passcode" class="gate-field dots-mustard" type="password" autocomplete="current-password" placeholder="Passcode" required>
-      <button class="btn btn-primary btn-block" type="submit">Come in</button>
-      <p id="gate-msg" class="gate-msg" role="alert" aria-live="polite"></p>
-    </form>
-    <noscript><p class="gate-msg">Rebella needs JavaScript turned on to unlock.</p></noscript>
-  </div>
-</section>'''
-
-def page(title,body,active=None,desc='Rebella prototype',extra_head=''):
-    return f'''<!doctype html>
-<html lang="en-AU">
+URLATTR=re.compile(r'((?:href|src)=")(?!https?:|#|/|mailto:|tel:|data:|\.\./)([^"]*)"')
+def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moon.jpg',og_type='website',canonical=None,keywords=KEYWORDS,head_more=''):
+    canon=SITE+(canonical if canonical is not None else ('' if path=='index.html' else path))
+    out=f'''<!doctype html>
+<html lang="en-AU" class="unlocked">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
-<meta name="description" content="{desc}">
-<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="{esc(desc)}">
+<meta name="keywords" content="{esc(keywords)}">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="{canon}">
+<meta property="og:site_name" content="Rebella">
+<meta property="og:locale" content="en_AU">
+<meta property="og:type" content="{og_type}">
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(desc)}">
+<meta property="og:url" content="{canon}">
+<meta property="og:image" content="{SITE}{og_img}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{esc(title)}">
+<meta name="twitter:description" content="{esc(desc)}">
+<meta name="twitter:image" content="{SITE}{og_img}">{head_more}
 <meta name="referrer" content="no-referrer">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&display=swap">
-<link rel="stylesheet" href="css/styles.css">
-<style>html:not(.unlocked) #site{{display:none!important}}</style>
-<script src="js/config.js"></script>
-<script src="js/gate.js"></script>
+<link rel="stylesheet" href="css/styles.css?v=3">
 <script src="js/main.js"></script>{extra_head}
 </head>
 <body>
@@ -123,8 +139,7 @@ def page(title,body,active=None,desc='Rebella prototype',extra_head=''):
   <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M15 2h18l13 13v18L33 46H15L2 33V15z" fill="#fff"/><path d="M16.5 6h15L42 16.5v15L31.5 42h-15L6 31.5v-15z" fill="#B23A35"/><rect x="13" y="20.5" width="22" height="7" rx="3.5" fill="#fff"/></svg>
   <span class="label"><strong>Get me out</strong><small>Tap to go Home</small></span>
 </a>
-{GATE}
-<div id="site" hidden>
+<div id="site">
 {header(active)}
 {body}
 {FOOTER}
@@ -132,54 +147,39 @@ def page(title,body,active=None,desc='Rebella prototype',extra_head=''):
 </body>
 </html>
 '''
-
-POSTS=[
- ('make','Make It','Turn an old T-shirt into a tote bag in 20 minutes','No sewing machine needed: a pair of scissors, a few knots and you have a bag with a story.','tote-bag'),
- ('questions','Big Questions','Why is the sky blue (and sunsets orange)?','A tiny bit of physics explains one of the prettiest things you see every day.','sunset-sky'),
- ('mind','Mind &amp; Body','A five-minute wind-down for busy brains','Three simple steps to help you switch off before bed, without needing an app.','tea'),
- ('voice','Your Voice','"I started a coding club at lunch"','A reader shares how she found her people by building something from scratch.','code'),
- ('rwl','Read Watch Listen','Six books to read when you want an adventure','From quests to mysteries: picks chosen by readers your age.','reading'),
- ('world','Your World','How to talk money with your family','Pocket money, first jobs and saving up: conversation starters that don\'t feel awkward.','money-jar'),
- ('make','Make It','Easy no-bake cookies for a rainy afternoon','Five ingredients, one bowl and zero oven time.','cookies'),
- ('questions','Big Questions','What would it be like to live on Mars?','Air, food, gravity and the very long commute, explained.','mars'),
- ('mind','Mind &amp; Body','Stretches you can do at your desk','Loosen up your neck, shoulders and wrists between study sessions.','stretching'),
- ('world','Your World','Group chat drama? Try these three steps','How to step back, speak up or log off when chats get heated.','phone'),
-]
+    depth=path.count('/')
+    if depth:
+        pre='../'*depth
+        out=URLATTR.sub(lambda m: m.group(1)+pre+m.group(2)+'"', out)
+    return out
 
 def photo(name,cls='photo',eager=False):
     c=CRED['img/articles/'+name+'.jpg']
     return f'<img class="{cls}" src="{c["file"]}" alt="{c["alt"]}" width="{c["w"]}" height="{c["h"]}"{"" if eager else " loading=\"lazy\""} decoding="async">'
 
-def card(p,href='article.html'):
-    k,cn,t,ex,img=p
+BY={a['slug']:a for a in ARTICLES}
+def ahref(a): return f'articles/{a["slug"]}.html'
+def card(slug):
+    a=BY[slug]; k=a['cat']; cn=CATNAME[k]
     return f'''<article class="card c-{k}">
-  <figure class="thumb-link">{photo(img)}<span class="band" aria-hidden="true">{cn}</span><span class="view" aria-hidden="true">View post</span></figure>
-  <div class="text"><a class="tag" href="category.html">{cn}</a><h3><a href="{href}">{t}</a></h3><p>{ex}</p></div>
+  <figure class="thumb-link">{photo(a["img"])}<span class="band" aria-hidden="true">{cn}</span><span class="view" aria-hidden="true">Read it</span></figure>
+  <div class="text"><a class="tag" href="{catlink(k)}">{cn}</a><h3><a href="{ahref(a)}">{a["title"]}</a></h3><p>{a["excerpt"]}</p></div>
 </article>'''
 
-HERO_ART='''<svg viewBox="0 0 1200 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-  <circle cx="300" cy="250" r="170" fill="#FBE6A2"/><circle cx="250" cy="200" r="26" fill="#fff" opacity=".25"/><circle cx="360" cy="320" r="40" fill="#fff" opacity=".18"/>
-  <ellipse cx="300" cy="260" rx="290" ry="60" fill="none" stroke="#F3A9BE" stroke-width="18" transform="rotate(-14 300 260)"/>
-  <path d="M120 470c90-40 190-34 270 18v70H120z" fill="#B9A6E3"/>
-  <path d="M520 520c60-30 140-30 200 0v40H520z" fill="#F3A9BE"/>
-  <g transform="translate(560 330) rotate(-8)"><path d="M0 40c70-30 140-24 200 14v150c-60-38-130-44-200-14z" fill="#fff"/><path d="M400 40c-70-30-140-24-200 14v150c60-38 130-44 200-14z" fill="#FFF3E8"/><path d="M200 54v150" stroke="#5B3A50" stroke-width="5"/><path d="M40 90h120M40 120h110M40 150h90M240 90h120M240 120h110" stroke="#FCD5B5" stroke-width="8" stroke-linecap="round"/></g>
-  <g transform="translate(980 90) rotate(32)"><rect width="40" height="300" rx="6" fill="#F3A9BE"/><rect y="250" width="40" height="34" fill="#FCD5B5"/><path d="M0 0l20-50 20 50z" fill="#FFF3E8"/><path d="M14-34l6-16 6 16z" fill="#5B3A50"/></g>
-  <g fill="#fff"><path d="M640 90c4 28 14 38 42 42-28 4-38 14-42 42-4-28-14-38-42-42 28-4 38-14 42-42z"/><path d="M90 80c3 20 10 27 30 30-20 3-27 10-30 30-3-20-10-27-30-30 20-3 27-10 30-30z"/><path d="M1100 420c3 20 10 27 30 30-20 3-27 10-30 30-3-20-10-27-30-30 20-3 27-10 30-30z"/></g>
-  <g fill="#FBE6A2"><circle cx="540" cy="200" r="10"/><circle cx="880" cy="60" r="8"/><circle cx="1150" cy="250" r="12"/><circle cx="80" cy="360" r="9"/></g>
-  <path d="M820 200c30-40 90-30 96 14 6 40-50 60-80 40-20-12-26-34-16-54z" fill="#C6E9D2" stroke="#58BAB3" stroke-width="4" stroke-dasharray="2 8" stroke-linecap="round"/>
-</svg>'''
+HERO_ART=open(os.path.join(OUT,'_hero_art.svg')).read() if os.path.exists(os.path.join(OUT,'_hero_art.svg')) else ''
 
 def pillars():
     return '<section class="pillars container" aria-label="Explore by interest"><ul>'+''.join(
-        f'<li class="c-{k}"><a href="category.html"><svg aria-hidden="true"><use href="#blob"/></svg><span>{n}</span></a></li>' for k,n in CATS)+'</ul></section>'
+        f'<li class="c-{k}"><a href="{catlink(k)}"><svg aria-hidden="true"><use href="#blob"/></svg><span>{n}</span></a></li>' for k,n in CATS)+'</ul></section>'
 
 def sidebar(first=True):
     issue=f'''<section class="widget"><div class="issue-box dots-mustard"><h4>Current issue</h4><div class="cover">{cover()}</div>
       <div class="issue-btns"><a class="btn btn-primary" href="#join">Subscribe</a><a class="btn btn-info" href="#join">View issue</a></div></div>
       <p class="issue-note">Example copy. Print edition placeholder.</p></section>'''
-    house='''<section class="widget sticky-widget"><div class="house-ad dots-brick"><h5>Your Voice</h5><p>Write it, draw it, film it. Send us what you're proud of and we might feature it. <span class="example">Example</span></p><a class="btn btn-primary dots-brick btn-block" href="article.html">Submit</a></div></section>'''
+    house='''<section class="widget sticky-widget"><div class="house-ad dots-brick"><h5>Your Voice</h5><p>Write it, draw it, film it. Soon you'll be able to share what you're proud of, safely, with every piece checked by an adult editor.</p><a class="btn btn-primary dots-brick btn-block" href="submit.html">How it will work</a></div></section>'''
     nl='''<section class="widget nl-widget"><h5>Join our newsletter</h5><form data-demo><label class="sr-only" for="sn1">First name</label><input class="field dots-mustard" id="sn1" placeholder="First name"><label class="sr-only" for="se1">Email</label><input class="field dots-mustard" id="se1" type="email" placeholder="Email"><button class="btn btn-secondary dots-mustard btn-block">Sign up</button><p class="form-msg" role="status"></p></form></section>'''
-    return f'<aside class="sidebar">{issue if first else nl}{house}</aside>'
+    recs='''<section class="widget"><div class="house-ad recs-ad dots-mustard"><h5>&#9733; Recommendations</h5><p>Song of the week, quote of the week, a goal for everyone and more picks.</p><a class="btn btn-secondary dots-mustard btn-block" href="recommendations.html">See the picks</a></div></section>'''
+    return f'<aside class="sidebar">{issue if first else nl}{recs}{house}</aside>'
 
 CREATE_PROMO='''<section class="create-promo container" aria-labelledby="cp-title"><div class="cp-inner dots-brick">
   <div class="cp-stickers" aria-hidden="true"><img src="img/stickers/word-dream-big.svg" alt="" class="s1"><img src="img/stickers/flower-peach.svg" alt="" class="s2"><img src="img/stickers/washi-mint-stripes.svg" alt="" class="s3"><img src="img/stickers/star-butter.svg" alt="" class="s4"><img src="img/library/tulips.jpg" alt="" class="p1"><img src="img/library/hot-air-balloon.jpg" alt="" class="p2"></div>
@@ -193,68 +193,138 @@ NEWSLETTER='''<section class="newsletter container" id="newsletter"><h2>Join our
 <button class="btn btn-secondary dots-mustard btn-block">Sign up</button><p class="form-msg" role="status"></p>
 <small>Example form: no data is collected in this prototype. Real version needs parent/guardian consent wording for under-16s.</small></form></section>'''
 
-FOLLOW='<section class="follow container" id="follow"><h2>Follow us</h2><p class="motto">Be curious. Be bold. Be you.</p><div class="icons"><a href="#" aria-label="Facebook (placeholder)"><svg><use href="#i-fb"/></svg></a><a href="#" aria-label="Instagram (placeholder)"><svg><use href="#i-ig"/></svg></a></div><div class="tiles" aria-label="Example social tiles">'+''.join(
+FOLLOW='<section class="follow container" id="follow"><h2>Follow us</h2><p class="motto">Be curious. Be bold. Be you.</p><div class="icons"><a href="#" aria-label="Facebook (placeholder)"><svg><use href="#i-fb"/></svg></a><a href="#" aria-label="Instagram (placeholder)"><svg><use href="#i-ig"/></svg></a></div><div class="tiles" aria-label="Photo tiles">'+''.join(
     f'<img class="tile" src="{CRED[f]["file"]}" alt="{CRED[f]["alt"]}" loading="lazy" decoding="async" width="{CRED[f]["w"]}" height="{CRED[f]["h"]}">' for f in ['img/library/'+n+'.jpg' for n in ['sunflower','pink-cupcakes','night-sky','kitten-daisies','watercolours','tulips','hot-air-balloon','bookshop','strawberries','great-wave']])+'</div></section>'
 
+HOME_FIRST=['t-shirt-tote-bag','why-is-the-sky-blue','five-minute-wind-down','start-a-coding-club','six-adventure-books']
+HOME_LATER=['talk-money-with-your-family','no-bake-oat-cookies','living-on-mars','desk-stretches','group-chat-drama']
+moon=BY['moon-garden']
 home=f'''<main id="main">
+<section class="site-intro container">
+  <h1 class="hand">Learn what you love.</h1>
+  <p>Rebella is an online magazine for teen girls: a safe, fun and cool place to learn and grow with things you actually want to. Make-it projects, big questions about space and science, books, feel-good ideas and real advice. If you've been searching for <strong>fun websites for teens</strong>, or <strong>educational and cool sites for girls</strong>, welcome. You're in the right place.</p>
+</section>
 <section class="hero container c-questions">
-  <a class="hero-art" href="article.html" aria-label="Read the featured post">{HERO_ART}</a>
-  <div class="hero-text"><span class="example kicker">Example copy</span><h1 class="dots-aqua">Could you grow a garden on the Moon?</h1><a class="btn dots-aqua" href="article.html">View post</a></div>
+  <a class="hero-art" href="{ahref(moon)}" aria-label="Read the featured post: {moon['title']}">{HERO_ART}</a>
+  <div class="hero-text"><span class="cat-chip kicker">Featured · Big Questions</span><h2 class="dots-aqua">{moon['title']}</h2><a class="btn dots-aqua" href="{ahref(moon)}">Read it</a></div>
 </section>
 <div class="container feed-wrap">
-  <div class="feed"><h2 class="section-title">Fresh this week <span class="example">Example copy</span></h2>
-  {''.join(card(p) for p in POSTS[:5])}
+  <div class="feed"><h2 class="section-title">Fresh this week</h2>
+  {''.join(card(s) for s in HOME_FIRST)}
   <h2 class="featured-title">Featured</h2>
-  {card(('voice','Your Voice','Reader art wall: theme "Home"','Send us a drawing, photo or collage about what home means to you. Example promo card.','art-wall'))}
+  {card('reader-art-wall-home')}
   </div>
   {sidebar(True)}
 </div>
 {pillars()}
 {CREATE_PROMO}
 <div class="container feed-wrap">
-  <div class="feed">{''.join(card(p) for p in POSTS[5:])}</div>
+  <div class="feed">{''.join(card(s) for s in HOME_LATER)}
+  <p class="all-link"><a class="btn btn-info dots-aqua" href="category.html">See all articles</a></p></div>
   {sidebar(False)}
 </div>
 {FOLLOW}
 {NEWSLETTER}
 </main>'''
 
-cat_posts=[('make','Make It',t,e,i) for t,e,i in [
- ('Turn an old T-shirt into a tote bag in 20 minutes','No sewing machine needed.','tote-bag'),
- ('Easy no-bake cookies for a rainy afternoon','Five ingredients, one bowl.','cookies'),
- ('Paint a mini mural on your bedroom door (with permission!)','Plan, sketch, paint, admire.','mural'),
- ('Start a sketchbook habit you\'ll actually keep','Ten-minute prompts for every day of the week.','pencils'),
- ('Make your own lip balm with three ingredients','A simple kitchen-chemistry project using beeswax and honey.','honey'),
- ('Design a zine about your favourite thing','Fold, cut, write and photocopy.','scissors')]]
-category=f'''<main id="main" class="c-make">
-<header class="page-header container"><span class="cat-chip">Section</span><h1 class="page-title">Make It</h1><p class="lead-banner">Crafts, DIY, art and cooking: learn by doing, mess allowed. (Example copy)</p></header>
+def cat_page(k):
+    lead,_=CAT_INFO[k]
+    posts=[a for a in ARTICLES if a['cat']==k]
+    return f'''<main id="main" class="c-{k}">
+<header class="page-header container"><span class="cat-chip">Section</span><h1 class="page-title">{CATNAME[k]}</h1><p class="lead-banner">{lead}</p></header>
 <div class="container feed-wrap">
-  <div class="feed">{''.join(card(p) for p in cat_posts)}
-  <ul class="pagination" aria-label="Pages"><li><span>1</span></li><li><a href="#">2</a></li><li><a href="#">3</a></li><li><a href="#">Next</a></li></ul></div>
+  <div class="feed">{''.join(card(a['slug']) for a in posts)}
+  <p class="all-link"><a class="btn btn-info dots-aqua" href="category.html">See all articles</a></p></div>
   {sidebar(True)}
 </div>
 </main>'''
 
-article=f'''<main id="main" class="c-questions">
+def all_page():
+    secs=''.join(f'<section class="all-section c-{k}" aria-labelledby="sec-{k}"><h2 id="sec-{k}" class="section-title"><a href="{catlink(k)}">{n}</a></h2>{"".join(card(a["slug"]) for a in ARTICLES if a["cat"]==k)}</section>' for k,n in CATS)
+    return f'''<main id="main" class="c-voice">
+<header class="page-header container"><span class="cat-chip">Explore</span><h1 class="page-title">All articles</h1><p class="lead-banner">Every Rebella article, sorted by section. Pick something you love and dive in.</p></header>
+<div class="container feed-wrap">
+  <div class="feed">{secs}</div>
+  {sidebar(True)}
+</div>
+</main>'''
+
+SUPPORT='''<aside class="support-box" aria-labelledby="support-title"><h2 id="support-title">Need to talk? You're not alone.</h2>
+<p>Talk to a parent, carer, teacher or school counsellor, or contact one of these free Australian services. Rebella isn't a medical service and can't give medical advice.</p>
+<ul><li><a href="https://au.reachout.com/" rel="noopener"><strong>ReachOut</strong></a>: online support, tips and stories for young people</li>
+<li><a href="https://kidshelpline.com.au/" rel="noopener"><strong>Kids Helpline</strong></a>: call <a href="tel:1800551800">1800 55 1800</a> any time, for any reason, or chat online</li>
+<li><a href="https://headspace.org.au/" rel="noopener"><strong>headspace</strong></a>: mental health support for 12 to 25 year olds, online and in centres</li></ul>
+<p class="small">If you or someone else is in danger right now, call 000.</p></aside>'''
+
+def related(a):
+    same=[x for x in ARTICLES if x['cat']==a['cat'] and x is not a]
+    others=[x for x in ARTICLES if x['cat']!=a['cat']]
+    i=ARTICLES.index(a)
+    others=others[i%len(others):]+others[:i%len(others)]
+    picks=(same+others)[:3]
+    lis=''.join(f'<li class="c-{x["cat"]}"><a href="{ahref(x)}"><span class="rel-cat">{CATNAME[x["cat"]]}</span>{x["title"]}</a></li>' for x in picks)
+    return f'<nav class="related" aria-label="Related articles"><h2>Keep reading</h2><ul>{lis}</ul><p class="back-links"><a href="{catlink(a["cat"])}">&larr; More from {CATNAME[a["cat"]]}</a><a href="category.html">All articles</a><a href="index.html">Home</a></p></nav>'
+
+def article_page(a):
+    k=a['cat']; c=CRED['img/articles/'+a['img']+'.jpg']
+    return f'''<main id="main" class="c-{k}">
 <div class="container">
-<h1 class="entry-title">Could you grow a garden on the Moon?</h1>
+<p class="crumbs"><a href="index.html">Home</a> / <a href="{catlink(k)}">{CATNAME[k]}</a></p>
+<h1 class="entry-title">{a["title"]}</h1>
 <div class="feed-wrap">
   <article class="feed entry">
-    <div class="meta"><span class="date">22 October 2026 · <span class="example">Example article</span></span><a class="cat cat-chip" href="category.html">Big Questions</a><span class="share" aria-label="Share (placeholders)"><a href="#" aria-label="Share via email">@</a><a href="#" aria-label="Copy link">&#128279;</a></span></div>
-    <figure class="feature-art">{photo('moon','photo',True)}<span class="band">Big Questions</span><figcaption class="photo-credit">Photo: {CRED['img/articles/moon.jpg']['artist']}, {CRED['img/articles/moon.jpg']['licLabel'].split(' (')[0]}, via <a href="{CRED['img/articles/moon.jpg']['page']}" rel="noopener">Wikimedia Commons</a></figcaption></figure>
-    <p class="lead">Spoiler: maybe, with a lot of help. Here's what plants need, and what the Moon is missing. (All copy on this page is example text for the prototype.)</p>
-    <p>Plants need four big things: light, water, air and something to grow in. On Earth we get all four for free. On the Moon, every one of them is a puzzle to solve.</p>
-    <h2>1. Light</h2><p>The Moon gets plenty of sunshine, but a "day" there lasts about two Earth weeks, followed by two weeks of darkness. Gardeners would need lamps for the long nights.</p>
-    <blockquote>Big question to think about: what would YOU plant first?</blockquote>
-    <h2>2. Soil</h2><p>Moon dust (called regolith) has no living things in it and can be sharp. Scientists have actually grown small plants in real lunar samples, which is a promising start.</p>
-    <ol><li><strong>Try it:</strong> plant cress seeds in sand vs potting mix and compare.</li><li><strong>Record:</strong> measure growth every day for a week.</li><li><strong>Share:</strong> send your results to Your Voice.</li></ol>
+    <div class="meta"><span class="date">23 October 2026</span><a class="cat cat-chip" href="{catlink(k)}">{CATNAME[k]}</a></div>
+    <figure class="feature-art">{photo(a["img"],'photo',True)}<span class="band">{CATNAME[k]}</span><figcaption class="photo-credit">Photo: {c['artist']}, {c['licLabel'].split(' (')[0]}, via <a href="{c['page']}" rel="noopener">Wikimedia Commons</a></figcaption></figure>
+    <p class="lead">{a["lead"]}</p>
+    {a["body"]}
+    {SUPPORT if a.get('support') else ''}
     <hr>
-    <div class="author-box"><div class="avatar">{thumb('voice','i-star')}</div><div><strong>Written by the Rebella team</strong> (placeholder author box)</div></div>
+    <div class="author-box"><div class="avatar">{thumb('voice','i-star')}</div><div><strong>Written by the Rebella team</strong><br><small>Spotted a mistake? We check our facts, and we'll fix it.</small></div></div>
+    {related(a)}
   </article>
   {sidebar(True)}
 </div>
 </div>
 </main>'''
+
+def article_jsonld(a):
+    import json as _j
+    d={"@context":"https://schema.org","@type":"Article","headline":strip(a['title']),"description":strip(a['desc']),"image":SITE+'img/articles/'+a['img']+'.jpg',
+       "datePublished":UPDATED,"author":{"@type":"Organization","name":"Rebella"},"publisher":{"@type":"Organization","name":"Rebella"},"mainEntityOfPage":SITE+ahref(a),"inLanguage":"en-AU"}
+    return '\n<script type="application/ld+json">'+_j.dumps(d,ensure_ascii=False)+'</script>'
+
+MOVED=f'''<main id="main" class="c-questions"><div class="container moved">
+<h1 class="entry-title">This page has moved</h1>
+<p>Rebella now has a page for every article. Looking for <strong>{moon["title"]}</strong>? <a href="{ahref(moon)}">Read it here</a>, or <a href="category.html">browse all articles</a>.</p>
+</div></main>'''
+
+SUBMIT='''<main id="main" class="c-voice"><div class="container">
+<header class="page-header"><span class="cat-chip">Your Voice</span><h1 class="page-title">Share your work</h1><p class="lead-banner">Write it, draw it, make it. Sharing is coming soon.</p></header>
+<div class="feed-wrap"><article class="feed entry">
+<p class="lead">We can't wait to see what you make. Sending work to Rebella isn't open yet, because we're setting it up carefully so it's safe for everyone.</p>
+<h2>How it will work</h2><ul>
+<li>A parent or carer will need to say it's okay before you send anything.</li>
+<li>An adult editor checks and approves every piece before it appears on the site.</li>
+<li>We'll only ever show a first name or a made-up creator name. Never your full name, school, suburb or photos of your face.</li>
+<li>No comments, no likes, no follower counts. Just good work to enjoy.</li></ul>
+<h2>Get making now</h2><p>Our first art wall theme is "Home". Read the <a href="articles/reader-art-wall-home.html">art wall ideas</a>, try a <a href="articles/make-a-zine.html">mini zine</a> or start a <a href="articles/sketchbook-habit.html">sketchbook habit</a>, or make a mood board on the <a href="create.html">Create page</a>.</p>
+<h2>Keep yourself safe</h2><p>Before you share anything anywhere, check it doesn't show your address, school uniform or logo, street signs, your house number or anyone who hasn't said it's okay to be in it.</p>
+</article>'''+'''{SIDEBAR}</div></div></main>'''
+
+RECS_BODY='''<main id="main" class="recs-page c-rwl"><div class="container">
+<header class="page-header"><span class="cat-chip">&#9733; Picks</span><h1 class="page-title">Recommendations</h1><p class="lead-banner">Cool things worth sharing: a song, a kind deed, a quote, a goal and more.</p></header>
+<p class="recs-updated" id="recs-updated"></p>
+<div class="recs-grid" id="recs">
+  <section class="rec c-rwl" data-rec="song"><h2><span aria-hidden="true">&#9835;</span> Song of the week</h2><div class="rec-body"><p class="placeholder"><span class="ph-chip">Placeholder</span> Her first picks are coming soon.</p></div></section>
+  <section class="rec c-voice" data-rec="celebrity"><h2><span aria-hidden="true">&#9829;</span> Celebrity and a kind deed they did</h2><div class="rec-body"><p class="placeholder"><span class="ph-chip">Placeholder</span> Her first picks are coming soon.</p></div></section>
+  <section class="rec c-questions" data-rec="quote"><h2><span aria-hidden="true">&#10077;</span> Quote of the week</h2><div class="rec-body"><p class="placeholder"><span class="ph-chip">Placeholder</span> Her first picks are coming soon.</p></div></section>
+  <section class="rec c-mind" data-rec="goal"><h2><span aria-hidden="true">&#10003;</span> Goal for everyone</h2><div class="rec-body"><p class="placeholder"><span class="ph-chip">Placeholder</span> Her first picks are coming soon.</p></div></section>
+  <section class="rec rec-wide c-make" data-rec="other"><h2><span aria-hidden="true">&#10024;</span> Other picks: anything else I recommend</h2><div class="rec-body"><p class="placeholder"><span class="ph-chip">Placeholder</span> Her first picks are coming soon.</p></div></section>
+</div>
+<section class="about-me c-world" id="about-me" aria-labelledby="about-title"><h2 id="about-title">About me</h2><div class="rec-body"><p class="placeholder"><span class="ph-chip">Placeholder</span> A few things our curator loves are coming soon.</p></div></section>
+<noscript><p class="recs-note">Turn on JavaScript to see this week's picks.</p></noscript>
+<p class="recs-note">Song and video picks are links to other sites, so ask a parent or carer before you open them. Rebella doesn't host any music.</p>
+</div></main>'''
 
 CREATE_BODY=open(os.path.join(OUT,'_create_body.html')).read()
 
@@ -268,8 +338,29 @@ def credits_page():
 <h2>Create page photo library</h2><div class="table-wrap"><table>{head}<tbody>{rows('library')}</tbody></table></div>
 </main>'''
 
-for fn,t,b,a,x in [('index.html','Rebella | Learn what you love',home,None,''),('category.html','Make It | Rebella',category,'make',''),('article.html','Could you grow a garden on the Moon? | Rebella',article,'questions',''),
-    ('create.html','Create a board | Rebella',CREATE_BODY,'create','\n<link rel="stylesheet" href="css/create.css">\n<script src="js/library.js" defer></script>\n<script src="js/create.js" defer></script>'),
-    ('credits.html','Photo credits | Rebella',credits_page(),None,'')]:
-    open(os.path.join(OUT,fn),'w').write(page(t,b,a,extra_head=x))
-print('written')
+HOME_JSONLD='\n<script type="application/ld+json">'+json.dumps({"@context":"https://schema.org","@type":"WebSite","name":"Rebella","alternateName":"Rebella: learn what you love","url":SITE,"description":"Rebella is an online magazine for teen girls: learn what you love with make-it projects, big questions, books and real advice.","inLanguage":"en-AU"})+'</script>'
+
+PAGES=[]  # (path, title, body, desc, active, extra, og_img, og_type, canonical, keywords, head_more, in_sitemap, priority)
+PAGES.append(('index.html','Rebella | Learn what you love: fun websites for teens',home,
+  "Learn what you love with Rebella, an online magazine for teen girls. Make-it projects, big questions, books and real advice: one of the fun websites for teens, and an educational and cool site for girls.",
+  None,'','img/articles/moon.jpg','website',None,KEYWORDS,HOME_JSONLD,True,'1.0'))
+PAGES.append(('category.html','All articles | Rebella',all_page(),'Every Rebella article in one place: crafts, science, books, friendships and feel-good ideas for teens who want to learn what they love.','all','','img/articles/pencils.jpg','website',None,KEYWORDS,'',True,'0.8'))
+for k,n in CATS:
+    first=[a for a in ARTICLES if a['cat']==k][0]
+    PAGES.append((catlink(k),f'{n} | Rebella',cat_page(k),CAT_INFO[k][1],k,'','img/articles/'+first['img']+'.jpg','website',None,f'{strip(n)}, '+KEYWORDS,'',True,'0.7'))
+for a in ARTICLES:
+    PAGES.append((ahref(a),f'{a["title"]} | Rebella',article_page(a),a['desc'],a['cat'],'','img/articles/'+a['img']+'.jpg','article',None,f'{strip(a["title"])}, {strip(CATNAME[a["cat"]])}, '+KEYWORDS,article_jsonld(a),True,'0.6'))
+PAGES.append(('recommendations.html','Recommendations: song, quote and goal of the week | Rebella',RECS_BODY,'Rebella Recommendations: song of the week, a celebrity and a kind deed they did, quote of the week, a goal for everyone and more picks.','recs','\n<script src="js/recs.js" defer></script>\n<script src="js/recs-render.js" defer></script>','img/articles/reading.jpg','website',None,'recommendations, song of the week, quote of the week, '+KEYWORDS,'',True,'0.7'))
+PAGES.append(('submit.html','Share your work with Your Voice | Rebella',SUBMIT.replace('{SIDEBAR}',sidebar(False)),'How sharing your art, writing and projects with Rebella\'s Your Voice section will work, safely and with an adult editor checking everything.','voice','','img/articles/art-wall.jpg','website',None,KEYWORDS,'',True,'0.4'))
+PAGES.append(('create.html','Create a mood board, collage or vision board | Rebella',CREATE_BODY,'Make mood boards, collages and vision boards with stickers and photos, add your own words, and save it as a picture. Free and private on Rebella.','create','\n<link rel="stylesheet" href="css/create.css">\n<script src="js/library.js" defer></script>\n<script src="js/create.js" defer></script>','img/library/tulips.jpg','website',None,'mood board maker, vision board, collage, '+KEYWORDS,'',True,'0.7'))
+PAGES.append(('credits.html','Photo credits | Rebella',credits_page(),'Credits for the CC0 and public domain photos used on Rebella, all from Wikimedia Commons.',None,'','img/library/sunflower.jpg','website',None,KEYWORDS,'',True,'0.3'))
+PAGES.append(('article.html','This page has moved | Rebella',MOVED,'This page has moved. Rebella now has a page for every article.',None,'','img/articles/moon.jpg','website',ahref(moon),KEYWORDS,f'\n<meta http-equiv="refresh" content="0; url={ahref(moon)}">',False,None))
+
+os.makedirs(os.path.join(OUT,'articles'),exist_ok=True)
+sm=[]
+for path,t,b,d,act,x,img,typ,can,kw,hm,insm,pri in PAGES:
+    open(os.path.join(OUT,path),'w').write(page(path,t,b,d,act,x,img,typ,can,kw,hm))
+    if insm: sm.append(f'  <url><loc>{SITE}{"" if path=="index.html" else path}</loc><lastmod>{UPDATED}</lastmod><priority>{pri}</priority></url>')
+open(os.path.join(OUT,'sitemap.xml'),'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+'\n'.join(sm)+'\n</urlset>\n')
+open(os.path.join(OUT,'robots.txt'),'w').write(f'User-agent: *\nDisallow: /rebella/moderation/\nDisallow: /moderation/\n\nSitemap: {SITE}sitemap.xml\n')
+print('written',len(PAGES),'pages')
