@@ -119,6 +119,8 @@ h1,h2,h3,h4,h5,h6{font-family:var(--f-body);text-transform:uppercase;font-weight
 .drawer{position:fixed;top:0;left:0;bottom:0;width:300px;max-width:100%;background:#fff;z-index:1000;transform:translateX(-100%);transition:transform .5s cubic-bezier(.7,0,.3,1);overflow-y:auto;padding:1.25rem 1.25rem 7rem;visibility:hidden}
 .drawer.open{transform:none;visibility:visible}
 .drawer .wordmark .script{font-size:2.6rem}.drawer .wordmark .serif{font-size:2.2rem}.drawer .wordmark .spark{display:none}
+/* Bonnie's logo in the phone menu: same 105.7x41.6 box as the old text wordmark, colour #B0275A on #FFFFFF (6.4:1) */
+.drawer .bl-wordmark{display:inline-flex;align-items:center;line-height:0}.drawer .bl-drawer{display:block;width:105.7px;height:41.6px;color:#B0275A}
 .drawer ul{list-style:none;margin:1.5rem 0;padding:0}
 .drawer li a{display:block;padding:.65rem 0;font-family:var(--f-hand);text-transform:uppercase;letter-spacing:1.5px;font-size:1.25rem;color:var(--cat-text);border-bottom:2px dotted rgba(var(--shadow),.15)}
 .drawer .drawer-sub a{display:block;margin-top:.5rem}

@@ -16,7 +16,18 @@ TEMPLATE = open(os.path.join(HERE, '_bars.html')).read()
 
 # Static logo (outlined vector wordmark, no web-font swap, no motion). Light = visitor theme, dark = black dashboard header.
 WORDMARK_DASH = '<div class="wordmark small wm-logo"><img src="img/rebella-wordmark-dark.svg" alt="Rebella" width="121" height="47" decoding="async"></div>'
-WORDMARK_SITE = '<a class="wordmark small wm-logo" href="index.html"><img src="img/rebella-wordmark-light.svg" alt="Rebella" width="121" height="47" decoding="async"></a>'
+# BONNIE'S LOGO (24 Oct 2026, Danny): hand-lettered "Rebella" signature, ONE source file img/bonnies-logo.svg
+# (single path, fill=currentColor). Each spot references it with <use> and sets its colour in CSS (.bl-logo color).
+# The viewBox is read from the file at build time so a new file drops straight in. Box sizes keep the old wordmark's
+# box (no layout shift); the ~2.03:1 drawing is fitted by height and left-aligned inside it (preserveAspectRatio).
+_BL_SRC = open(os.path.join(HERE, 'img', 'bonnies-logo.svg')).read()
+import re as _re
+BL_VIEWBOX = _re.search(r'viewBox="([^"]+)"', _BL_SRC).group(1)
+def bonnies_logo(cls, label='Rebella', w=121, h=47):
+    a11y = f'role="img" aria-label="{label}"' if label else 'aria-hidden="true"'
+    return (f'<svg class="bl-logo {cls}" viewBox="{BL_VIEWBOX}" width="{w}" height="{h}" preserveAspectRatio="xMinYMid meet" '
+            f'{a11y} focusable="false"><use href="img/bonnies-logo.svg#bonnies-logo"/></svg>')
+WORDMARK_SITE = '<a class="wordmark small wm-logo" href="index.html">' + bonnies_logo('bl-head') + '</a>'
 # Header radio dial: js in music/youtube/bonnie-radio.js mounts a compact genre dial here (same dial, smaller).
 # Without JS it is a plain link to the radio on the Music Playground.
 RADIO_MINI = ('<span class="br-mini-host" data-radio-mini data-help="radio-mini">'

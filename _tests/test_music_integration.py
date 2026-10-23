@@ -58,7 +58,7 @@ with sync_playwright() as pw:
                 r = pg.evaluate("""() => { const h=document.getElementById('app-head'), f=document.getElementById('app-foot');
                     return {orbs:document.querySelectorAll('.help-orb').length, ht:h?h.getBoundingClientRect().top:null, fb:f?innerHeight-f.getBoundingClientRect().bottom:null,
                       dials:document.querySelectorAll('.br-dial').length, sw:document.documentElement.scrollWidth, iw:innerWidth,
-                      script:h&&h.querySelector('.wm-logo img')?'logo':null, mast:h?getComputedStyle(h.querySelector('.masthead')).backgroundColor:null,
+                      script:h&&h.querySelector('.wm-logo .bl-logo use')?'logo':null, mast:h?getComputedStyle(h.querySelector('.masthead')).backgroundColor:null,
                       foot:f?getComputedStyle(f).backgroundColor:null} }""")
                 ok(r['orbs'] == 1, f'{tag}: exactly one help orb ({r["orbs"]})')
                 ok(r['ht'] is not None and abs(r['ht']) < 1 and abs(r['fb']) < 1, f'{tag}: bars pinned')

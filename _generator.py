@@ -70,7 +70,8 @@ KEYWORDS='learn what you love, fun websites for teens, educational and cool site
 def esc(s): return _html.escape(_html.unescape(s), quote=True)
 def strip(s): return _html.unescape(re.sub('<[^>]+>','',s))
 
-WORDMARK='<a class="wordmark" href="index.html" aria-label="Rebella home"><span class="script">rebel</span><span class="serif">la</span><svg class="spark" aria-hidden="true"><use href="#i-sparkle"/></svg></a>'
+from _bars import bonnies_logo  # Bonnie's logo (img/bonnies-logo.svg), phone menu spot
+WORDMARK='<a class="wordmark bl-wordmark" href="index.html" aria-label="Rebella home">'+bonnies_logo('bl-drawer',label=None,w=106,h=42)+'</a>'
 def catlink(k): return f'category-{k}.html'
 from _bars import split_bars
 BARS_HEAD,BARS_FOOT=split_bars('visitor')  # shared with Bonnie's Dashboard; audience switch in _bars.py
@@ -148,9 +149,9 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <meta name="referrer" content="no-referrer">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&family=Special+Elite&display=swap">
-<link rel="stylesheet" href="css/styles.css?v=5">
+<link rel="stylesheet" href="css/styles.css?v=6">
 <link rel="stylesheet" href="css/zine.css?v=5">
-<link rel="stylesheet" href="css/bars.css?v=2">
+<link rel="stylesheet" href="css/bars.css?v=3">
 <link rel="stylesheet" href="music/youtube/bonnie-radio.css?v=2">
 <script src="js/main.js?v=2"></script>
 <script src="js/bars.js?v=2" defer></script>

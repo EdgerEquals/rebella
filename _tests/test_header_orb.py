@@ -1,4 +1,4 @@
-"""Headless checks: static logo header, header radio dial, Create/Picks out of the header, the one help orb
+"""Headless checks: static logo header (Bonnie's logo, img/bonnies-logo.svg), header radio dial, Create/Picks out of the header, the one help orb
 (drag + highlight + label, anchored pop-up, pick mode, keyboard), content width. iPhone SE portrait/landscape + desktop.
 Run: python3 _tests/test_header_orb.py [base-url]   (default: serves the repo locally)"""
 import os, sys, re, threading, functools, http.server, socketserver
@@ -29,7 +29,7 @@ with sync_playwright() as pw:
             pg.on('request', lambda r: reqs.append(r.url))
             tag = f'{vn} /{path}'
             pg.goto(BASE + path, wait_until='networkidle'); pg.wait_for_timeout(400)
-            r = pg.evaluate("""(LUMs) => { const LUM = eval(LUMs); const h=document.getElementById('app-head'), tb=h.querySelector('.topbar'), img=h.querySelector('.wm-logo img');
+            r = pg.evaluate("""(LUMs) => { const LUM = eval(LUMs); const h=document.getElementById('app-head'), tb=h.querySelector('.topbar'), img=h.querySelector('.wm-logo .bl-logo'), use=img?img.querySelector('use'):null, ub=use?use.getBBox():{width:0}, mb=getComputedStyle(h.querySelector('.masthead')).backgroundColor;
               const anims=document.getAnimations().filter(a=>a.effect&&a.effect.target&&h.contains(a.effect.target)).length;
               const links=[...h.querySelectorAll('a'), ...document.querySelectorAll('.mainnav .nav-right a')].map(a=>a.getAttribute('href')||'');
               const md=h.querySelector('.br-mini'), lab=h.querySelector('.br-mini-lab'), bg=getComputedStyle(tb).backgroundColor;
@@ -38,7 +38,7 @@ with sync_playwright() as pw:
               const orb=document.getElementById('help-orb'), or=orb.getBoundingClientRect(), fr=document.getElementById('app-foot').getBoundingClientRect();
               const conts=[...document.querySelectorAll('main .container, main.container')].filter(e=>e.offsetWidth&&!e.closest('.mainnav'));
               const col=Math.min(...conts.map(e=>{const s=getComputedStyle(e);return e.clientWidth-parseFloat(s.paddingLeft)-parseFloat(s.paddingRight)}));
-              return {anims, imgOk: !!img && img.complete && img.naturalWidth>0 && img.alt==='Rebella', imgH: img?img.getBoundingClientRect().height:0,
+              return {anims, imgOk: !!img && img.getAttribute('aria-label')==='Rebella' && /bonnies-logo\.svg#bonnies-logo$/.test(use.getAttribute('href')||'') && ub.width>0, logoCr: img?cr(getComputedStyle(img).color,mb):0, imgH: img?img.getBoundingClientRect().height:0,
                 bad: links.filter(u=>/create\\.html|recommendations\\.html/.test(u)), tbH: tb.offsetHeight,
                 miniIn: !!md && md.getBoundingClientRect().top>=tb.getBoundingClientRect().top-1 && md.getBoundingClientRect().bottom<=tb.getBoundingClientRect().bottom+1 && md.offsetWidth>0,
                 role: md?md.getAttribute('role'):null, name: md?md.getAttribute('aria-label'):null,
@@ -46,7 +46,8 @@ with sync_playwright() as pw:
                 orbs: document.querySelectorAll('.help-orb').length, orbLeft: or.left>innerWidth/2 && (()=>{const e=document.querySelector('.escape');if(!e)return true;const x=e.getBoundingClientRect();return or.bottom<=x.top+1})(), orbAbove: or.bottom<=fr.top+1,
                 maxC: conts.length?Math.max(...conts.map(e=>e.getBoundingClientRect().width)):0, col, ov: document.documentElement.scrollWidth>innerWidth+1} }""", LUM)
             ok(r['anims'] == 0, f'{tag}: nothing in the header animates ({r["anims"]})')
-            ok(r['imgOk'] and abs(r['imgH'] - (36.4 if o['viewport']['width'] <= 575 else 47.5)) < 1, f'{tag}: logo image loaded, alt Rebella, height {r["imgH"]:.1f}')
+            ok(r['imgOk'] and abs(r['imgH'] - (36.4 if o['viewport']['width'] <= 575 else 47.5)) < 1, f'{tag}: Bonnie\'s logo rendered, label Rebella, height {r["imgH"]:.1f}')
+            ok(r['logoCr'] >= 3, f'{tag}: logo contrast on the masthead {r["logoCr"]:.1f}:1')
             ok(not r['bad'], f'{tag}: no Create/Picks links in the header nav ({r["bad"]})')
             ok(r['miniIn'] and r['role'] == 'slider' and r['name'] == 'Rebella radio' and r['tbH'] <= 50, f'{tag}: radio dial in the one-row top bar (top bar {r["tbH"]}px)')
             ok(r['labCr'] >= 4.5 and r['ringCr'] >= 3, f'{tag}: dial contrast label {r["labCr"]:.1f}:1, dial {r["ringCr"]:.1f}:1')

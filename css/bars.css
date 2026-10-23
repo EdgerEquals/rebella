@@ -79,6 +79,10 @@ body.has-bars .escape{bottom:calc(var(--app-foot-h,60px) + 12px)}
 #app-head .wm-logo{display:inline-flex;align-items:center;line-height:0}
 #app-head .wm-logo img{display:block;height:47.5px;width:auto}
 @media(max-width:575px){#app-head .wm-logo img{height:36.4px}}
+/* Bonnie's logo (24 Oct 2026): img/bonnies-logo.svg via <use>, colour per spot. Same box as the old wordmark image
+   (122.3x47.5, phone 93.7x36.4) so nothing in the header shifts; the drawing is fitted by height, left-aligned. */
+#app-head .wm-logo .bl-head{display:block;height:47.5px;width:122.3px;color:#B0275A}  /* on #FFFFFF: 6.4:1 */
+@media(max-width:575px){#app-head .wm-logo .bl-head{height:36.4px;width:93.7px}}
 #app-head .head-actions:empty{display:none}
 #app-head .bar-right{display:flex;align-items:center;gap:.9rem;flex:0 0 auto}
 /* header radio dial (mounted by music/youtube/bonnie-radio.js): compact, pinks, AA in both themes */
