@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Rebella Moderation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&display=swap">
+<link rel="stylesheet" href="css/mod.css">
+<script src="js/config.js"></script>
+<script src="js/items.js"></script>
+<script src="js/app.js" defer></script>
+</head>
+<body class="locked">
+
+<!-- Passcode gate -->
+<section id="gate" class="gate" aria-labelledby="gate-title">
+  <div class="gate-card dots-brick">
+    <div class="wordmark"><span class="script">rebel</span><span class="serif">la</span></div>
+    <p class="mod-label">Moderation</p>
+    <h1 id="gate-title" class="hand">Team only</h1>
+    <p class="gate-intro">Enter the passcode to review content for Rebella.</p>
+    <form id="gate-form" autocomplete="off">
+      <label for="passcode" class="sr-only">Passcode</label>
+      <input id="passcode" class="field dots-mustard" type="password" inputmode="text" autocomplete="current-password" placeholder="Passcode" required>
+      <button class="btn btn-primary btn-block" type="submit">Unlock</button>
+      <p id="gate-msg" class="gate-msg" role="alert" aria-live="polite"></p>
+    </form>
+    <p class="gate-note">Private page. Not part of the public magazine.</p>
+  </div>
+</section>
+
+<!-- Dashboard (hidden until unlocked) -->
+<div id="app" hidden>
+  <div class="topbar"><div class="container">
+    <span class="tagline">Keep Rebella safe, fun and cool</span>
+    <button id="lock" class="lockbtn" type="button" aria-label="Lock dashboard">&#128274; Lock</button>
+  </div></div>
+  <header class="masthead"><div class="container">
+    <div class="brand">
+      <div class="wordmark small"><span class="script">rebel</span><span class="serif">la</span></div>
+      <span class="mod-pill">Moderation</span>
+    </div>
+    <div class="head-actions">
+      <button id="export" class="btn btn-info" type="button">Export decisions (JSON)</button>
+      <button id="reset" class="btn btn-secondary" type="button">Reset all</button>
+    </div>
+  </div></header>
+
+  <main class="container" id="main">
+    <div class="notice dots-mustard">
+      <span class="example">Example</span>
+      Every item below is made-up example content. Decisions are saved in this browser only (no server yet).
+    </div>
+
+    <nav class="tabs" role="tablist" aria-label="Filter queue">
+      <button role="tab" class="tab" data-filter="pending" aria-selected="true">Pending <span class="count" id="c-pending">0</span></button>
+      <button role="tab" class="tab" data-filter="approved" aria-selected="false">Approved <span class="count" id="c-approved">0</span></button>
+      <button role="tab" class="tab" data-filter="rejected" aria-selected="false">Rejected <span class="count" id="c-rejected">0</span></button>
+      <button role="tab" class="tab" data-filter="all" aria-selected="false">All <span class="count" id="c-all">0</span></button>
+    </nav>
+
+    <div id="queue" class="queue" aria-live="polite"></div>
+    <p id="empty" class="empty hand" hidden>Nothing here. Nice work!</p>
+  </main>
+
+  <footer class="footer"><div class="container">
+    <span>Rebella moderation prototype</span><span>Decisions stored locally in this browser</span>
+  </div></footer>
+</div>
+
+<!-- Reject dialog -->
+<dialog id="reject-dlg" class="dlg">
+  <form method="dialog" id="reject-form">
+    <h2 class="hand">Reject this item?</h2>
+    <p id="reject-title" class="dlg-title"></p>
+    <label for="reason">Reason (optional)</label>
+    <select id="reason-pick" class="field">
+      <option value="">Choose a reason, or type below</option>
+      <option>Not age-appropriate</option>
+      <option>Body image / diet content</option>
+      <option>Unverified or misleading claims</option>
+      <option>Advertising or sponsored</option>
+      <option>Privacy or consent concern</option>
+      <option>Off-topic for Rebella</option>
+    </select>
+    <textarea id="reason" class="field" rows="3" placeholder="Add a note (optional)"></textarea>
+    <div class="dlg-btns">
+      <button value="cancel" class="btn btn-secondary" type="submit">Cancel</button>
+      <button value="ok" class="btn btn-primary" type="submit">Reject</button>
+    </div>
+  </form>
+</dialog>
+</body>
+</html>
