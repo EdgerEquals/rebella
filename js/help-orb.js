@@ -126,7 +126,7 @@
     if (st) return window.HelpOrb; // exactly one orb
     opt = opt || {};
     document.querySelectorAll('.help-orb').forEach(function (x) { x.remove(); });
-    st = { dict: opt.dict || {}, hot: null, kb: false, picking: false, pop: null, returnTo: null };
+    st = { dict: opt.dict || {}, targets: opt.targets || [], hot: null, kb: false, picking: false, pop: null, returnTo: null };
     (opt.targets || []).forEach(function (p) { try { document.querySelectorAll(p[0]).forEach(function (el) { if (!el.hasAttribute('data-help')) el.setAttribute('data-help', p[1]); }); } catch (e) {} });
     css();
     var lab = st.label = document.createElement('span'); lab.className = 'help-label'; lab.hidden = true; lab.setAttribute('aria-hidden', 'true'); document.body.appendChild(lab);
@@ -183,5 +183,7 @@
     o.addEventListener('blur', function () { if (st.kb) setTimeout(function () { if (document.activeElement !== o && !st.pop) pick(false); }, 0); });
     return window.HelpOrb;
   }
-  window.HelpOrb = { init: init, close: function () { if (st) close(); } };
+  // js/nav.js swapped in new page content: close any pop-up, leave pick mode, re-apply the help.json targets
+  function refresh() { if (!st) return; close(false); pick(false); (st.targets || []).forEach(function (p) { try { document.querySelectorAll(p[0]).forEach(function (el) { if (!el.hasAttribute('data-help')) el.setAttribute('data-help', p[1]); }); } catch (e) {} }); home(false); }
+  window.HelpOrb = { init: init, refresh: refresh, close: function () { if (st) close(); } };
 })();

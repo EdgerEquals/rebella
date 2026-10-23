@@ -47,13 +47,17 @@
       window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
     }
 
-    // Demo-only: stop placeholder forms from submitting anywhere.
-    document.querySelectorAll('form[data-demo]').forEach(function (f) {
+    window.RebellaForms(document);
+  });
+  // Demo-only: stop placeholder forms from submitting anywhere. js/nav.js calls this again for swapped-in content.
+  window.RebellaForms = function (root) {
+    root.querySelectorAll('form[data-demo]:not([data-bound])').forEach(function (f) {
+      f.setAttribute('data-bound', '');
       f.addEventListener('submit', function (e) {
         e.preventDefault();
         var msg = f.querySelector('.form-msg');
         if (msg) msg.textContent = 'Example form: nothing was sent.';
       });
     });
-  });
+  };
 })();

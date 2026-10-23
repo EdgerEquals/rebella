@@ -100,7 +100,7 @@
   //      Never plays, never loads YouTube, no pop-up. ----
   (function mini() {
     var mh = document.querySelector('[data-radio-mini]'); if (!mh) return;
-    var link = mh.querySelector('a'), dest = link ? link.getAttribute('href') : 'music/playground/#radio';
+    var link = mh.querySelector('a'), dest = new URL(link ? link.getAttribute('href') : 'music/playground/#radio', location.href).href;   // absolute: the header stays mounted when js/nav.js swaps pages
     var d = el('span', 'br-mini'); d.tabIndex = 0;
     d.setAttribute('role', 'slider'); d.setAttribute('aria-label', 'Rebella radio'); d.setAttribute('aria-valuemin', '0'); d.setAttribute('aria-valuemax', String(N - 1));
     d.setAttribute('aria-describedby', 'br-mini-help'); d.setAttribute('data-help', 'radio-mini');
@@ -114,7 +114,7 @@
     function step(n) { var j = Math.max(0, Math.min(N - 1, at + n)); if (j === at) return; at = j; audio(); if (ac && ac.resume) try { ac.resume(); } catch (x) {} click(); buzz(8); paint(); try { sessionStorage.setItem('rebella.radio.mini', String(at)); } catch (e) {} }
     function go() {
       var k = GEN[order[at]].key;
-      if (window.BonnieRadio && PG) { window.BonnieRadio.select(k, true); return; }        // already on the Playground: no reload
+      if (window.BonnieRadio && document.querySelector('[data-bonnie-radio][data-variant=playground][data-mounted]')) { window.BonnieRadio.select(k, true); return; }        // already on the Playground: no reload
       var u = new URL(dest, location.href); u.searchParams.set('ch', k); u.hash = 'radio'; location.href = u.href;
     }
     var dr = null, wheelT = 0;
@@ -130,7 +130,16 @@
     paint();
   })();
 
-  if (!host) return;
+  // ---- main dial + player: mounted on pages that have [data-bonnie-radio] (home, Playground). js/nav.js swaps page
+  //      content without a reload, so this can mount again; a previous player keeps playing unless the new page
+  //      has its own radio, in which case it is paused and removed cleanly. ----
+  var dead = null;
+  function mountMain() {
+  host = document.querySelector('[data-bonnie-radio]');
+  if (!host || host.hasAttribute('data-mounted')) return;
+  host.setAttribute('data-mounted', '');
+  PG = host.getAttribute('data-variant') === 'playground';
+  if (dead) dead();
   // ---- UI ----
   var wrap = el('div', 'br');
   var intro = el('p', 'br-intro', PG ? 'Turn the dial to pick a station. Your band below follows its tempo and key. Music plays from YouTube, only after you press play.' : 'Music picked by Bonnie. It plays from YouTube, only after you press play.');
@@ -323,7 +332,7 @@
   function station(g, initial) { var d = { initial: !!initial }; Object.keys(g).forEach(function (k) { d[k] = g[k]; }); return d; }
   function tune(g) {
     curGenre = g; emit('rebella:station', station(g, false));
-    if (PG) try { var u = new URL(location.href); u.searchParams.set('ch', g.key); history.replaceState(history.state, '', u.href); } catch (e) {}   // shareable station URL, no extra Back steps
+    if (PG) try { var u = new URL(location.href); u.searchParams.set('ch', g.key); history.replaceState(history.state, '', u.href); emit('rebella:urlstate', {}); } catch (e) {}   // shareable station URL, no extra Back steps
     var pl = pool(g.key);
     if (!pl.length) { status.textContent = g.label + ' is tuning in soon ✨ Try another station, or come back later.'; wrap.setAttribute('data-soon', g.key); return; }
     wrap.removeAttribute('data-soon');
@@ -395,4 +404,8 @@
     get station() { return curGenre ? station(curGenre, true) : null; }, reroll: reroll, land: land, select: select, playReading: playReading, setMuted: setMuted };
   if (PG && location.hash === '#radio') { var foc = function () { select(curGenre.key, true); }; if (document.readyState === 'complete') setTimeout(foc, 50); else addEventListener('load', function () { setTimeout(foc, 50); }); }
   emit('rebella:station', station(curGenre, true));
+  dead = function () { want = false; try { if (player) player.pauseVideo(); } catch (e) {} try { if (player && player.destroy) player.destroy(); } catch (e) {} panel.remove(); emit('rebella:radio', { playing: false }); };
+  }
+  mountMain();
+  window.BonnieRadioMount = mountMain;
 })();
