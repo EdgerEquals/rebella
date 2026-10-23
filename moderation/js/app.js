@@ -10,7 +10,9 @@
   var DKEY = "rebella-mod-decisions-v2";     // localStorage: decisions made in this browser
   var CAT = {"Make It":"c-make","Big Questions":"c-questions","Mind & Body":"c-mind","Your World":"c-world","Read Watch Listen":"c-rwl","Your Voice":"c-voice"};
   var $ = function(s){return document.querySelector(s);};
-  var filter = "pending", rejectId = null;
+  var filter = "pending";
+  var panel = null;   // inline panel open in one card: {id, kind:"reject"|"video", pick, text}
+  var REASONS = ["Not age-appropriate","Body image / diet content","Unverified or misleading claims","Advertising or sponsored","Privacy or consent concern","Off-topic for Rebella"];
   var Q = null, ITEMS = [], qkey = null, es = null, live = {}, remote = {}, checking = {};
 
   function hex(buf){return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,"0");}).join("");}
@@ -146,7 +148,7 @@
   function card(it){
     var r = rec(it.id), st = r ? r.status : "pending";
     if(st === "pending") r = null;
-    var a = el("article", "item " + (CAT[it.category]||"c-make"));
+    var a = el("article", "item " + (CAT[it.category]||"c-make")); a.setAttribute("data-id", it.id);
     var top = el("div","top"), left = el("div");
     left.appendChild(el("span","tag",it.category));
     left.appendChild(el("span","type",it.type));
@@ -183,11 +185,15 @@
       a.appendChild(el("p","decision",(st==="approved"?"Approved ":"Rejected ")+when+(r.reason?" \u2014 "+r.reason:"")));
     }
     var acts = el("div","actions");
+    if(st === "pending" && panel && panel.id === it.id){
+      a.appendChild(panel.kind === "reject" ? rejectPanel(it) : videoPanel(it));
+      return a;
+    }
     if(st === "pending"){
       acts.appendChild(btn("\u2713 Approve","btn-approve",function(){
-        if(it.type === "video" && !confirm("Have you watched the whole video? It will be embedded on Rebella.")) return;
+        if(it.type === "video"){ openPanel(it.id, "video"); return; }
         decide(it.id,"approved"); }));
-      acts.appendChild(btn("\u2715 Reject","btn-primary",function(){ openReject(it); }));
+      acts.appendChild(btn("\u2715 Reject","btn-primary",function(){ openPanel(it.id, "reject"); }));
     } else if(r && r.state === "unsent"){
       acts.appendChild(btn("\u21BB Retry","btn-approve",function(){ decide(it.id, st, r.reason); }));
     } else if(st === "rejected"){
@@ -197,13 +203,60 @@
     return a;
   }
 
+  // ---------- inline panels (no dialogs / confirm boxes) ----------
+  function openPanel(id, kind){ panel = {id:id, kind:kind, pick:"", text:""}; render(); focusPanel(); }
+  function closePanel(){ var id = panel && panel.id; panel = null; render();
+    if(id){ var c = document.querySelector('.item[data-id="' + CSS.escape(id) + '"] .actions button'); if(c) c.focus(); } }
+  function focusPanel(){ var f = document.querySelector(".inline-panel select, .inline-panel .btn"); if(f) f.focus(); }
+  function onEsc(e){ if(e.key === "Escape"){ e.preventDefault(); closePanel(); } }
+  function rejectPanel(it){
+    var f = el("form","inline-panel reject-panel"); f.setAttribute("aria-label","Reject this item"); f.noValidate = true;
+    f.appendChild(el("p","ip-title","Reject this item?"));
+    var lid = "rp-" + it.id.replace(/[^\w-]/g,"");
+    var lab = el("label",null,"Reason (optional)"); lab.htmlFor = lid + "-pick"; f.appendChild(lab);
+    var sel = el("select","field"); sel.id = lid + "-pick";
+    sel.appendChild(new Option("Choose a reason, or type below",""));
+    REASONS.forEach(function(r){ sel.appendChild(new Option(r, r)); });
+    sel.value = panel.pick; sel.addEventListener("change", function(){ panel.pick = sel.value; });
+    f.appendChild(sel);
+    var ta = el("textarea","field"); ta.rows = 3; ta.placeholder = "Add a note (optional)"; ta.setAttribute("aria-label","Note (optional)");
+    ta.value = panel.text; ta.addEventListener("input", function(){ panel.text = ta.value; });
+    f.appendChild(ta);
+    var b = el("div","ip-btns");
+    var ok = el("button","btn btn-primary btn-reject-confirm","\u2715 Reject"); ok.type = "submit";
+    var no = el("button","btn btn-secondary","Cancel"); no.type = "button"; no.addEventListener("click", closePanel);
+    b.appendChild(ok); b.appendChild(no); f.appendChild(b);
+    f.addEventListener("submit", function(e){
+      e.preventDefault();
+      var reason = [panel.pick, panel.text.trim()].filter(Boolean).join(": ");
+      panel = null; decide(it.id, "rejected", reason);
+    });
+    f.addEventListener("keydown", onEsc);
+    return f;
+  }
+  function videoPanel(it){
+    var d = el("div","inline-panel confirm-strip video-confirm"); d.setAttribute("role","group"); d.setAttribute("aria-label","Approve this video?");
+    d.appendChild(el("p","ip-title","Approve this video?"));
+    d.appendChild(el("p","cs-text","Have you watched the whole video? It will be embedded on Rebella."));
+    var b = el("div","ip-btns");
+    b.appendChild(btn("\u2713 Yes, approve","btn-approve",function(){ panel = null; decide(it.id,"approved"); }));
+    b.appendChild(btn("Cancel","btn-secondary",closePanel));
+    d.appendChild(b); d.addEventListener("keydown", onEsc);
+    return d;
+  }
+
   function render(){
     if(!Q) return;
+    if(panel && !ITEMS.some(function(it){ return it.id === panel.id && statusOf(it.id) === "pending"; })) panel = null;
+    var keepFocus = panel && document.activeElement && document.activeElement.closest && document.activeElement.closest(".inline-panel");
     var q = $("#queue"), counts = {pending:0,approved:0,rejected:0,all:ITEMS.length};
     ITEMS.forEach(function(it){ counts[statusOf(it.id)]++; });
     Object.keys(counts).forEach(function(k){ $("#c-"+k).textContent = counts[k]; });
     document.querySelectorAll(".tab").forEach(function(t){ t.setAttribute("aria-selected", t.dataset.filter===filter ? "true":"false"); });
     $("#queue-meta").textContent = "Queue updated " + new Date(Q.updated*1000).toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"}) + ". Highest score first.";
+    if(keepFocus){   // don't rebuild the cards while someone is typing in an open panel; just refresh the counts
+      return;
+    }
     q.textContent = "";
     var shown = ITEMS.filter(function(it){ return filter==="all" || statusOf(it.id)===filter; });
     shown.forEach(function(it){ q.appendChild(card(it)); });
@@ -214,20 +267,6 @@
     t.addEventListener("click", function(){ filter = t.dataset.filter; render(); });
   });
 
-  // ---------- reject dialog ----------
-  var dlg = $("#reject-dlg");
-  function openReject(it){
-    rejectId = it.id; $("#reject-title").textContent = it.title;
-    $("#reason").value = ""; $("#reason-pick").value = "";
-    if(dlg.showModal) dlg.showModal(); else { var r = prompt("Reason (optional)"); if(r!==null) decide(it.id,"rejected",r); }
-  }
-  dlg.addEventListener("close", function(){
-    if(dlg.returnValue === "ok" && rejectId){
-      var reason = [$("#reason-pick").value, $("#reason").value.trim()].filter(Boolean).join(": ");
-      decide(rejectId, "rejected", reason);
-    }
-    rejectId = null;
-  });
 
   // ---------- export / reset ----------
   $("#export").addEventListener("click", function(){
@@ -238,9 +277,16 @@
     a.download = "rebella-decisions-"+new Date().toISOString().slice(0,10)+".json";
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
   });
-  $("#reset").addEventListener("click", function(){
-    if(confirm("Clear the decisions saved in this browser? (Decisions already sent to the publisher stay.)")){ localStorage.removeItem(DKEY); render(); }
+  function resetStrip(open){
+    $("#reset-strip").hidden = !open; $("#reset").setAttribute("aria-expanded", open ? "true" : "false");
+    if(open){ $("#reset-msg").textContent = ""; $("#reset-no").focus(); }
+  }
+  $("#reset").addEventListener("click", function(){ resetStrip($("#reset-strip").hidden); });
+  $("#reset-no").addEventListener("click", function(){ resetStrip(false); $("#reset").focus(); });
+  $("#reset-yes").addEventListener("click", function(){
+    localStorage.removeItem(DKEY); resetStrip(false); render(); $("#reset-msg").textContent = "Cleared the decisions saved in this browser."; $("#reset").focus();
   });
+  $("#reset-strip").addEventListener("keydown", function(e){ if(e.key === "Escape"){ e.preventDefault(); resetStrip(false); $("#reset").focus(); } });
 
   // ---------- boot ----------
   (async function(){

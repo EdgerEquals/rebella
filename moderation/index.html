@@ -8,10 +8,10 @@
 <title>Rebella Moderation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&display=swap">
-<link rel="stylesheet" href="css/mod.css?v=3">
+<link rel="stylesheet" href="css/mod.css?v=5">
 <script src="js/config.js?v=2"></script>
 <script src="js/crypto.js?v=3"></script>
-<script src="js/app.js?v=4" defer></script>
+<script src="js/app.js?v=6" defer></script>
 </head>
 <body class="locked">
 
@@ -45,7 +45,12 @@
     </div>
     <div class="head-actions">
       <button id="export" class="btn btn-info" type="button">Export decisions (JSON)</button>
-      <button id="reset" class="btn btn-secondary" type="button">Reset all</button>
+      <button id="reset" class="btn btn-secondary" type="button" aria-expanded="false" aria-controls="reset-strip">Reset all</button>
+      <div id="reset-strip" class="confirm-strip danger" hidden>
+        <span class="cs-text" id="reset-q">Clear the decisions saved in this browser? Decisions already sent to the publisher stay.</span>
+        <span class="cs-btns"><button id="reset-yes" class="btn btn-danger" type="button" aria-describedby="reset-q">Yes, clear them</button><button id="reset-no" class="btn btn-secondary" type="button">Cancel</button></span>
+      </div>
+      <p id="reset-msg" class="inline-msg" aria-live="polite"></p>
     </div>
   </div></header>
 
@@ -73,27 +78,5 @@
   </div></footer>
 </div>
 
-<!-- Reject dialog -->
-<dialog id="reject-dlg" class="dlg">
-  <form method="dialog" id="reject-form">
-    <h2 class="hand">Reject this item?</h2>
-    <p id="reject-title" class="dlg-title"></p>
-    <label for="reason">Reason (optional)</label>
-    <select id="reason-pick" class="field">
-      <option value="">Choose a reason, or type below</option>
-      <option>Not age-appropriate</option>
-      <option>Body image / diet content</option>
-      <option>Unverified or misleading claims</option>
-      <option>Advertising or sponsored</option>
-      <option>Privacy or consent concern</option>
-      <option>Off-topic for Rebella</option>
-    </select>
-    <textarea id="reason" class="field" rows="3" placeholder="Add a note (optional)"></textarea>
-    <div class="dlg-btns">
-      <button value="cancel" class="btn btn-secondary" type="submit">Cancel</button>
-      <button value="ok" class="btn btn-primary" type="submit">Reject</button>
-    </div>
-  </form>
-</dialog>
 </body>
 </html>
