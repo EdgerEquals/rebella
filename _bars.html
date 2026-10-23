@@ -1,0 +1,17 @@
+<!-- SHARED BARS (one component, two audiences). Rendered by _bars.py; audience="{audience}". Same structure, height, colours and lock as the dashboard bars; only the wording differs. -->
+<div class="app-head rb-bars" id="app-head" data-audience="{audience}">
+  <div class="topbar"><div class="container">
+    <span class="tagline" id="bar-greet" data-help-slot="header" data-help="{greet_help}">{tagline}</span>
+    {top_right}
+  </div></div>
+  <header class="masthead"><div class="container">
+    <div class="brand">
+      {wordmark}
+      <span class="mod-pill">{pill}</span>
+    </div>
+    <div class="head-actions">{actions}</div>
+  </div></header>
+</div>
+<footer class="footer rb-bars" id="app-foot" data-audience="{audience}"><div class="container">
+  <span class="ft-left">{foot_left}</span><span class="ft-right"><span class="ft-line" id="bar-line" data-help-slot="footer">{foot_line}</span>{foot_extra}</span>
+</div></footer>

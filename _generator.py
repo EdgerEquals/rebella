@@ -71,17 +71,15 @@ def strip(s): return _html.unescape(re.sub('<[^>]+>','',s))
 
 WORDMARK='<a class="wordmark" href="index.html" aria-label="Rebella home"><span class="script">rebel</span><span class="serif">la</span><svg class="spark" aria-hidden="true"><use href="#i-sparkle"/></svg></a>'
 def catlink(k): return f'category-{k}.html'
+from _bars import split_bars
+BARS_HEAD,BARS_FOOT=split_bars('visitor')  # shared with Bonnie's Dashboard; audience switch in _bars.py
 
 def header(active=None):
     cur=lambda k: ' aria-current="page"' if active==k else ''
     items=''.join(f'<li class="c-{k}"><a class="navlink" href="{catlink(k)}"{cur(k)}>{n}</a></li>' for k,n in CATS)
     ditems=''.join(f'<li class="c-{k}"><a href="{catlink(k)}">{n}</a></li>' for k,n in CATS)
     return f'''{ICONS}
-<div class="topbar"><div class="container"><span class="tagline">Learn what you love.</span><nav aria-label="Utility"><a href="recommendations.html"{cur("recs")}>Recommendations</a><a href="category.html"{cur("all")}>All articles</a><a href="#newsletter">Newsletter</a><a href="submit.html">Submit your work</a></nav></div></div>
-<header class="masthead"><div class="container">
-  {WORDMARK}
-  <div class="head-promo"><div class="promo-text"><p>Get the print edition <span class="example">Example</span></p><a class="btn btn-primary dots-brick" href="#join">Find out more</a></div><a class="cover-thumb" href="#join" aria-label="Current issue (example cover)">{cover()}</a></div>
-</div></header>
+{BARS_HEAD}
 <nav class="mainnav" aria-label="Main"><div class="container">
   <button class="icon-btn burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><svg><use href="#i-burger"/></svg></button>
   <ul class="menu">{items}</ul>
@@ -104,7 +102,7 @@ def header(active=None):
   <div class="drawer-sub"><a class="btn btn-primary dots-brick" href="#newsletter">Join the newsletter</a><a class="btn btn-secondary dots-mustard" href="#join">Get the magazine</a></div>
 </nav>'''
 
-FOOTER=f'''<footer>
+FOOTER=f'''<section class="site-end" aria-label="More from Rebella">
   <section class="join-band" id="join"><div class="container">
     <div class="cover">{cover()}</div>
     <div class="copy"><h3>Rebella in print</h3><p><span class="example">Example copy</span> A quarterly mag of make-it projects, big questions and real stories, posted to your door.</p>
@@ -120,7 +118,8 @@ FOOTER=f'''<footer>
     <p class="legal">&copy; 2026 Rebella. A safe, fun place for teens to learn what you love. <a href="credits.html">Photo credits</a></p>
     <p class="legal photo-note">Photos are CC0 / public domain (Wikimedia Commons, NASA, museum open access), credited on the <a href="credits.html">credits page</a>. Stickers are original Rebella artwork.</p>
   </div></div>
-</footer>'''
+</section>
+{BARS_FOOT}'''
 
 URLATTR=re.compile(r'((?:href|src)=")(?!https?:|#|/|mailto:|tel:|data:|\.\./)([^"]*)"')
 def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moon.jpg',og_type='website',canonical=None,keywords=KEYWORDS,head_more=''):
@@ -129,7 +128,7 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <html lang="en-AU" class="unlocked">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{title}</title>
 <meta name="description" content="{esc(desc)}">
 <meta name="keywords" content="{esc(keywords)}">
@@ -151,7 +150,11 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&family=Special+Elite&display=swap">
 <link rel="stylesheet" href="css/styles.css?v=4">
 <link rel="stylesheet" href="css/zine.css?v=5">
+<link rel="stylesheet" href="css/bars.css?v=1">
 <script src="js/main.js"></script>
+<script src="js/bars.js?v=1" defer></script>
+<script src="js/help-orb.js?v=1" defer></script>
+<script src="js/help-init.js?v=1" defer></script>
 <script src="js/quotes.js" defer></script>
 <script src="js/quotes-render.js" defer></script>{extra_head}
 </head>
@@ -405,11 +408,14 @@ PAGES.append(('create.html','Create a mood board, collage or vision board | Rebe
 PAGES.append(('credits.html','Photo credits | Rebella',credits_page(),'Credits for the CC0 and public domain photos used on Rebella (Wikimedia Commons, NASA, museum open access) and for republished articles.',None,'','img/library/sunflower.jpg','website',None,KEYWORDS,'',True,'0.3'))
 PAGES.append(('article.html','This page has moved | Rebella',MOVED,'This page has moved. Rebella now has a page for every article.',None,'','img/articles/moon.jpg','website',ahref(moon),KEYWORDS,f'\n<meta http-equiv="refresh" content="0; url={ahref(moon)}">',False,None))
 
+from _cookies import COOKIES_BODY
+PAGES.append(('cookies/index.html','Cookies and your device | Rebella',COOKIES_BODY,'What cookies are, how they differ from local storage, exactly what Rebella saves on your device (and never sends), and how to clear it.',None,'','img/articles/moon.jpg','website','cookies/',KEYWORDS,'',True,'0.3'))
+os.makedirs(os.path.join(OUT,'cookies'),exist_ok=True)
 os.makedirs(os.path.join(OUT,'articles'),exist_ok=True)
 sm=[]
 for path,t,b,d,act,x,img,typ,can,kw,hm,insm,pri in PAGES:
     open(os.path.join(OUT,path),'w').write(page(path,t,b,d,act,x,img,typ,can,kw,hm))
-    if insm: sm.append(f'  <url><loc>{SITE}{"" if path=="index.html" else path}</loc><lastmod>{UPDATED}</lastmod><priority>{pri}</priority></url>')
+    if insm: sm.append(f'  <url><loc>{SITE}{"" if path=="index.html" else path.replace("index.html","")}</loc><lastmod>{UPDATED}</lastmod><priority>{pri}</priority></url>')
 open(os.path.join(OUT,'sitemap.xml'),'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+'\n'.join(sm)+'\n</urlset>\n')
 open(os.path.join(OUT,'robots.txt'),'w').write(f'User-agent: *\nDisallow: /rebella/moderation/\nDisallow: /moderation/\n\nSitemap: {SITE}sitemap.xml\n')
 print('written',len(PAGES),'pages')
