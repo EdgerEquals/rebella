@@ -25,6 +25,7 @@ Stickers (`img/stickers/*.svg`) are original artwork made for Rebella. Word stic
 | `img/articles/honey.jpg` | Golden honey dripping | U.S. Department of Agriculture | Public domain | [File:20140910-ARS-LSC-01408 (15269674232).jpg](https://commons.wikimedia.org/wiki/File:20140910-ARS-LSC-01408_(15269674232).jpg) |
 | `img/articles/scissors.jpg` | A pair of blue craft scissors | Karen Arnold | CC0 1.0 (public domain dedication) | [File:Safety scissors blue.jpg](https://commons.wikimedia.org/wiki/File:Safety_scissors_blue.jpg) |
 | `img/articles/moon.jpg` | The full Moon in a dark sky | Tumeiyo1 | CC0 1.0 (public domain dedication) | [File:Full moon. 010226.jpg](https://commons.wikimedia.org/wiki/File:Full_moon._010226.jpg) |
+| `img/articles/can-an-insect-larva-change-its-mind.jpg` | Aleyrodes-larva-limago-front | Nikita Kluge | CC0 (via Wikimedia Commons) | [Aleyrodes-larva-limago-front.jpg](https://commons.wikimedia.org/wiki/File:Aleyrodes-larva-limago-front.jpg) |
 
 ## Create page photo library (`img/library/`)
 
@@ -59,3 +60,11 @@ Stickers (`img/stickers/*.svg`) are original artwork made for Rebella. Word stic
 | `img/library/succulent.jpg` | A green succulent plant | photostockeditor | CC0 1.0 (public domain dedication) | [File:Macro Suculent Plant 2.jpg](https://commons.wikimedia.org/wiki/File:Macro_Suculent_Plant_2.jpg) |
 | `img/library/eiffel-tower.jpg` | The Eiffel Tower in Paris | Jebulon | CC0 1.0 (public domain dedication) | [File:Tour Eiffel vue du Champ-de-Mars.jpg](https://commons.wikimedia.org/wiki/File:Tour_Eiffel_vue_du_Champ-de-Mars.jpg) |
 | `img/library/tulips.jpg` | Pink and purple tulips | Anelka | CC0 1.0 (public domain dedication) | [File:Tulips-320151 1920.jpg](https://commons.wikimedia.org/wiki/File:Tulips-320151_1920.jpg) |
+
+## Republished and adapted text (content pipeline)
+
+Articles added through the moderation dashboard after approval. Each keeps its original licence. Source log: item, URL, licence, approved date.
+
+| Page | Source | Licence | Approved |
+|---|---|---|---|
+| `articles/can-an-insect-larva-change-its-mind.html` | [Can An Insect Larva Change Its Mind?](https://kids.frontiersin.org/articles/10.3389/frym.2026.1681331) (Frontiers for Young Minds) | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | 2026-10-23 |
