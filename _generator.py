@@ -56,6 +56,10 @@ def ransom(text):
             letters+=f'<span class="rl rl{(i*7+3)%6}">{_html.escape(ch)}</span>'; i+=1
         words.append(f'<span class="rw">{letters}</span>')
     return f'<span class="sr-only">{_html.escape(t)}</span><span class="ransom" aria-hidden="true">{" ".join(words)}</span>'
+# Items approved on the moderation dashboard (written by /workspace/rebella-pipeline/publish.py). Newest first.
+_PJ=os.path.join(OUT,'_pipeline_articles.json')
+PIPE=json.load(open(_PJ)) if os.path.exists(_PJ) else []
+ARTICLES=PIPE+[a for a in ARTICLES if a['slug'] not in {p['slug'] for p in PIPE}]
 SITE='https://edgerequals.github.io/rebella/'
 UPDATED='2026-10-23'
 CATNAME=dict(CATS)
@@ -120,13 +124,13 @@ FOOTER=f'''<footer>
       <div><h6>Help &amp; safety</h6><ul><li><a href="https://au.reachout.com/" rel="noopener">ReachOut</a></li><li><a href="https://kidshelpline.com.au/" rel="noopener">Kids Helpline 1800 55 1800</a></li><li><a href="https://headspace.org.au/" rel="noopener">headspace</a></li><li><a href="https://www.esafety.gov.au/young-people" rel="noopener">eSafety: staying safe online</a></li></ul></div>
     </div>
     <p class="legal">&copy; 2026 Rebella. A safe, fun place for teens to learn what you love. <a href="credits.html">Photo credits</a></p>
-    <p class="legal photo-note">Photos are CC0 / public domain from Wikimedia Commons, credited on the <a href="credits.html">credits page</a>. Stickers are original Rebella artwork.</p>
+    <p class="legal photo-note">Photos are CC0 / public domain (Wikimedia Commons, NASA, museum open access), credited on the <a href="credits.html">credits page</a>. Stickers are original Rebella artwork.</p>
   </div></div>
 </footer>'''
 
 URLATTR=re.compile(r'((?:href|src)=")(?!https?:|#|/|mailto:|tel:|data:|\.\./)([^"]*)"')
 def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moon.jpg',og_type='website',canonical=None,keywords=KEYWORDS,head_more=''):
-    canon=SITE+(canonical if canonical is not None else ('' if path=='index.html' else path))
+    canon=canonical if (canonical or '').startswith('http') else SITE+(canonical if canonical is not None else ('' if path=='index.html' else path))
     out=f'''<!doctype html>
 <html lang="en-AU" class="unlocked">
 <head>
@@ -220,7 +224,7 @@ NEWSLETTER='''<section class="newsletter container" id="newsletter"><h2>Join our
 FOLLOW='<section class="follow container" id="follow"><h2>Follow us</h2><p class="motto">Be curious. Be bold. Be you.</p><div class="icons"><a href="#" aria-label="Facebook (placeholder)"><svg><use href="#i-fb"/></svg></a><a href="#" aria-label="Instagram (placeholder)"><svg><use href="#i-ig"/></svg></a></div><div class="tiles" aria-label="Photo tiles">'+''.join(
     f'<img class="tile" src="{CRED[f]["file"]}" alt="{CRED[f]["alt"]}" loading="lazy" decoding="async" width="{CRED[f]["w"]}" height="{CRED[f]["h"]}">' for f in ['img/library/'+n+'.jpg' for n in ['sunflower','pink-cupcakes','night-sky','kitten-daisies','watercolours','tulips','hot-air-balloon','bookshop','strawberries','great-wave']])+'</div></section>'
 
-HOME_FIRST=['t-shirt-tote-bag','why-is-the-sky-blue','five-minute-wind-down','start-a-coding-club','six-adventure-books']
+HOME_FIRST=[p['slug'] for p in PIPE[:3]]+['t-shirt-tote-bag','why-is-the-sky-blue','five-minute-wind-down','start-a-coding-club','six-adventure-books']
 HOME_LATER=['talk-money-with-your-family','no-bake-oat-cookies','living-on-mars','desk-stretches','group-chat-drama']
 moon=BY['moon-garden']
 home=f'''<main id="main">
@@ -308,14 +312,14 @@ def article_page(a):
 <h1 class="entry-title">{a["title"]}</h1>
 <div class="feed-wrap">
   <article class="feed entry">
-    <div class="meta"><span class="date">23 October 2026</span><a class="cat cat-chip" href="{catlink(k)}">{CATNAME[k]}</a></div>
-    <figure class="feature-art">{photo(a["img"],'photo',True)}<span class="band">{CATNAME[k]}</span><figcaption class="photo-credit">Photo: {c['artist']}, {c['licLabel'].split(' (')[0]}, via <a href="{c['page']}" rel="noopener">Wikimedia Commons</a></figcaption></figure>
+    <div class="meta"><span class="date">{a.get('date_label','23 October 2026')}</span><a class="cat cat-chip" href="{catlink(k)}">{CATNAME[k]}</a></div>
+    <figure class="feature-art">{photo(a["img"],'photo',True)}<span class="band">{CATNAME[k]}</span><figcaption class="photo-credit">Photo: {c['artist']}, {c['licLabel'].split(' (')[0]}, via <a href="{c['page']}" rel="noopener">{c.get('via','Wikimedia Commons')}</a></figcaption></figure>
     <p class="lead">{a["lead"]}</p>
     {a["body"]}
     {rebel_quote('art-'+a['slug'])}
     {SUPPORT if a.get('support') else ''}
     <hr>
-    <div class="author-box"><div class="avatar">{thumb('voice','i-star')}</div><div><strong>Written by the Rebella team</strong><br><small>Spotted a mistake? We check our facts, and we'll fix it.</small></div></div>
+    <div class="author-box"><div class="avatar">{thumb('voice','i-star')}</div><div>{a.get('author_box') or "<strong>Written by the Rebella team</strong><br><small>Spotted a mistake? We check our facts, and we'll fix it.</small>"}</div></div>
     {related(a)}
   </article>
   {sidebar(True)}
@@ -326,7 +330,7 @@ def article_page(a):
 def article_jsonld(a):
     import json as _j
     d={"@context":"https://schema.org","@type":"Article","headline":strip(a['title']),"description":strip(a['desc']),"image":SITE+'img/articles/'+a['img']+'.jpg',
-       "datePublished":UPDATED,"author":{"@type":"Organization","name":"Rebella"},"publisher":{"@type":"Organization","name":"Rebella"},"mainEntityOfPage":SITE+ahref(a),"inLanguage":"en-AU"}
+       "datePublished":UPDATED,"author":{"@type":"Organization","name":a.get('author_name','Rebella')},"publisher":{"@type":"Organization","name":"Rebella"},"mainEntityOfPage":SITE+ahref(a),"inLanguage":"en-AU"}
     return '\n<script type="application/ld+json">'+_j.dumps(d,ensure_ascii=False)+'</script>'
 
 MOVED=f'''<main id="main" class="c-questions"><div class="container moved">
@@ -364,13 +368,19 @@ RECS_BODY='''<main id="main" class="recs-page c-rwl"><div class="container">
 
 CREATE_BODY=open(os.path.join(OUT,'_create_body.html')).read()
 
+def text_credits():
+    if not PIPE: return ''
+    rows=''.join(f'<tr><td><a href="articles/{a["slug"]}.html">{a["title"]}</a></td><td><a href="{a["source"]["url"]}" rel="noopener">{esc(a["source"]["name"])}</a></td><td><a href="{a["source"]["licence_url"]}" rel="noopener license">{esc(a["source"]["licence"])}</a></td><td>{a["source"].get("approved","")}</td></tr>' for a in PIPE)
+    return f'<h2>Republished and adapted articles</h2><p>These pages reuse text, video or images under their own licence, credited on each page. Each one was approved by a Rebella editor before it went live.</p><div class="table-wrap"><table><thead><tr><th scope="col">Page</th><th scope="col">Source</th><th scope="col">Licence</th><th scope="col">Approved</th></tr></thead><tbody>{rows}</tbody></table></div>'
+
 def credits_page():
     rows=lambda g: ''.join(f'<tr><td><img src="{c["file"]}" alt="" loading="lazy" width="80" height="{round(80*c["h"]/c["w"])}"></td><td>{c["alt"]}</td><td>{c["artist"]}</td><td>{c["licLabel"]}</td><td><a href="{c["page"]}" rel="noopener">{c["title"].replace("File:","")}</a></td></tr>' for c in CREDITS if c['group']==g)
     head='<thead><tr><th scope="col"><span class="sr-only">Preview</span></th><th scope="col">What it shows</th><th scope="col">Author</th><th scope="col">Licence</th><th scope="col">Source</th></tr></thead>'
     return f'''<main id="main" class="credits container">
 <h1 class="entry-title">Photo credits</h1>
-<p>Every photo on Rebella comes from <strong>Wikimedia Commons</strong> and is marked <strong>CC0</strong> or <strong>public domain</strong> on its file page, so it can be reused, changed and shared freely (including in boards you make and download). Credit isn't required, but we like to say thank you. Our stickers are original Rebella artwork.</p>
+<p>Every photo on Rebella comes from <strong>Wikimedia Commons</strong>, <strong>NASA</strong> or a museum's open-access collection, and is marked <strong>CC0</strong> or <strong>public domain</strong> at its source, so it can be reused, changed and shared freely (including in boards you make and download). Credit isn't required, but we like to say thank you. Our stickers are original Rebella artwork.</p>
 <h2>Article photos</h2><div class="table-wrap"><table>{head}<tbody>{rows('articles')}</tbody></table></div>
+{text_credits()}
 <h2>Create page photo library</h2><div class="table-wrap"><table>{head}<tbody>{rows('library')}</tbody></table></div>
 </main>'''
 
@@ -385,11 +395,11 @@ for k,n in CATS:
     first=[a for a in ARTICLES if a['cat']==k][0]
     PAGES.append((catlink(k),f'{n} | Rebella',cat_page(k),CAT_INFO[k][1],k,'','img/articles/'+first['img']+'.jpg','website',None,f'{strip(n)}, '+KEYWORDS,'',True,'0.7'))
 for a in ARTICLES:
-    PAGES.append((ahref(a),f'{a["title"]} | Rebella',article_page(a),a['desc'],a['cat'],'','img/articles/'+a['img']+'.jpg','article',None,f'{strip(a["title"])}, {strip(CATNAME[a["cat"]])}, '+KEYWORDS,article_jsonld(a),True,'0.6'))
+    PAGES.append((ahref(a),f'{a["title"]} | Rebella',article_page(a),a['desc'],a['cat'],'','img/articles/'+a['img']+'.jpg','article',a.get('canonical'),f'{strip(a["title"])}, {strip(CATNAME[a["cat"]])}, '+KEYWORDS,article_jsonld(a),True,'0.6'))
 PAGES.append(('recommendations.html','Recommendations: song, quote and goal of the week | Rebella',RECS_BODY,'Rebella Recommendations: song of the week, Rightfully Famous (someone famous for the right reasons), quote of the week, a goal for everyone and more picks.','recs','\n<script src="js/recs.js" defer></script>\n<script src="js/recs-render.js" defer></script>','img/articles/reading.jpg','website',None,'recommendations, song of the week, quote of the week, '+KEYWORDS,'',True,'0.7'))
 PAGES.append(('submit.html','Share your work with Your Voice | Rebella',SUBMIT.replace('{SIDEBAR}',sidebar(False)),'How sharing your art, writing and projects with Rebella\'s Your Voice section will work, safely and with an adult editor checking everything.','voice','','img/articles/art-wall.jpg','website',None,KEYWORDS,'',True,'0.4'))
 PAGES.append(('create.html','Create a mood board, collage or vision board | Rebella',CREATE_BODY,'Make mood boards, collages and vision boards with stickers and photos, add your own words, and save it as a picture. Free and private on Rebella.','create','\n<link rel="stylesheet" href="css/create.css">\n<script src="js/library.js" defer></script>\n<script src="js/create.js" defer></script>','img/library/tulips.jpg','website',None,'mood board maker, vision board, collage, '+KEYWORDS,'',True,'0.7'))
-PAGES.append(('credits.html','Photo credits | Rebella',credits_page(),'Credits for the CC0 and public domain photos used on Rebella, all from Wikimedia Commons.',None,'','img/library/sunflower.jpg','website',None,KEYWORDS,'',True,'0.3'))
+PAGES.append(('credits.html','Photo credits | Rebella',credits_page(),'Credits for the CC0 and public domain photos used on Rebella (Wikimedia Commons, NASA, museum open access) and for republished articles.',None,'','img/library/sunflower.jpg','website',None,KEYWORDS,'',True,'0.3'))
 PAGES.append(('article.html','This page has moved | Rebella',MOVED,'This page has moved. Rebella now has a page for every article.',None,'','img/articles/moon.jpg','website',ahref(moon),KEYWORDS,f'\n<meta http-equiv="refresh" content="0; url={ahref(moon)}">',False,None))
 
 os.makedirs(os.path.join(OUT,'articles'),exist_ok=True)

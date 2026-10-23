@@ -69,3 +69,9 @@ window.REBELLA_RECS = {
 - Quotes: edit ONE file, `js/quotes.js` (`quote`, `person`, `who`, `context`, `source`). The list after the `=` must stay valid JSON because `_generator.py` reads it too. Every quote must be real, word-for-word, correctly attributed and linked to a reliable source (Wikiquote's sourced section, a primary source or a reputable outlet). Never add "attributed"/disputed/listicle quotes.
 - `js/quotes-render.js` fills every `[data-rebel-quote]` slot with a random quote (a different person per slot) on each page load. `_generator.py` pre-renders a fixed quote in each slot so nothing is blank without JS.
 - `_generator.py` interfaces are unchanged (`ARTICLES` format, `card()`, `article_page(a)`, `page(...)`). New helpers: `rebel_quote(seed)`, `ransom(text)`, `TEAR`. `article_page()` now adds one quote card after the article body (before the support box); section pages get one after the 2nd card (and another if a section has 4+ articles); the home page gets three; the All articles page gets two.
+
+## Content pipeline (approved items)
+- Items Bonnie approves on the moderation dashboard are published by `/workspace/rebella-pipeline` (on the box).
+  They live in `_pipeline_articles.json` (same fields as `_articles.py` plus source/licence info), with photos in
+  `img/articles/<slug>.jpg`, credits in `img/credits.json` + `CREDITS.md`, and `_generator.py` builds their pages,
+  home/section cards, credits table and sitemap. Don't hand-edit those entries; republished text must stay unedited.
