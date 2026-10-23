@@ -32,7 +32,7 @@
 <script src="js/help-init.js?v=1" defer></script>
 <script src="js/quotes.js" defer></script>
 <script src="js/quotes-render.js" defer></script>
-</head>
+<link rel="stylesheet" href="music/music-site.css"></head>
 <body class="zine">
 <a class="skip" href="#main">Skip to content</a>
 <a class="escape" href="index.html" data-escape aria-label="Emergency stop: leave this page now and go to the Rebella homepage">
@@ -78,7 +78,7 @@
   <ul class="menu"><li class="c-make"><a class="navlink" href="category-make.html">Make It</a></li><li class="c-questions"><a class="navlink" href="category-questions.html">Big Questions</a></li><li class="c-mind"><a class="navlink" href="category-mind.html">Mind &amp; Body</a></li><li class="c-world"><a class="navlink" href="category-world.html">Your World</a></li><li class="c-rwl"><a class="navlink" href="category-rwl.html">Read Watch Listen</a></li><li class="c-voice"><a class="navlink" href="category-voice.html">Your Voice</a></li></ul>
   <div class="nav-right">
     <a class="create-pill" href="create.html"><svg aria-hidden="true"><use href="#i-sparkle"/></svg>Create</a>
-    <a class="create-pill recs-pill" href="recommendations.html" aria-label="Recommendations"><svg aria-hidden="true"><use href="#i-star"/></svg><span class="long">Recommendations</span><span class="short" aria-hidden="true">Picks</span></a>
+    <a class="create-pill recs-pill" href="recommendations.html" aria-label="Recommendations"><svg aria-hidden="true"><use href="#i-star"/></svg><span class="long">Recommendations</span><span class="short" aria-hidden="true">Picks</span></a><a class="create-pill music-pill" href="music/index.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 17.5V6l11-2.5v11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><ellipse cx="6.4" cy="17.6" rx="3.2" ry="2.5" fill="currentColor"/><ellipse cx="17.4" cy="15" rx="3.2" ry="2.5" fill="currentColor"/></svg>Music</a>
     <a class="social" href="#follow" aria-label="Facebook (placeholder)"><svg><use href="#i-fb"/></svg></a>
     <a class="social" href="#follow" aria-label="Instagram (placeholder)"><svg><use href="#i-ig"/></svg></a>
     <a class="sub-link" href="#newsletter">Join</a>
@@ -91,7 +91,7 @@
 <nav class="drawer" id="drawer" aria-label="Mobile menu" aria-hidden="true">
   <button class="icon-btn close" data-close-drawer aria-label="Close menu"><svg><use href="#i-close"/></svg></button>
   <a class="wordmark" href="index.html" aria-label="Rebella home"><span class="script">rebel</span><span class="serif">la</span><svg class="spark" aria-hidden="true"><use href="#i-sparkle"/></svg></a>
-  <ul><li class="c-create"><a href="create.html">&#10024; Create a board</a></li><li class="c-create"><a href="recommendations.html">&#9733; Recommendations</a></li><li class="c-make"><a href="category-make.html">Make It</a></li><li class="c-questions"><a href="category-questions.html">Big Questions</a></li><li class="c-mind"><a href="category-mind.html">Mind &amp; Body</a></li><li class="c-world"><a href="category-world.html">Your World</a></li><li class="c-rwl"><a href="category-rwl.html">Read Watch Listen</a></li><li class="c-voice"><a href="category-voice.html">Your Voice</a></li><li><a href="category.html">All articles</a></li></ul>
+  <ul><li class="c-create"><a href="create.html">&#10024; Create a board</a></li><li class="c-create"><a href="recommendations.html">&#9733; Recommendations</a></li><li class="c-create"><a href="music/index.html">&#9835; Music</a></li><li class="c-create"><a href="music/playground/index.html">&#9834; Music Playground</a></li><li class="c-make"><a href="category-make.html">Make It</a></li><li class="c-questions"><a href="category-questions.html">Big Questions</a></li><li class="c-mind"><a href="category-mind.html">Mind &amp; Body</a></li><li class="c-world"><a href="category-world.html">Your World</a></li><li class="c-rwl"><a href="category-rwl.html">Read Watch Listen</a></li><li class="c-voice"><a href="category-voice.html">Your Voice</a></li><li><a href="category.html">All articles</a></li></ul>
   <div class="drawer-sub"><a class="btn btn-primary dots-brick" href="#newsletter">Join the newsletter</a><a class="btn btn-secondary dots-mustard" href="#join">Get the magazine</a></div>
 </nav>
 <main id="main">
@@ -158,7 +158,11 @@
 
 <section class="pillars container" aria-label="Explore by interest"><ul><li class="c-make"><a href="category-make.html"><svg aria-hidden="true"><use href="#blob"/></svg><span>Make It</span></a></li><li class="c-questions"><a href="category-questions.html"><svg aria-hidden="true"><use href="#blob"/></svg><span>Big Questions</span></a></li><li class="c-mind"><a href="category-mind.html"><svg aria-hidden="true"><use href="#blob"/></svg><span>Mind &amp; Body</span></a></li><li class="c-world"><a href="category-world.html"><svg aria-hidden="true"><use href="#blob"/></svg><span>Your World</span></a></li><li class="c-rwl"><a href="category-rwl.html"><svg aria-hidden="true"><use href="#blob"/></svg><span>Read Watch Listen</span></a></li><li class="c-voice"><a href="category-voice.html"><svg aria-hidden="true"><use href="#blob"/></svg><span>Your Voice</span></a></li></ul></section>
 <div class="container quote-row"><aside class="rebel-quote" data-rebel-quote aria-label="Rebel quote"><figure class="rq-paper"><blockquote class="rq-text" cite="https://www.independent.co.uk/news/world/asia/the-full-text-malala-yousafzai-delivers-defiant-riposte-to-taliban-militants-with-speech-to-the-un-general-assembly-8706606.html"><p>One child, one teacher, one book and one pen can change the world.</p></blockquote><figcaption class="rq-cap"><span class="rq-person">Malala Yousafzai</span><span class="rq-who">Pakistani activist who stood up for girls&#x27; right to go to school, and the youngest-ever Nobel Peace Prize winner.</span><a class="rq-src" href="https://www.independent.co.uk/news/world/asia/the-full-text-malala-yousafzai-delivers-defiant-riposte-to-taliban-militants-with-speech-to-the-un-general-assembly-8706606.html" rel="noopener">Source: Speech to the United Nations, 12 July 2013</a></figcaption></figure></aside></div>
-<section class="create-promo container" aria-labelledby="cp-title"><div class="cp-inner dots-brick">
+<section class="container mu-teaser" aria-labelledby="mu-teaser-title"><div class="mu-teaser-in">
+  <svg class="mu-teaser-note" aria-hidden="true"><use href="#i-music"/></svg>
+  <div><h2 id="mu-teaser-title" class="hand">New: Music</h2><p>Free tracks by local and independent artists, starting with a Perth composer.</p></div>
+  <a class="btn btn-info dots-aqua" href="music/index.html">Have a listen</a>
+</div></section><section class="create-promo container" aria-labelledby="cp-title"><div class="cp-inner dots-brick">
   <div class="cp-stickers" aria-hidden="true"><img src="img/stickers/word-dream-big.svg" alt="" class="s1"><img src="img/stickers/flower-peach.svg" alt="" class="s2"><img src="img/stickers/washi-mint-stripes.svg" alt="" class="s3"><img src="img/stickers/star-butter.svg" alt="" class="s4"><img src="img/library/tulips.jpg" alt="" class="p1"><img src="img/library/hot-air-balloon.jpg" alt="" class="p2"></div>
   <div class="cp-copy"><h2 id="cp-title" class="hand">Make a mood board</h2><p>Mood boards, collages and vision boards: drag in stickers and photos, add your own words, then save it as a picture.</p><a class="btn btn-primary dots-brick" href="create.html">Start creating</a></div>
 </div></section>

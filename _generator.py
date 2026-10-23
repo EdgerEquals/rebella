@@ -56,6 +56,7 @@ PIPE=json.load(open(_PJ)) if os.path.exists(_PJ) else []
 ARTICLES=PIPE+[a for a in ARTICLES if a['slug'] not in {p['slug'] for p in PIPE}]
 SITE='https://edgerequals.github.io/rebella/'
 UPDATED='2026-10-23'
+MUSIC_SECTION=True  # Music section: everything lives in music/. Set False (or delete music/ and the 'if MUSIC_SECTION' line below) to remove it. See music/REMOVE.md
 CATNAME=dict(CATS)
 CAT_INFO={
  'make':('Crafts, DIY, art and cooking: learn by doing, mess allowed.','Make It: crafts, DIY projects, art and easy recipes for teens on Rebella.'),
@@ -411,6 +412,8 @@ PAGES.append(('article.html','This page has moved | Rebella',MOVED,'This page ha
 from _cookies import COOKIES_BODY
 PAGES.append(('cookies/index.html','Cookies and your device | Rebella',COOKIES_BODY,'What cookies are, how they differ from local storage, exactly what Rebella saves on your device (and never sends), and how to clear it.',None,'','img/articles/moon.jpg','website','cookies/',KEYWORDS,'',True,'0.3'))
 os.makedirs(os.path.join(OUT,'cookies'),exist_ok=True)
+if MUSIC_SECTION: from music._music import install; page=install(PAGES,page,globals())  # Music section hook (see music/REMOVE.md)
+if MUSIC_SECTION and os.path.isdir(os.path.join(OUT,'music','playground')): from music.playground._playground import install as _pg; page=_pg(PAGES,page,globals())  # MUSIC PLAYGROUND hook (see music/playground/REMOVE.md)
 os.makedirs(os.path.join(OUT,'articles'),exist_ok=True)
 sm=[]
 for path,t,b,d,act,x,img,typ,can,kw,hm,insm,pri in PAGES:

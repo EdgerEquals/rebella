@@ -1,0 +1,109 @@
+<main id="main" class="pg c-rwl">
+<div class="container">
+<header class="page-header"><span class="cat-chip">&#9834; Music</span><h1 class="page-title">Music Playground</h1><p class="lead-banner">Turn things, tap things, see what feels good.</p></header>
+
+<section class="pg-panel pg-intro" aria-labelledby="pg-hi">
+  <h2 id="pg-hi" class="hand">Have a play</h2>
+  <p>There's no right way to do this and nothing to get right. Turn the dial until it feels right, build a tiny band, mess with the sound and see where it takes you.</p>
+  <p class="pg-small">Every sound here is made live by your browser. No microphone, no recordings of you, and nothing is sent anywhere. Sound starts after your first tap.</p>
+  <div class="pg-row">
+    <label class="pg-switch" data-help="mute"><input type="checkbox" switch id="pg-mute"> <span>Mute everything</span></label>
+    <button class="btn btn-primary dots-brick" type="button" id="pg-start" data-help="start">Tap to wake the sound</button>
+  </div>
+  <p class="pg-small pg-noaudio" id="pg-noaudio" hidden>This browser can't make sounds on a web page, so the instruments and effects are resting. The radio still works.</p>
+</section>
+
+<section class="pg-panel" aria-labelledby="pg-radio-h">
+  <h2 id="pg-radio-h" class="hand">The radio</h2>
+  <div class="pg-radio">
+    <div class="pg-dial-wrap">
+      <div class="pg-dial" id="pg-dial" role="slider" tabindex="0" aria-label="Genre dial" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0" aria-valuetext="" data-help="dial">
+        <svg viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="92" class="pg-dial-ring"/><g id="pg-dial-ticks"></g><g id="pg-dial-knob"><circle cx="100" cy="100" r="62" class="pg-dial-knob"/><rect x="96" y="44" width="8" height="30" rx="4" class="pg-dial-pointer"/></g></svg>
+      </div>
+      <p class="pg-dial-label" id="pg-dial-label" aria-hidden="true">&nbsp;</p>
+      <p class="pg-small">Settle it where it feels right. The order shuffles every visit.</p>
+    </div>
+    <div class="pg-player-wrap">
+      <div class="pg-player" id="pg-player" data-help="player" data-help-keepclear><div class="pg-player-empty" id="pg-player-empty"><span aria-hidden="true">&#128251;</span><p id="pg-player-msg">Nothing on this station yet. Dad adds approved channels, then they play here.</p></div></div>
+      <div class="pg-row">
+        <button class="btn btn-info dots-aqua" type="button" id="pg-reading" data-help="reading">Reading music</button>
+      </div>
+      <p class="pg-small">Radio music plays in YouTube's own player, so the effects below can't touch it, and the playground can't hear it.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pg-panel" aria-labelledby="pg-follow-h">
+  <h2 id="pg-follow-h" class="hand">Play along with the radio</h2>
+  <p class="pg-small">Plays along by tempo and key tags, not by listening.</p>
+  <div class="pg-row">
+    <label class="pg-switch" data-help="follow"><input type="checkbox" switch id="pg-follow" checked> <span>Follow the radio</span></label>
+    <button class="pg-btn" type="button" id="pg-tap" data-help="tap-tempo">Tap tempo</button>
+    <button class="pg-btn" type="button" id="pg-lineup" data-help="line-up">Line up (tap on the beat)</button>
+  </div>
+  <div class="pg-row" role="group" aria-label="Nudge" data-help="nudge">
+    <button class="pg-btn" type="button" data-nudge="-beat">&minus; beat</button>
+    <button class="pg-btn" type="button" data-nudge="-10">&minus;10 ms</button>
+    <button class="pg-btn" type="button" data-nudge="10">+10 ms</button>
+    <button class="pg-btn" type="button" data-nudge="beat">+ beat</button>
+  </div>
+  <label class="pg-slider" data-help="latency"><span>Latency</span><input type="range" id="pg-latency" min="0" max="300" step="10" value="0" aria-valuetext="0 ms"><output id="pg-latency-out">0 ms</output></label>
+  <p class="pg-readout" id="pg-tempo-readout" aria-live="off">&nbsp;</p>
+</section>
+
+<section class="pg-panel" aria-labelledby="pg-flav-h">
+  <h2 id="pg-flav-h" class="hand">Sound flavour</h2>
+  <fieldset class="pg-flavours" data-help="flavour"><legend class="sr-only">Generated sound flavour</legend>
+    <label><input type="radio" name="pg-flavour" value="lofi" checked> Lo-fi</label>
+    <label><input type="radio" name="pg-flavour" value="chiptune"> Chiptune</label>
+    <label><input type="radio" name="pg-flavour" value="ambient"> Ambient</label>
+    <label><input type="radio" name="pg-flavour" value="pop"> Pop</label>
+    <label><input type="radio" name="pg-flavour" value="nature"> Nature</label>
+  </fieldset>
+  <h3 class="pg-h3">Band moods</h3>
+  <div class="pg-presets" id="pg-presets" data-help="presets"></div>
+</section>
+
+<section class="pg-panel" aria-labelledby="pg-inst-h">
+  <h2 id="pg-inst-h" class="hand">Instruments</h2>
+  <p class="pg-small">All made from scratch by your browser. Tap to hear one, add it to your band.</p>
+  <ul class="pg-inst" id="pg-inst"></ul>
+</section>
+
+<section class="pg-panel" aria-labelledby="pg-band-h">
+  <h2 id="pg-band-h" class="hand">Your band</h2>
+  <div class="pg-row">
+    <button class="btn btn-primary dots-brick" type="button" id="pg-play" data-help="play" aria-pressed="false">Play</button>
+    <label class="pg-slider" data-help="swing"><span>Swing</span><input type="range" id="pg-swing" min="0" max="0.618" step="0.01" value="0.236"></label>
+    <label class="pg-slider" data-help="humanise"><span>Loose</span><input type="range" id="pg-human" min="0" max="1" step="0.01" value="0.382"></label>
+  </div>
+  <ol class="pg-slots" id="pg-slots" data-help="ensemble"></ol>
+  <p class="pg-small" id="pg-slots-note"></p>
+  <p class="pg-small pg-soon">Coming soon: a 16-step grid to write your own parts, and sending your band to a real MIDI keyboard.</p>
+</section>
+
+<section class="pg-panel" aria-labelledby="pg-fx-h">
+  <h2 id="pg-fx-h" class="hand">Effects rack</h2>
+  <div class="pg-fx" id="pg-fx"></div>
+  <p class="pg-small pg-soon" data-help="soon">Coming soon: a looper, sampler pads, stutter and chop, all made from the playground's own sound (never a microphone, never the radio).</p>
+  <div class="pg-row"><button class="pg-btn" type="button" id="pg-bend" data-help="bend">Bend time</button></div>
+</section>
+
+<section class="pg-panel" aria-labelledby="pg-ladder-h">
+  <h2 id="pg-ladder-h" class="hand">Dad's ladder</h2>
+  <p class="pg-small">A little demo of how Dad's music picks its pace. Move the sliders and the readout changes. On Rebella there are no messages, so you're the one setting the mood.</p>
+  <div class="pg-pumps">
+    <label class="pg-slider" data-help="pump-time"><span>Time of day</span><input type="range" id="pp-time" min="0" max="3" step="1" value="0"><output id="pp-time-o"></output></label>
+    <label class="pg-slider" data-help="pump-weather"><span>Weather</span><input type="range" id="pp-weather" min="0" max="5" step="1" value="3"><output id="pp-weather-o"></output></label>
+    <label class="pg-slider" data-help="pump-urgency"><span>Hurry</span><input type="range" id="pp-urg" min="0" max="2" step="1" value="0"><output id="pp-urg-o"></output></label>
+    <label class="pg-slider" data-help="pump-mood"><span>Mood</span><input type="range" id="pp-mood" min="0" max="6" step="1" value="3"><output id="pp-mood-o"></output></label>
+  </div>
+  <p class="pg-readout" id="pg-ladder-readout" data-help="ladder-readout">&nbsp;</p>
+  <div class="pg-row">
+    <button class="pg-btn" type="button" id="pg-xfade" data-help="crossfade">Drift to the next part</button>
+    <label class="pg-switch" data-help="auto-dj"><input type="checkbox" switch id="pg-auto"> <span>Let it drift on its own</span></label>
+  </div>
+</section>
+<noscript><p class="recs-note">The Playground needs JavaScript.</p></noscript>
+</div>
+</main>
