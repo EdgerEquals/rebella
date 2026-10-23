@@ -1,4 +1,4 @@
-/* Bonnie's radio (Rebella, local branch bonnie-playlist-button; not published).
+/* Bonnie's radio (Rebella). THE one genre dial on the site: the home page and the Music Playground both mount it.
    A play button for Bonnie's playlist plus a radio-tuner GENRE DIAL. Nothing loads from YouTube and nothing plays until
    the listener presses Play. Then a visible mini-player (200x200, the documented minimum; youtube-nocookie.com; on the
    top layer so nothing covers it) appears in a free corner. It pauses whenever the page is hidden.
@@ -11,7 +11,10 @@
    (Dad-approved, age-checked entries only). No API key, no account, no social features.
    Phi timing (/home/box/.config/phi-timing-rules.md): static fade PHI^-3 s, snap PHI^-2 s, needle sway PHI^4 s
    (golden offset k = 1), haptic gap PHI^1 s, double-tap window PHI^-1 s. Reduced motion: no sway, no snap animation.
-   Testing only: ?list=<id> stands in for Bonnie's playlist, ?genrelist=<id> for every empty station. */
+   No URL test overrides on the live site: only ids in stations.js (Dad-approved + age-checked) can ever load.
+   Host options: data-variant="playground" (Playground intro wording). Events for the Playground band (no network):
+   'rebella:station' {key,label,flavour,bpm,key_root,mode,initial} on every landing, 'rebella:radio' {playing}.
+   API: window.BonnieRadio.{genre, station, order, reroll, land, playReading, setMuted}. */
 (function () {
   'use strict';
   var PHI = 1.6180339887, G = 0.6180339887;
@@ -19,8 +22,8 @@
   var host = document.querySelector('[data-bonnie-radio]'); if (!host) return;
   var DATA = window.BONNIE_STATIONS || { genres: [], main: [], pools: {} };
   var ID_RE = /^[A-Za-z0-9_-]{12,64}$/, HOSTYT = 'https://www.youtube-nocookie.com';
-  function qp(k) { try { var v = new URLSearchParams(location.search).get(k); return v && ID_RE.test(v) ? v : null; } catch (e) { return null; } }
-  var TEST_MAIN = qp('list'), TEST_GENRE = qp('genrelist');
+  var PG = host.getAttribute('data-variant') === 'playground';
+  function emit(n, d) { try { document.dispatchEvent(new CustomEvent(n, { detail: d })); } catch (e) {} }
   var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
   var GEN = (DATA.genres && DATA.genres.length) ? DATA.genres : [
     { key: 'pop', label: 'Pop' }, { key: 'indie-local', label: 'Indie / Local' }, { key: 'lofi', label: 'Lo-fi' }, { key: 'rock', label: 'Rock' },
@@ -29,11 +32,11 @@
   function el(t, c, x) { var n = document.createElement(t); if (c) n.className = c; if (x != null) n.textContent = x; return n; }
   function rnd(n) { return Math.floor(Math.random() * n); }
   function pool(key) {
-    var p = (DATA.pools && DATA.pools[key]) || [];
-    if (!p.length && TEST_GENRE) return [{ id: 'test', name: 'test', list: TEST_GENRE }];
-    return p;
+    return ((DATA.pools && DATA.pools[key]) || []).filter(function (x) { return x && ID_RE.test(x.list || ''); });
   }
-  function mainList() { if (TEST_MAIN) return TEST_MAIN; var m = DATA.main && DATA.main[0]; return m ? m.list : null; }
+  function first(a) { var m = a && a[0]; return m && ID_RE.test(m.list || '') ? m.list : null; }
+  function mainList() { return first(DATA.main); }
+  function readingList() { return first(DATA.reading); }
 
   // ---- session shuffle of detent -> genre ----
   var KEY = 'rebella.radio.order';
@@ -44,18 +47,18 @@
 
   // ---- UI ----
   var wrap = el('div', 'br');
-  var intro = el('p', 'br-intro', 'Music picked by Bonnie. It plays from YouTube, only after you press play.');
+  var intro = el('p', 'br-intro', PG ? 'Turn the dial to pick a station. Your band below follows its tempo and key. Music plays from YouTube, only after you press play.' : 'Music picked by Bonnie. It plays from YouTube, only after you press play.');
   var play = el('button', 'br-play'); play.type = 'button';
   var pIco = el('span', 'br-play-ico', '\u25B6'); pIco.setAttribute('aria-hidden', 'true');
   var pTxt = el('span', 'br-play-txt', "Play Bonnie's playlist (from YouTube)");
-  play.appendChild(pIco); play.appendChild(pTxt);
+  play.appendChild(pIco); play.appendChild(pTxt); play.setAttribute('data-help', 'radio-play');
 
   var tuner = el('div', 'br-tuner');
   var dial = el('div', 'br-dial');
   dial.tabIndex = 0;
   dial.setAttribute('role', 'slider'); dial.setAttribute('aria-label', 'Genre tuner');
   dial.setAttribute('aria-valuemin', '0'); dial.setAttribute('aria-valuemax', String(N - 1));
-  dial.setAttribute('aria-describedby', 'br-dial-help');
+  dial.setAttribute('aria-describedby', 'br-dial-help'); dial.setAttribute('data-help', 'dial');
   var svgNS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(svgNS, 'svg');
   svg.setAttribute('viewBox', '0 0 120 120'); svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('class', 'br-face');
   var ring = document.createElementNS(svgNS, 'circle'); ring.setAttribute('cx', '60'); ring.setAttribute('cy', '60'); ring.setAttribute('r', '46'); ring.setAttribute('class', 'br-ring'); svg.appendChild(ring);
@@ -75,7 +78,7 @@
   var tside = el('div', 'br-tside');
   var tuned = el('p', 'br-tuned'); tuned.setAttribute('aria-live', 'polite');
   var help = el('p', 'br-help', 'Turn the dial to change station. Double-tap it (or press R) to shuffle the stations.'); help.id = 'br-dial-help';
-  var mute = el('button', 'br-mute'); mute.type = 'button';
+  var mute = el('button', 'br-mute'); mute.type = 'button'; mute.setAttribute('data-help', 'radio-mute');
   tside.appendChild(tuned); tside.appendChild(help); tside.appendChild(mute);
   tuner.appendChild(dial); tuner.appendChild(tside);
   var status = el('p', 'br-status'); status.setAttribute('role', 'status');
@@ -83,7 +86,7 @@
   host.appendChild(wrap);
 
   // the mini-player panel (only built on the first press)
-  var panel = el('section', 'br-panel'); panel.hidden = true; panel.setAttribute('aria-label', "Bonnie's radio player");
+  var panel = el('section', 'br-panel'); panel.hidden = true; panel.setAttribute('aria-label', "Bonnie's radio player"); panel.setAttribute('data-help', 'player');
   var frame = el('div', 'br-frame'), pside = el('div', 'br-pside');
   var ptitle = el('p', 'br-ptitle', "Bonnie's radio"), pnow = el('p', 'br-pnow');
   var ctl = el('div', 'br-ctl');
@@ -135,12 +138,13 @@
     mute.setAttribute('aria-pressed', muted ? 'true' : 'false');
     mute.setAttribute('aria-label', muted ? 'Unmute the radio' : 'Mute the radio');
   }
-  mute.addEventListener('click', function () {
-    muted = !muted; try { localStorage.setItem('rebella.radio.muted', muted ? '1' : '0'); } catch (e) {}
+  function setMuted(m) {
+    muted = !!m; try { localStorage.setItem('rebella.radio.muted', muted ? '1' : '0'); } catch (e) {}
     if (master) master.gain.setTargetAtTime(muted ? 0 : 1, ac.currentTime, 0.02);
     if (player && ready) { try { if (muted) player.mute(); else player.unMute(); } catch (e) {} }
     paintMute();
-  });
+  }
+  mute.addEventListener('click', function () { setMuted(!muted); });
 
   // ---- dial mechanics ----
   var angle = A0 + (rnd(N)) * STEP, landed = -1;
@@ -266,17 +270,18 @@
   function onState(e) {
     var S = window.YT.PlayerState;
     if (e.data === S.PLAYING) {
-      started = true; randomSeek(0); status.textContent = '';
+      started = true; randomSeek(0); status.textContent = ''; emit('rebella:radio', { playing: true });
       pnow.textContent = 'Playing from YouTube';
       play.setAttribute('aria-pressed', 'true'); pTxt.textContent = "Bonnie's playlist is on (YouTube)";
-    } else if (e.data === S.ENDED) { if (want) next(); }
-    else if (e.data === S.PAUSED && !pausedHidden) pnow.textContent = 'Paused';
+    } else if (e.data === S.ENDED) { if (want) next(); else emit('rebella:radio', { playing: false }); }
+    else if (e.data === S.PAUSED) { emit('rebella:radio', { playing: false }); if (!pausedHidden) pnow.textContent = 'Paused'; }
   }
   function next() { var p = plist(); if (!p) return; var cur = -1; try { cur = player.getPlaylistIndex(); } catch (e) {} var i = rnd(p.length); if (p.length > 1 && i === cur) i = (i + 1) % p.length; seeked = {}; try { player.playVideoAt(i); } catch (e) {} }
 
   var curGenre = null;
+  function station(g, initial) { var d = { initial: !!initial }; Object.keys(g).forEach(function (k) { d[k] = g[k]; }); return d; }
   function tune(g) {
-    curGenre = g;
+    curGenre = g; emit('rebella:station', station(g, false));
     var pl = pool(g.key);
     if (!pl.length) { status.textContent = g.label + ' is tuning in soon ✨ Try another station, or come back later.'; wrap.setAttribute('data-soon', g.key); return; }
     wrap.removeAttribute('data-soon');
@@ -290,6 +295,12 @@
     panel.hidden = false; place(); want = true; ptitle.textContent = label;
     if (!player) build(list); else startRandom(list, false);
   }
+  function playReading() {
+    audio(); if (ac && ac.resume) try { ac.resume(); } catch (x) {}
+    var r = readingList();
+    if (!r) { status.textContent = 'Reading music is tuning in soon \u2728 It will play here once Dad adds the playlist.'; wrap.setAttribute('data-soon', 'reading'); return false; }
+    wrap.removeAttribute('data-soon'); openPlayer(r, 'Reading music'); return true;
+  }
   play.addEventListener('click', function () {
     audio(); if (ac && ac.resume) try { ac.resume(); } catch (x) {}
     var m = mainList();
@@ -298,7 +309,7 @@
   });
   bNext.addEventListener('click', function () { if (ready) { want = true; next(); } });
   bStop.addEventListener('click', function () {
-    want = false; if (player) try { player.pauseVideo(); } catch (e) {}
+    want = false; if (player) try { player.pauseVideo(); } catch (e) {} emit('rebella:radio', { playing: false });
     panel.hidden = true; play.setAttribute('aria-pressed', 'false'); pTxt.textContent = "Play Bonnie's playlist (from YouTube)"; play.focus();
   });
   document.addEventListener('visibilitychange', function () {
@@ -329,6 +340,8 @@
   sway.style.animationDuration = P(4).toFixed(3) + 's';
   sway.style.animationDelay = (-(P(4) * ((1 * G) % 1))).toFixed(3) + 's';
   if (reduce.matches) sway.style.animation = 'none';
-  setNeedle(angle, false); landed = nearest(angle); paintTuned(landed, false); paintMute();
-  window.BonnieRadio = { get order() { return order.map(function (i) { return GEN[i].label; }); }, get genre() { return curGenre && curGenre.label; }, reroll: reroll, land: land };
+  setNeedle(angle, false); landed = nearest(angle); paintTuned(landed, false); paintMute(); curGenre = genreAt(landed);
+  window.BonnieRadio = { get order() { return order.map(function (i) { return GEN[i].label; }); }, get genre() { return curGenre && curGenre.label; },
+    get station() { return curGenre ? station(curGenre, true) : null; }, reroll: reroll, land: land, playReading: playReading, setMuted: setMuted };
+  emit('rebella:station', station(curGenre, true));
 })();

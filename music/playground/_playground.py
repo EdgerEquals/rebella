@@ -7,9 +7,10 @@ DRAWER_LI = '<li class="c-create"><a href="{pre}music/playground/index.html">&#9
 ENTRY = '<p class="mu-pg-link"><a class="btn btn-secondary dots-mustard" href="playground/index.html">Try the Music Playground</a></p>'
 
 def install(PAGES, page, G):
+    # ONE genre dial (music/youtube/bonnie-radio.js + stations.js) and ONE help orb (site js/help-orb.js + help.json).
     PAGES.append(('music/playground/index.html', 'Music Playground | Rebella', BODY,
         'The Rebella Music Playground: tune the genre dial, build a little band of made-up instruments and play with sound. No microphone, nothing recorded or sent.',
-        'playground', '\n<link rel="stylesheet" href="music/playground/playground.css">\n<script src="music/playground/js/help-orb.js" defer></script>\n<script src="music/playground/js/playground.js" defer></script>',
+        'playground', '\n<link rel="stylesheet" href="music/playground/playground.css">' + G['_yt_music'].HEAD + '\n<script src="music/playground/js/playground.js" defer></script>',
         'img/articles/reading.jpg', 'website', None, 'music playground, make music, ' + G['KEYWORDS'], '', True, '0.5'))
     def wrapped(path, title, bdy, desc, active=None, *a, **kw):
         out = page(path, title, bdy, desc, active, *a, **kw)

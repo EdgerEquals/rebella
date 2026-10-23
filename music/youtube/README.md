@@ -7,7 +7,7 @@ Everything for Bonnie's radio lives in this folder:
 | `channels.json` | The registry: one entry per playlist or channel. Edit this. |
 | `_yt_music.py` | Build step, called once from `_generator.py`. Keeps only approved, age-checked entries. |
 | `stations.js` | Generated from `channels.json`. Never edit by hand. |
-| `bonnie-radio.js` / `.css` | The play button, the genre dial and the mini-player. |
+| `bonnie-radio.js` / `.css` | The play button, the genre dial and the mini-player. The site's ONE dial: the home page and the Music Playground both mount it. |
 
 Nothing here uses a YouTube API key or an account. Playlists must be **Public** or **Unlisted** (Private ones can't play in
 an embedded player). A **channel** plays through its uploads playlist: `UU` + the channel id without its leading `UC`
@@ -49,4 +49,4 @@ an embedded player). A **channel** plays through its uploads playlist: `UU` + th
 `bonnie-main` (Bonnie's playlist) and the eight station slots `slot-pop`, `slot-indie-local`, `slot-lofi`, `slot-rock`,
 `slot-hiphop`, `slot-electronic`, `slot-acoustic`, `slot-chill`. There are no real indie channels yet.
 
-Testing locally without real ids: `index.html?list=<public playlist id>&genrelist=<public playlist id>`.
+URL test overrides (`?list=`, `?genrelist=`) were removed before going live (24 Oct 2026): only ids in `stations.js` can ever load. To test, use a local copy with a temporary approved entry and never commit it.

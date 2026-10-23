@@ -3,7 +3,6 @@
    Phi timing (PHI^n s): UI transitions 0.382 s; Dad's ladder (rule 10) sets crossfade = PHI^(3.5+s) clamped 2.06-22.83 s,
    BPM = 60/PHI^(-1+s/2) clamped 62-157, volume = 0.55*PHI^(-s/4) clamped 0.25-0.8 (serious/urgent duck to 0.3).
    Synth envelopes use PHI^n times. Auto-drift every PHI^5.5 = 14.1 s x PHI^s, applied at the next bar. */
-window.PG_HELP = {"orb": {"title": "The help orb", "what": "Drag me onto anything in the Playground and I'll tell you what it does, up here and down in the footer.", "try": "Drop me on the big dial first."}, "start": {"title": "Wake the sound", "what": "Browsers keep quiet until you tap something. This wakes the Playground's sound.", "try": "Tap it, then tap Hear it on any instrument."}, "mute": {"title": "Mute everything", "what": "Silences the Playground and the radio. It remembers your choice next time.", "try": "Flick it on when someone needs quiet."}, "dial": {"title": "The genre dial", "what": "Turn it like an old radio. Between stations you hear static, and each click is a station.", "try": "Turn it slowly and stop where it feels right."}, "player": {"title": "The radio player", "what": "Music from YouTube plays here, but only channels Dad has said yes to.", "try": "Turn the dial to see which stations have music yet."}, "reading": {"title": "Reading music", "what": "Quiet music for when you've got a book open. It plays in the radio player.", "try": "Pick a book, tap this, and see how it feels."}, "follow": {"title": "Follow the radio", "what": "Your band picks up the station's tempo and key, so it plays along. It goes by labels, not by listening.", "try": "Turn the dial with your band playing."}, "tap-tempo": {"title": "Tap tempo", "what": "Tap along to a beat and the band speeds up or slows down to match you.", "try": "Tap four times to your heartbeat."}, "line-up": {"title": "Line up", "what": "Tap right on a beat you hear and the band starts its bar right there.", "try": "Wait for a big beat on the radio, then tap."}, "nudge": {"title": "Nudge", "what": "Shifts your band a whole beat, or a tiny 10 milliseconds, earlier or later.", "try": "Use the tiny nudges until it sounds glued together."}, "latency": {"title": "Latency", "what": "Bluetooth speakers and headphones can run a little late. This slides your band to make up for it.", "try": "Slide it until claps on screen and in your ears match."}, "flavour": {"title": "Sound flavour", "what": "Changes the patterns your band plays: Lo-fi, Chiptune, Ambient, Pop or Nature.", "try": "Leave the band the same and just change the flavour."}, "presets": {"title": "Band moods", "what": "Ready-made bands named after a feeling. Each one swaps in a few instruments.", "try": "Pick the one that matches your day."}, "play": {"title": "Play", "what": "Starts and stops your band.", "try": "Press play, then take instruments in and out."}, "swing": {"title": "Swing", "what": "Makes the beat bounce instead of marching. More swing, more bounce.", "try": "Slide it slowly while the drums play."}, "humanise": {"title": "Loose", "what": "Lets the notes land a little early or late and play a little softer or louder, like real people playing.", "try": "Turn it right up, then right down, and listen for the difference."}, "ensemble": {"title": "Your band", "what": "Up to four instruments on a phone, or six on a bigger screen. Each one has a part to play.", "try": "Give two instruments the same part and see what happens."}, "slot": {"title": "Band member", "what": "Choose its part (bass, chords, melody or rhythm), mute it, solo it or change how loud it is in the mix.", "try": "Solo each one to hear what it's doing on its own."}, "fx-filter": {"title": "Filter sweep", "what": "Slowly opens and closes the sound, like a door to a room with music in it.", "try": "Use it on a pad and close your eyes."}, "fx-delay": {"title": "Tape-style echo", "what": "Repeats notes a bit later, fading each time, like an old tape echo.", "try": "Try it on the pluck."}, "fx-chorus": {"title": "Chorus", "what": "Makes one instrument sound like a few playing together.", "try": "Switch it on with the electric piano."}, "fx-phaser": {"title": "Phaser", "what": "A slow, swirly whoosh moving through the sound.", "try": "Turn it on and listen to the hats."}, "fx-crush": {"title": "Bitcrush", "what": "Makes the sound crunchy and old-video-game-ish.", "try": "Pair it with Chiptune."}, "bend": {"title": "Bend time", "what": "Slows the band down and drops the pitch for a moment, then lets it spring back.", "try": "Press it right before the drums come back in."}, "soon": {"title": "Coming soon", "what": "A looper, sample pads, stutter and chop, all made from the Playground's own sound.", "try": "Keep playing with the effects for now."}, "pump-time": {"title": "Time of day", "what": "Later in the day, Dad's music gets slower, softer and fades more gently.", "try": "Slide it to Deep night and watch the readout."}, "pump-weather": {"title": "Weather", "what": "Hot and sunny days speed things up, fog and rain slow them down.", "try": "Try Foggy, then Hot."}, "pump-urgency": {"title": "Hurry", "what": "When something needs attention, the music quickens and goes quieter.", "try": "Slide it to Urgent and see the volume drop."}, "pump-mood": {"title": "Mood", "what": "Each mood nudges the pace and picks a kind of music for Dad.", "try": "Find the mood you're in right now."}, "ladder-readout": {"title": "The readout", "what": "Shows the steps added up (s), the beats per minute, how long the fade is, the volume and the kind of music.", "try": "Move one slider at a time and watch which number changes."}, "crossfade": {"title": "Drift to the next part", "what": "Slowly fades your band into a slightly different part, over the fade time shown in the readout.", "try": "Press it with the band playing and listen to the melody lift."}, "auto-dj": {"title": "Let it drift", "what": "Keeps drifting between parts on its own, at the ladder's pace.", "try": "Switch it on and just listen for a while."}, "inst-acid": {"title": "Acid bass", "what": "A squelchy, rubbery bass that bubbles along. Tap Hear it to listen, Add to put it in your band.", "try": "Turn on the filter sweep with it."}, "inst-sub": {"title": "Sub bass", "what": "A deep, round bass you feel more than hear. Tap Hear it to listen, Add to put it in your band.", "try": "Try it on headphones."}, "inst-ep": {"title": "Electric piano", "what": "Soft, bell-like piano chords. Tap Hear it to listen, Add to put it in your band.", "try": "Pair it with Sunday morning."}, "inst-pad": {"title": "Warm pad", "what": "A slow, cosy cloud of sound that fades in gently. Tap Hear it to listen, Add to put it in your band.", "try": "Let it hold under everything else."}, "inst-lead": {"title": "Lead", "what": "A bright, buzzy synth for melodies. Tap Hear it to listen, Add to put it in your band.", "try": "Give it the melody part."}, "inst-pluck": {"title": "Pluck", "what": "Like a string being picked. Tap Hear it to listen, Add to put it in your band.", "try": "Add the tape-style echo."}, "inst-bells": {"title": "Bells", "what": "Shiny, ringing metal tones. Tap Hear it to listen, Add to put it in your band.", "try": "Try them with Soft rain."}, "inst-strings": {"title": "Strings", "what": "A swell of string-like sound that rises slowly. Tap Hear it to listen, Add to put it in your band.", "try": "Give it the chords part."}, "inst-kit": {"title": "Drum kit (808-style)", "what": "Kick, snare, clap and hi-hats in one. Tap Hear it to listen, Add to put it in your band.", "try": "Make it the rhythm, then add swing."}, "inst-shaker": {"title": "Shaker", "what": "A soft shaker that fills the gaps. Tap Hear it to listen, Add to put it in your band.", "try": "Add it to Barefoot."}};  // inline fallback copy of data/help.json
 (function () {
   'use strict';
   var PHI = 1.6180339887, GA = 0.6180339887;
@@ -141,9 +140,6 @@ window.PG_HELP = {"orb": {"title": "The help orb", "what": "Drag me onto anythin
     nodes.chorus = new T.Chorus({ frequency: 1 / 1.618, delayTime: 3.5, depth: 0.618, wet: 0 }).connect(nodes.phaser).start();
     nodes.filter = new T.AutoFilter({ frequency: 1 / 4.236, baseFrequency: 300, octaves: 3.6, wet: 0 }).connect(nodes.chorus).start();
     nodes.fxIn = nodes.filter;
-    nodes.static = new T.Gain(0).connect(nodes.limiter);
-    nodes.noise = new T.Noise('pink').connect(new T.Filter({ type: 'bandpass', frequency: 1800, Q: 1.618 }).connect(nodes.static)).start();
-    nodes.click = new T.MembraneSynth({ pitchDecay: 0.008, octaves: 2, envelope: { attack: 0.001, decay: 0.03, sustain: 0 } }).connect(nodes.limiter); nodes.click.volume.value = -18;
     T.Transport.bpm.value = bpm; T.Transport.swingSubdivision = '16n'; T.Transport.swing = +$('pg-swing').value;
     rebuildVoices();
   }
@@ -184,7 +180,7 @@ window.PG_HELP = {"orb": {"title": "The help orb", "what": "Drag me onto anythin
       } catch (e) {}
     }
   }
-  function setMute(m) { store('rebella.playground.muted', !!m); if (T) T.Destination.mute = !!m; try { if (yt && yt.mute) m ? yt.mute() : yt.unMute(); } catch (e) {} }
+  function setMute(m) { store('rebella.playground.muted', !!m); if (T) T.Destination.mute = !!m; try { if (window.BonnieRadio) window.BonnieRadio.setMuted(!!m); } catch (e) {} }
 
   // ---------- UI: instruments ----------
   function renderInst() {
@@ -266,62 +262,17 @@ window.PG_HELP = {"orb": {"title": "The help orb", "what": "Drag me onto anythin
   }
   function readTempo() { $('pg-tempo-readout').textContent = 'Tempo ' + Math.round(bpm) + ' BPM, key ' + key.root + ' ' + key.mode + (latency ? ', latency ' + latency + ' ms' : ''); }
 
-  // ---------- genre dial ----------
-  var genres = [], order = [], detent = 0, angle = 0, STEP = 0;
-  function shuffle(n) { var o = []; for (var i = 0; i < n; i++) o.push(i); for (i = n - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = o[i]; o[i] = o[j]; o[j] = t; } return o; }
-  function setupDial(list) {
-    genres = list; var n = genres.length; STEP = 270 / (n - 1);
-    var ord = null; try { ord = JSON.parse(sessionStorage.getItem('rebella.playground.dialorder')); } catch (e) {}
-    if (!ord || ord.length !== n) { ord = shuffle(n); try { sessionStorage.setItem('rebella.playground.dialorder', JSON.stringify(ord)); } catch (e) {} }
-    order = ord;
-    var g = $('pg-dial-ticks'); var ns = 'http://www.w3.org/2000/svg';
-    for (var i = 0; i < n; i++) { var a = (-135 + i * STEP) * Math.PI / 180, l = document.createElementNS(ns, 'line');
-      l.setAttribute('x1', 100 + 76 * Math.sin(a)); l.setAttribute('y1', 100 - 76 * Math.cos(a)); l.setAttribute('x2', 100 + 88 * Math.sin(a)); l.setAttribute('y2', 100 - 88 * Math.cos(a)); l.setAttribute('class', 'pg-dial-tick'); g.appendChild(l); }
-    $('pg-dial').setAttribute('aria-valuemax', String(n - 1));
-    setAngle(-135, false); settle(0, true);
-  }
-  function cur() { return genres[order[detent]]; }
-  function setAngle(a, live) {
-    angle = clamp(a, -135, 135);
-    $('pg-dial-knob').setAttribute('transform', 'rotate(' + angle + ' 100 100)');
-    if (live && ready) {   // static between stations: loudest halfway between detents
-      var pos = (angle + 135) / STEP, d = Math.abs(pos - Math.round(pos)) * 2;
-      nodes.static.gain.rampTo(0.18 * d, 0.03);
-      var nearest = Math.round(pos);
-      if (nearest !== lastTick) { lastTick = nearest; nodes.click.triggerAttackRelease('C6', 0.02); }
-    }
-  }
-  var lastTick = -1;
-  function settle(i, quiet) {
-    detent = clamp(i, 0, genres.length - 1);
-    var target = -135 + detent * STEP, knob = $('pg-dial-knob');
-    if (!reduce) { knob.style.transition = 'transform .382s ease'; setTimeout(function () { knob.style.transition = ''; }, 382); }
-    setAngle(target, false);
-    if (ready) { nodes.static.gain.rampTo(0, 0.146); if (!quiet) nodes.click.triggerAttackRelease('G5', 0.03); }
-    var gnr = cur(); $('pg-dial').setAttribute('aria-valuenow', String(detent)); $('pg-dial').setAttribute('aria-valuetext', gnr.label);
-    $('pg-dial-label').textContent = gnr.label;
-    if (!quiet) onStation(gnr);
-  }
-  function dialEvents() {
-    var dial = $('pg-dial'), drag = null;
-    function ang(e) { var r = dial.getBoundingClientRect(), x = e.clientX - r.left - r.width / 2, y = e.clientY - r.top - r.height / 2; return Math.atan2(x, -y) * 180 / Math.PI; }
-    dial.addEventListener('pointerdown', function (e) { wake(); drag = { a0: ang(e), k0: angle }; try { dial.setPointerCapture(e.pointerId); } catch (er) {} e.preventDefault(); });
-    dial.addEventListener('pointermove', function (e) { if (!drag) return; var d = ang(e) - drag.a0; if (d > 180) d -= 360; if (d < -180) d += 360; setAngle(drag.k0 + d, true); });
-    function up() { if (!drag) return; drag = null; settle(Math.round((angle + 135) / STEP)); }
-    dial.addEventListener('pointerup', up); dial.addEventListener('pointercancel', up);
-    dial.addEventListener('keydown', function (e) {
-      var k = e.key, i = detent;
-      if (k === 'ArrowRight' || k === 'ArrowUp') i++; else if (k === 'ArrowLeft' || k === 'ArrowDown') i--; else if (k === 'Home') i = 0; else if (k === 'End') i = genres.length - 1; else return;
-      e.preventDefault(); wake().then(function () { settle(i); });
-    });
-  }
+  // ---------- genre dial: the ONE site dial (music/youtube/bonnie-radio.js) mounts in [data-bonnie-radio] ----------
+  // It tells us which station it landed on ('rebella:station', tags from music/youtube/channels.json) and whether
+  // YouTube is playing ('rebella:radio'). Nothing here talks to YouTube.
+  function tags(g) { return { label: g.label, bpm: +g.bpm || 76, key: g.key_root || 'C', mode: MODES[g.mode] ? g.mode : 'major', flavour: g.flavour || 'lofi' }; }
   // ---------- follow the radio ----------
-  function onStation(g) {
-    loadSource(sourceFor(g), g.label);
+  function onStation(raw) {
+    if (!raw) return; var g = tags(raw);
     if (!$('pg-follow').checked) return;
     var fade = ladder().fade;
     bpm = g.bpm; if (T) T.Transport.bpm.rampTo(g.bpm, fade);
-    pendingKey = { root: g.key, mode: MODES[g.mode] ? g.mode : 'major' }; if (!playing) { key = pendingKey; pendingKey = null; }
+    pendingKey = { root: g.key, mode: g.mode }; if (!playing) { key = pendingKey; pendingKey = null; }
     state.flavour = g.flavour; [].forEach.call(document.querySelectorAll('input[name=pg-flavour]'), function (r) { r.checked = r.value === g.flavour; }); save();
     readTempo();
   }
@@ -333,42 +284,9 @@ window.PG_HELP = {"orb": {"title": "The help orb", "what": "Drag me onto anythin
   }
   function shift(sec) { if (!T || !playing) return; try { T.Transport.seconds = Math.max(0, T.Transport.seconds + sec); } catch (e) {} }
 
-  // ---------- YouTube (one visible compliant player; only for approved sources with a real id) ----------
-  var channels = { channels: [], reading: null }, yt = null, ytReady = false, ytList = null;
-  var ID_RE = /^[A-Za-z0-9_-]{12,64}$/;
-  function sourceFor(g) {
-    var ok = (channels.channels || []).filter(function (c) { return c.approvedByDad === true && c.genre === g.id && ID_RE.test(c.youtubePlaylistId || ''); });
-    return ok.length ? ok[Math.floor(Math.random() * ok.length)].youtubePlaylistId : null;
-  }
-  function loadSource(list, label) {
-    var msg = $('pg-player-msg');
-    if (!list) { if (yt) try { yt.pauseVideo(); } catch (e) {} $('pg-player-empty').hidden = false; msg.textContent = label + ': nothing on this station yet. Dad adds approved channels, then they play here.'; return; }
-    $('pg-player-empty').hidden = true; ytList = list;
-    if (!yt) return buildYT(list);
-    if (ytReady) crossfadeYT(list);
-  }
-  function buildYT(list) {
-    var box = $('pg-player'), f = document.createElement('iframe');
-    f.id = 'pg-yt'; f.width = 356; f.height = 200; f.title = 'Rebella radio (YouTube player)';
-    f.allow = 'autoplay; encrypted-media; picture-in-picture'; f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-    f.src = 'https://www.youtube-nocookie.com/embed/videoseries?list=' + encodeURIComponent(list) + '&enablejsapi=1&playsinline=1&rel=0&origin=' + encodeURIComponent(location.origin);
-    box.appendChild(f);
-    var s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(s);
-    window.onYouTubeIframeAPIReady = function () {
-      yt = new YT.Player('pg-yt', { events: { onReady: function () { ytReady = true; randomStart(); }, onStateChange: function (e) { duck(e.data === 1); } } });
-    };
-  }
-  function randomStart() { try { yt.setShuffle(true); var p = yt.getPlaylist() || []; yt.playVideoAt(Math.floor(Math.random() * Math.max(1, p.length))); setTimeout(function () { var d = yt.getDuration(); if (d > 0) yt.seekTo(Math.random() * d * 0.618, true); }, 1618); if ($('pg-mute').checked) yt.mute(); } catch (e) {} }
-  function crossfadeYT(list) {
-    var L = ladder(), half = L.fade / 2, v0 = 100;
-    rampYT(half, function (x) { return v0 * Math.cos(x * Math.PI / 2); }, function () {
-      try { yt.loadPlaylist({ list: list, listType: 'playlist' }); } catch (e) {}
-      setTimeout(function () { randomStart(); rampYT(half, function (x) { return L.vol * 100 * Math.sin(x * Math.PI / 2); }); }, 1000);
-    });
-  }
-  function rampYT(sec, f, done) { var t0 = performance.now(), id = setInterval(function () { var x = clamp((performance.now() - t0) / (sec * 1000), 0, 1); try { yt.setVolume(Math.round(f(x))); } catch (e) {} if (x >= 1) { clearInterval(id); if (done) done(); } }, 60); }
   function duck(radioPlaying) { if (nodes.gen) nodes.gen.gain.rampTo(radioPlaying ? 0.3 : 1, 0.618); }
-  document.addEventListener('visibilitychange', function () { if (document.hidden && yt && ytReady) try { yt.pauseVideo(); } catch (e) {} });
+  document.addEventListener('rebella:radio', function (e) { duck(!!(e.detail && e.detail.playing)); });
+  document.addEventListener('rebella:station', function (e) { if (booted) onStation(e.detail); });
 
   // ---------- Dad's ladder (rule 10 demo; pumps are sliders here) ----------
   var PT = [['Day', 0], ['Evening', 0.5], ['Clear night', 1.5], ['Deep night', 2]];
@@ -396,7 +314,6 @@ window.PG_HELP = {"orb": {"title": "The help orb", "what": "Drag me onto anythin
       T.Transport.scheduleOnce(function () {}, at);
       xf = { to: section ? 0 : 1, t0: at, len: L.fade }; section = section ? 0 : 1;
       T.Transport.bpm.rampTo(L.bpm, L.fade); bpm = L.bpm; nodes.gen.gain.rampTo(L.vol / 0.55 > 1 ? 1 : L.vol / 0.55, L.fade);
-      if (yt && ytReady && ytList) crossfadeYT(ytList);
       readTempo();
     });
   }
@@ -424,14 +341,8 @@ window.PG_HELP = {"orb": {"title": "The help orb", "what": "Drag me onto anythin
     });
   }
 
-  // ---------- help dictionary (merged into any site dictionary) ----------
-  function initHelp() {
-    if (!window.HelpOrb) return;
-    var inline = window.PG_HELP || {};
-    window.HelpOrb.init({ dict: [inline, BASE + 'data/help.json'] });
-  }
-
   // ---------- boot ----------
+  var booted = false;   // help answers come from the site-wide help orb (js/help-orb.js + help.json)
   function boot() {
     var mute = $('pg-mute'); mute.checked = !!store('rebella.playground.muted');
     mute.addEventListener('change', function () { setMute(mute.checked); });
@@ -449,15 +360,11 @@ window.PG_HELP = {"orb": {"title": "The help orb", "what": "Drag me onto anythin
     $('pg-xfade').addEventListener('click', crossfade);
     $('pg-auto').addEventListener('change', function () { auto(this.checked); });
     ['pp-time', 'pp-weather', 'pp-urg', 'pp-mood'].forEach(function (id) { $(id).addEventListener('input', showLadder); });
-    $('pg-reading').addEventListener('click', function () {
-      var r = channels.reading || {}, id = r.approvedByDad === true && ID_RE.test(r.youtubePlaylistId || '') ? r.youtubePlaylistId : null;
-      loadSource(id, 'Reading music'); if (!id) $('pg-player-msg').textContent = 'Reading music is waiting for its playlist. It will play here once it arrives.';
-    });
+    $('pg-reading').addEventListener('click', function () { if (window.BonnieRadio) window.BonnieRadio.playReading(); });
     showLadder();
-    var gj = fetch(BASE + 'data/genres.json').then(function (r) { return r.json(); }).catch(function () { return { genres: [{ id: 'lofi', label: 'Lo-fi', flavour: 'lofi', bpm: 76, key: 'F', mode: 'dorian' }, { id: 'ambient', label: 'Ambient', flavour: 'ambient', bpm: 64, key: 'E', mode: 'major' }] }; });
-    var cj = fetch(BASE + 'data/channels.json').then(function (r) { return r.json(); }).catch(function () { return { channels: [] }; });
-    Promise.all([gj, cj]).then(function (a) { channels = a[1] || channels; setupDial(a[0].genres); dialEvents(); var g = cur(); bpm = g.bpm; key = { root: g.key, mode: MODES[g.mode] ? g.mode : 'major' }; state.flavour = state.flavour || g.flavour; readTempo(); });
-    initHelp();
+    var g0 = window.BonnieRadio && window.BonnieRadio.station; booted = true;
+    if (g0) { var t0 = tags(g0); bpm = t0.bpm; key = { root: t0.key, mode: t0.mode }; state.flavour = saved.flavour || t0.flavour; }
+    readTempo();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();

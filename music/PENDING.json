@@ -1,0 +1,29 @@
+{
+ "_about": "Tracks held back from the Music page until a human has listened to the whole track by ear (vocals). Not loaded by the site. To add one: listen, then move the entry back into tracks.json and restore its MP3 from git history (commit 8f6f7a0) or the source page.",
+ "pending": [
+  {
+   "reason": "Has vocals; machine transcription found only clean lines but nobody has checked it by ear yet.",
+   "held_on": "2026-10-24",
+   "track": {
+    "id": "let-you-know",
+    "title": "Let You Know",
+    "artist": "Hypersleep",
+    "artist_url": "https://freemusicarchive.org/music/Hypersleep/",
+    "location": "Melbourne, VIC",
+    "local": "au",
+    "location_source": "https://freemusicarchive.org/music/Hypersleep/bio",
+    "mood": "dreamy",
+    "vocal": true,
+    "lyrics_check": "Vocal. Machine transcription (24 Oct 2026) found only soft, repeated clean lines (\"I can see the stars in your eyes\", \"Oh, what's wrong with me?\"). Not yet checked by ear.",
+    "about": "Floaty synth-pop from a Melbourne producer, with soft, faraway vocals.",
+    "licence": "CC BY-NC-SA 4.0",
+    "licence_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+    "source": "Free Music Archive",
+    "source_url": "https://freemusicarchive.org/music/Hypersleep/Hypersleep_EP/Hypersleep_-_Hypersleep_EP_-_04_Let_You_Know/",
+    "file": "audio/hypersleep-let-you-know.mp3",
+    "duration": "4:56",
+    "changes": "none"
+   }
+  }
+ ]
+}

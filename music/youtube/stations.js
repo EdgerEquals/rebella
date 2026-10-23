@@ -3,38 +3,71 @@ window.BONNIE_STATIONS = {
  "genres": [
   {
    "key": "pop",
-   "label": "Pop"
+   "label": "Pop",
+   "flavour": "pop",
+   "bpm": 116,
+   "key_root": "C",
+   "mode": "major"
   },
   {
    "key": "indie-local",
-   "label": "Indie / Local"
+   "label": "Indie / Local",
+   "flavour": "pop",
+   "bpm": 118,
+   "key_root": "G",
+   "mode": "major"
   },
   {
    "key": "lofi",
-   "label": "Lo-fi"
+   "label": "Lo-fi",
+   "flavour": "lofi",
+   "bpm": 76,
+   "key_root": "F",
+   "mode": "dorian"
   },
   {
    "key": "rock",
-   "label": "Rock"
+   "label": "Rock",
+   "flavour": "pop",
+   "bpm": 120,
+   "key_root": "E",
+   "mode": "minor"
   },
   {
    "key": "hiphop",
-   "label": "Hip-hop"
+   "label": "Hip-hop",
+   "flavour": "lofi",
+   "bpm": 90,
+   "key_root": "A",
+   "mode": "minor"
   },
   {
    "key": "electronic",
-   "label": "Electronic"
+   "label": "Electronic",
+   "flavour": "pop",
+   "bpm": 124,
+   "key_root": "A",
+   "mode": "minor"
   },
   {
    "key": "acoustic",
-   "label": "Acoustic"
+   "label": "Acoustic",
+   "flavour": "nature",
+   "bpm": 88,
+   "key_root": "C",
+   "mode": "major"
   },
   {
    "key": "chill",
-   "label": "Chill"
+   "label": "Chill",
+   "flavour": "ambient",
+   "bpm": 64,
+   "key_root": "E",
+   "mode": "major"
   }
  ],
  "main": [],
+ "reading": [],
  "pools": {
   "pop": [],
   "indie-local": [],
