@@ -12,41 +12,38 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap&text=LearnwhatyouloveRbl.MakeItBigQuestionsMind%26BodyYourWorldReadWatchListenVoiceFeaturedAboutmePicksCreateThesphereHi!">
 <style>
-/* ---- Golden ratio system: every step is a power of phi (see README "Where phi is used") ---- */
-:root{--phi:1.618034;--s-2:.382rem;--s-1:.618rem;--s0:1rem;--s1:1.618rem;--s2:2.618rem;--s3:4.236rem;--s4:6.854rem;
---t-1:.786rem;--t0:1rem;--t1:1.272rem;--t2:1.618rem;--t3:2.618rem;--t4:4.236rem;
---cream:#FFF8F4;--blush:#F8CFDB;--peach:#FCD9C0;--butter:#FBE7B0;--mint:#C8EBD5;--aqua:#B5E3E0;--lav:#DCD0F2;
---ink:#3A2B35;--head:#5B3A50;--accent:#B4436C;--cool:#4C5E7A;--warm:#B4436C;
---b0:4.817s;--b1:2.977s;--b2:1.840s;--b3:1.137s;--b4:.703s;--d:0}
+/* ---- ONE ratio (spec 10): every size, step and duration below is derived from --phi. --T0 (= 1/f0 from the sphere
+   model, set again by js) is the only time base; percentages in keyframes are 100*phi^-n. ---- */
+:root{--phi:1.6180339887;--p2:calc(var(--phi)*var(--phi));--p3:calc(var(--p2)*var(--phi));--p4:calc(var(--p3)*var(--phi));
+--s-2:calc(1rem/var(--p2));--s-1:calc(1rem/var(--phi));--s0:1rem;--s1:calc(1rem*var(--phi));--s2:calc(1rem*var(--p2));--s3:calc(1rem*var(--p3));--s4:calc(1rem*var(--p4));
+--t-1:calc(1rem*pow(var(--phi),-.5));--t0:1rem;--t1:calc(1rem*pow(var(--phi),.5));--t2:calc(1rem*var(--phi));--t3:calc(1rem*var(--p2));--t4:calc(1rem*var(--p3));
+--T0:4.8166s;--b0:var(--T0);--b1:calc(var(--T0)/var(--phi));--b2:calc(var(--T0)/var(--p2));--b3:calc(var(--T0)/var(--p3));--b4:calc(var(--T0)/var(--p4));
+--frame:calc(100rem/var(--phi));--sz:calc(1rem*pow(var(--phi),2.5));
+--cream:#FFF8F4;--ink:#3A2B35;--head:#5B3A50;--accent:#B4436C;--cool:#4C5E7A;--warm:#B4436C}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--cream);color:var(--ink);font:400 var(--t0)/1.618 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+body{margin:0;background:var(--cream);color:var(--ink);font:400 var(--t0)/var(--phi) system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
 a{color:var(--accent)}
-.hand{font-family:"Gochi Hand","Comic Sans MS",cursive;font-weight:400;color:var(--head);line-height:1.272;margin:0 0 var(--s-1)}
-h1.hand{font-size:clamp(var(--t3),7.5vw,var(--t4))}
-h2.hand{font-size:clamp(var(--t2),4.6vw,var(--t3))}
+.hand{font-family:"Gochi Hand","Comic Sans MS",cursive;font-weight:400;color:var(--head);line-height:pow(var(--phi),.5);margin:0 0 var(--s-1)}
+h1.hand{font-size:clamp(var(--t3),calc(100vw/var(--p4)*var(--phi)),var(--t4))}
+h2.hand{font-size:clamp(var(--t2),calc(100vw/var(--p4)),var(--t3))}
 h3{font-size:var(--t1);margin:0 0 var(--s-2);color:var(--head)}
-.skip{position:absolute;left:var(--s0);top:-10rem;z-index:30;background:var(--ink);color:#fff;padding:var(--s-1) var(--s0);border-radius:var(--s-2)}
+.skip{position:absolute;left:var(--s0);top:calc(-1*var(--s4));z-index:30;background:var(--ink);color:#fff;padding:var(--s-1) var(--s0);border-radius:var(--s-2)}
 .skip:focus{top:var(--s0)}
-:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-/* ---- Ambient environment: you float inside the vortex (fixed, behind content) ---- */
-#amb{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;contain:strict}
-#amb svg.rings{position:absolute;left:50%;top:50%;width:100vmax;height:100vmax;margin:-50vmax 0 0 -50vmax}
-#amb .ring{transform-origin:50% 50%;will-change:transform}
-#amb .vig{position:absolute;inset:0;background:radial-gradient(circle at var(--gx,50%) var(--gy,50%),transparent calc((1 - var(--d)*.618)*61.8%),rgba(58,43,53,calc(var(--d)*.618)) calc((1 - var(--d)*.382)*100%))}
-#rb-neb,#rb-mind{position:absolute;inset:0;width:100%;height:100%}
-/* ---- Page frame: 61.8 / 38.2 split, phi aspect hero ---- */
+:focus-visible{outline:calc(var(--s-2)/var(--phi)) solid var(--accent);outline-offset:calc(var(--s-2)/var(--phi))}
+#amb{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;contain:strict;background:var(--cream)}
+#field{position:absolute;inset:0;width:100%;height:100%}
 main{position:relative;z-index:1}
-.frame{width:min(100% - 2*var(--s0),61.8rem);margin:0 auto}
-.panel{background:rgba(255,248,244,.94);border-radius:var(--s0);padding:var(--s1);box-shadow:0 var(--s-2) var(--s1) rgba(91,58,80,.08)}
-.golden{display:grid;grid-template-columns:1.618fr 1fr;gap:var(--s1);align-items:start}
-.hero{min-height:calc(min(61.8rem,100vw) / 1.618);display:grid;align-content:center;padding:var(--s3) 0 var(--s2)}
+.frame{width:min(100% - 2*var(--s0),var(--frame));margin:0 auto}
+.panel{background:rgba(255,248,244,.944);border-radius:var(--s0);padding:var(--s1);box-shadow:0 var(--s-2) var(--s1) rgba(91,58,80,.09)}
+.golden{display:grid;grid-template-columns:calc((100% - var(--s1))/var(--phi)) 1fr;gap:var(--s1);align-items:start}
+.hero{min-height:calc(min(var(--frame),100vw)/var(--phi));display:grid;align-content:center;padding:var(--s3) 0 var(--s2)}
 .wordmark{font-family:"Gochi Hand",cursive;font-size:var(--t2);color:var(--accent);text-decoration:none}
 .note p{margin:0 0 var(--s-1)}
 .sign{font-family:"Gochi Hand",cursive;font-size:var(--t1);color:var(--accent)}
 section{padding:var(--s2) 0;scroll-margin-top:var(--s1)}
-.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(14.56rem,1fr));gap:var(--s0)}
-.cat{border-radius:var(--s0);padding:var(--s0) var(--s1);min-height:9rem}
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,calc(var(--frame)/var(--p2))),1fr));gap:var(--s0)}
+.cat{border-radius:var(--s0);padding:var(--s0) var(--s1)}
 .cat p{margin:0 0 var(--s-1)}
 .c-make{background:#FCD5B5;color:#5c2a0e}.c-make a{color:#94461A}
 .c-questions{background:#B5E3E0;color:#143f40}.c-questions a{color:#22696A}
@@ -55,93 +52,57 @@ section{padding:var(--s2) 0;scroll-margin-top:var(--s1)}
 .c-rwl{background:#FBE6A2;color:#433300}.c-rwl a{color:#745800}
 .c-voice{background:#F8C8D5;color:#5e1f36}.c-voice a{color:#A2355D}
 .breath{animation:breath var(--b0) ease-in-out infinite}
-@keyframes breath{0%,100%{transform:scale(1)}38.2%{transform:scale(1.0146)}}
+@keyframes breath{0%,100%{transform:scale(1) rotate(0)}38.2%{transform:scale(calc(1 + 1/var(--p4)/var(--p4))) rotate(calc(1deg/var(--p3)))}}
 .arts{list-style:none;padding:0;margin:0;display:grid;gap:var(--s-1)}
 .arts a{font-weight:600}
-#sphere .stage{position:relative;aspect-ratio:1.618/1;border-radius:var(--s1);overflow:hidden;background:radial-gradient(circle at 50% 50%,#3a2b35 0,#1f1720 61.8%,#140f15 100%);touch-action:pan-y}
+#sphere .stage{position:relative;aspect-ratio:var(--phi)/1;border-radius:var(--s1);overflow:hidden;background:radial-gradient(circle at 50% 50%,#3a2b35 0,#1f1720 61.8%,#140f15 100%);touch-action:pan-y}
 #sphere canvas{display:block;width:100%;height:100%}
-.ph{position:absolute;inset:0;margin:auto;width:38.2%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 38.2% 38.2%,rgba(220,208,242,.5),rgba(180,67,108,.18) 61.8%,transparent 62%)}
+.ph{position:absolute;inset:0;margin:auto;width:38.2%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 38.2% 38.2%,rgba(220,208,242,.382),rgba(180,67,108,.146) 61.8%,transparent 61.8%)}
 .about p{margin:0 0 var(--s-1)}
 footer{position:relative;z-index:1;padding:var(--s2) 0 var(--s4);font-size:var(--t-1);color:#5d4a55}
 footer a{color:#7a2f4d}
 .snd{font:inherit;background:none;border:0;color:#5d4a55;text-decoration:underline;cursor:pointer;padding:0}
-/* ---- Drifting shortcuts (no menu). Fallback: static row of links ---- */
 #drift{position:fixed;inset:0;z-index:5;pointer-events:none}
-.mv{position:absolute;left:0;top:0;width:var(--sz,3.4rem);height:var(--sz,3.4rem);pointer-events:auto;opacity:0;will-change:transform,opacity;color:var(--warm);-webkit-tap-highlight-color:transparent;border-radius:50%}
+.mv{position:absolute;left:0;top:0;width:var(--sz);height:var(--sz);pointer-events:auto;opacity:0;will-change:transform,opacity;color:var(--warm);-webkit-tap-highlight-color:transparent;border-radius:50%}
 .mv svg{width:100%;height:100%;overflow:visible;display:block}
 .mv.ent{color:var(--cool)}
 .mv .hh{transform:rotate(var(--ha,0rad))}.mv .mh{transform:rotate(var(--ma,0rad))}
 .mv .lbl{position:absolute;left:50%;top:100%;transform:translateX(-50%);white-space:nowrap;font-size:var(--t-1);background:var(--cream);color:var(--ink);padding:0 var(--s-2);border-radius:var(--s-2);opacity:0}
-.mv:focus-visible{opacity:1!important}
-.mv:focus-visible .lbl{opacity:1}
+.mv:focus-visible{opacity:1!important}.mv:focus-visible .lbl{opacity:1}
 .mv.idle{pointer-events:none}
-.flap{transform-origin:50% 50%;animation:flap var(--fp,var(--b3)) ease-in-out infinite}
-@keyframes flap{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.618)}}
-.pulse{transform-origin:50% 38.2%;animation:pulse var(--fp,var(--b2)) cubic-bezier(.382,0,.618,1) infinite}
-@keyframes pulse{0%,100%{transform:scale(1,1)}23.6%{transform:scale(1.09,.854)}61.8%{transform:scale(.97,1.04)}}
-.cilia{animation:cil var(--b4) linear infinite}
-@keyframes cil{to{stroke-dashoffset:-6.18}}
+.flap{transform-origin:50% 38.2%;animation:flap var(--fp,var(--b3)) ease-in-out infinite}
+@keyframes flap{0%,100%{transform:rotate(0)}50%{transform:rotate(calc(-1turn/var(--p4)))}}
 .no-js #drift,.static #drift{position:static;display:flex;flex-wrap:wrap;gap:var(--s-1);padding:var(--s0);justify-content:center;pointer-events:auto;background:var(--cream)}
-.no-js .mv,.static .mv{position:relative;opacity:1!important;transform:none!important;visibility:visible;width:auto;height:auto;display:flex;align-items:center;gap:var(--s-2);padding:var(--s-2) var(--s-1);border-radius:var(--s-1);background:#fff;text-decoration:none}
+.no-js .mv,.static .mv{position:relative;opacity:1!important;transform:none!important;width:auto;height:auto;display:flex;align-items:center;gap:var(--s-2);padding:var(--s-2) var(--s-1);border-radius:var(--s-1);background:#fff;text-decoration:none;pointer-events:auto}
 .no-js .mv svg,.static .mv svg{width:var(--s1);height:var(--s1)}
 .no-js .mv .lbl,.static .mv .lbl{position:static;transform:none;opacity:1;background:none}
-.getout{position:fixed;right:var(--s0);bottom:var(--s0);z-index:2147483647;min-width:188px;min-height:64px;display:flex;flex-direction:column;justify-content:center;padding:var(--s-1) var(--s0);background:#B0255B;color:#fff;border-radius:var(--s0);text-decoration:none;line-height:1.272;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-.getout small{opacity:.9}
+.getout{position:fixed;right:var(--s0);bottom:var(--s0);z-index:2147483647;min-width:188px;min-height:64px;display:flex;flex-direction:column;justify-content:center;padding:var(--s-1) var(--s0);background:#B0255B;color:#fff;border-radius:var(--s0);text-decoration:none;line-height:pow(var(--phi),.5);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.getout small{opacity:.854}
 .paused *{animation-play-state:paused!important}
-@media (max-width:46rem){.golden{grid-template-columns:1fr}.hero{min-height:auto;padding-top:var(--s2)}.getout{min-width:64px;min-height:64px;padding:var(--s-1)}.getout small{display:none}#sphere .stage{aspect-ratio:1/1.618}}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important}#amb .ring{transform:none!important}}
+@media (max-width:47rem){.golden{grid-template-columns:1fr}.hero{min-height:auto;padding-top:var(--s2)}.getout{min-width:64px;min-height:64px;padding:var(--s-1)}.getout small{display:none}#sphere .stage{aspect-ratio:1/var(--phi)}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important}}
 @media (forced-colors:active){#amb{display:none}}
 </style>
 <script>document.documentElement.classList.remove('no-js');if(matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('static');</script>
 <script src="js/site-consts.js" defer></script>
 <script src="js/site-physics.js" defer></script>
-<script src="js/movers.js" defer></script>
+<script src="js/field.js" defer></script>
 <script src="js/tiers.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <a class="getout" href="../index.html" data-escape><strong>Get me out</strong><small>Tap to go Home</small></a>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
- <defs>
-  <!-- ENTITIES: rigid, hard-edged, cool -->
-  <symbol id="g-keyhole" viewBox="-50 -50 100 100"><circle r="44" fill="none" stroke="currentColor" stroke-width="5"/><circle cy="-12" r="13" fill="currentColor"/><path d="M-8-4h16l7 34h-30z" fill="currentColor"/></symbol>
-  <symbol id="g-clock" viewBox="-50 -50 100 100"><circle r="44" fill="#fff" stroke="currentColor" stroke-width="5"/><g stroke="currentColor" stroke-width="4"><path d="M0-40v8M0 32v8M-40 0h8M32 0h8"/></g><path class="hh" d="M0 0V-21" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path class="mh" d="M0 0V-34" stroke="#B4436C" stroke-width="3" stroke-linecap="round"/></symbol>
-  <symbol id="g-spot" viewBox="-50 -50 100 100"><circle r="30" fill="currentColor"/><circle r="44" fill="none" stroke="currentColor" stroke-width="3"/></symbol>
-  <symbol id="g-card" viewBox="-50 -50 100 100"><rect x="-30" y="-44" width="60" height="88" rx="7" fill="#fff" stroke="currentColor" stroke-width="5"/><path d="M0-14l11 14-11 14-11-14z" fill="#B4436C"/></symbol>
-  <symbol id="g-frame" viewBox="-50 -50 100 100"><rect x="-46" y="-28.4" width="92" height="56.9" fill="none" stroke="currentColor" stroke-width="6"/><rect x="-35" y="-17.6" width="56.9" height="35.2" fill="none" stroke="currentColor" stroke-width="3"/><rect x="21.9" y="-17.6" width="13.4" height="13.4" fill="none" stroke="currentColor" stroke-width="2"/></symbol>
-  <symbol id="g-door" viewBox="-50 -50 100 100"><path d="M-26 46V-14a26 26 0 0 1 52 0V46z" fill="#fff" stroke="currentColor" stroke-width="5"/><path d="M-14 46V-8a14 14 0 0 1 28 0V46" fill="currentColor" opacity=".382"/><circle cx="16" cy="14" r="4" fill="currentColor"/></symbol>
-  <!-- ORGANISMS: soft-bodied, warm -->
-  <symbol id="g-seed" viewBox="-50 -50 100 100"><path d="M0 4V46" stroke="#94461A" stroke-width="3"/><g class="phy" fill="currentColor"></g></symbol>
-  <symbol id="g-diatom" viewBox="-50 -50 100 100"><ellipse rx="40" ry="24.7" fill="#FCD9C0" stroke="currentColor" stroke-width="4"/><ellipse rx="40" ry="24.7" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="3.09 3.09" transform="scale(1.15)" class="cilia"/><path d="M-30 0H30M-18-18v36M0-23v46M18-18v36" stroke="currentColor" stroke-width="2" opacity=".618"/></symbol>
-  <symbol id="g-jelly" viewBox="-50 -50 100 100"><g class="pulse"><path d="M-36 0a36 32 0 0 1 72 0q-9 7-18 0-9 7-18 0-9 7-18 0-9 7-18 0z" fill="#F8CFDB" stroke="currentColor" stroke-width="4"/><path d="M-24 6q-6 18 2 38M-8 6q6 18-2 40M8 6q-6 18 2 40M24 6q6 18-2 38" fill="none" stroke="currentColor" stroke-width="3"/></g></symbol>
-  <symbol id="g-rabbit" viewBox="-50 -50 100 100"><ellipse cx="-4" cy="14" rx="30" ry="22" fill="#fff" stroke="currentColor" stroke-width="4"/><circle cx="24" cy="-6" r="14" fill="#fff" stroke="currentColor" stroke-width="4"/><ellipse cx="22" cy="-32" rx="6" ry="17" fill="#F8CFDB" stroke="currentColor" stroke-width="4" transform="rotate(-12 22 -22)"/><ellipse cx="32" cy="-30" rx="5" ry="15" fill="#F8CFDB" stroke="currentColor" stroke-width="4" transform="rotate(14 32 -20)"/><circle cx="-34" cy="8" r="7" fill="#fff" stroke="currentColor" stroke-width="3"/><circle cx="28" cy="-8" r="2.5" fill="currentColor"/></symbol>
-  <symbol id="g-figure" viewBox="-50 -50 100 100"><circle cy="-30" r="13" fill="#FCD9C0" stroke="currentColor" stroke-width="4"/><path d="M0-16C-20-14-24 20-22 44h44C24 20 20-14 0-16z" fill="#F8CFDB" stroke="currentColor" stroke-width="4"/><g class="flap"><path d="M-14-6l-24 20M14-6l24 20" stroke="currentColor" stroke-width="5" stroke-linecap="round"/></g></symbol>
-  <symbol id="g-tree" viewBox="-50 -50 100 100"><g class="lsys" stroke="#94461A" stroke-linecap="round" fill="none"></g></symbol>
- </defs>
-</svg>
-<div id="amb" aria-hidden="true">
- <svg class="rings" viewBox="-100 -100 200 200" fill="none" stroke-linecap="round">
-  <circle class="ring" r="100" stroke="#F8CFDB" stroke-width="1.5" stroke-dasharray="61.8 38.2"/>
-  <circle class="ring" r="61.8" stroke="#DCD0F2" stroke-width="1.2" stroke-dasharray="38.2 23.6"/>
-  <circle class="ring" r="38.2" stroke="#B5E3E0" stroke-width="1" stroke-dasharray="23.6 14.6"/>
-  <circle class="ring" r="23.6" stroke="#FBE7B0" stroke-width=".8" stroke-dasharray="14.6 9"/>
-  <circle class="ring" r="14.6" stroke="#FCD9C0" stroke-width=".6" stroke-dasharray="9 5.6"/>
- </svg>
- <div class="vig"></div>
-</div>
+
+<div id="amb" aria-hidden="true"></div>
 <div id="drift" role="group" aria-label="Drifting shortcuts to each part of this page">
- <a class="mv ent" href="#top" data-g="keyhole" aria-label="Back to the top"><svg aria-hidden="true"><use href="#g-keyhole"/></svg><span class="lbl">Top</span></a>
- <a class="mv org" href="#make" data-g="seed" aria-label="Make It"><svg aria-hidden="true"><use href="#g-seed"/></svg><span class="lbl">Make It</span></a>
- <a class="mv org" href="#questions" data-g="diatom" aria-label="Big Questions"><svg aria-hidden="true"><use href="#g-diatom"/></svg><span class="lbl">Big Questions</span></a>
- <a class="mv org" href="#mind" data-g="jelly" aria-label="Mind and Body"><svg aria-hidden="true"><use href="#g-jelly"/></svg><span class="lbl">Mind &amp; Body</span></a>
- <a class="mv ent" href="#world" data-g="clock" aria-label="Your World"><svg aria-hidden="true"><use href="#g-clock"/></svg><span class="lbl">Your World</span></a>
- <a class="mv ent" href="#rwl" data-g="spot" aria-label="Read Watch Listen"><svg aria-hidden="true"><use href="#g-spot"/></svg><span class="lbl">Read Watch Listen</span></a>
- <a class="mv ent" href="#voice" data-g="card" aria-label="Your Voice"><svg aria-hidden="true"><use href="#g-card"/></svg><span class="lbl">Your Voice</span></a>
- <a class="mv ent" href="#featured" data-g="frame" aria-label="Featured articles"><svg aria-hidden="true"><use href="#g-frame"/></svg><span class="lbl">Featured</span></a>
- <a class="mv ent" href="#sphere" data-g="door" aria-label="The sphere"><svg aria-hidden="true"><use href="#g-door"/></svg><span class="lbl">The sphere</span></a>
- <a class="mv org" href="#picks" data-g="rabbit" aria-label="Picks"><svg aria-hidden="true"><use href="#g-rabbit"/></svg><span class="lbl">Picks</span></a>
- <a class="mv org" href="#about" data-g="figure" aria-label="About me"><svg aria-hidden="true"><use href="#g-figure"/></svg><span class="lbl">About me</span></a>
- <a class="mv org" href="#create" data-g="tree" aria-label="Create"><svg aria-hidden="true"><use href="#g-tree"/></svg><span class="lbl">Create</span></a>
+ <a class="mv ent" href="#top" data-g="keyhole" aria-label="Back to the top"><svg aria-hidden="true" viewBox="-50 -50 100 100"></svg><span class="lbl">Top</span></a>
+ <a class="mv ent" href="#sections" data-g="card" aria-label="Sections"><svg aria-hidden="true" viewBox="-50 -50 100 100"></svg><span class="lbl">Sections</span></a>
+ <a class="mv ent" href="#featured" data-g="frame" aria-label="Featured articles"><svg aria-hidden="true" viewBox="-50 -50 100 100"></svg><span class="lbl">Featured</span></a>
+ <a class="mv ent" href="#fresh" data-g="clock" aria-label="Fresh this week"><svg aria-hidden="true" viewBox="-50 -50 100 100"></svg><span class="lbl">Fresh</span></a>
+ <a class="mv ent" href="#sphere" data-g="door" aria-label="The sphere"><svg aria-hidden="true" viewBox="-50 -50 100 100"></svg><span class="lbl">The sphere</span></a>
+ <a class="mv org" href="#picks" data-g="rabbit" aria-label="Picks"><svg aria-hidden="true" viewBox="-50 -50 100 100"></svg><span class="lbl">Picks</span></a>
+ <a class="mv org" href="#about" data-g="figure" aria-label="About me"><svg aria-hidden="true" viewBox="-50 -50 100 100"></svg><span class="lbl">About me</span></a>
+ <a class="mv org" href="#create" data-g="tree" aria-label="Create"><svg aria-hidden="true" viewBox="-50 -50 100 100"></svg><span class="lbl">Create</span></a>
 </div>
 <main id="main" tabindex="-1">
  <section id="top" class="frame hero">
@@ -155,12 +116,11 @@ footer a{color:#7a2f4d}
    </div>
    <div class="panel breath">
     <h2 class="hand">Hi!</h2>
-    <p>Things drift past now and then. Catch one to go somewhere.</p>
     <p><a href="../index.html">The full Rebella site</a></p>
    </div>
   </div>
  </section>
- <section class="frame" aria-label="Sections">
+ <section id="sections" class="frame" aria-label="Sections">
   <div class="cats">
    <div id="make" class="cat c-make breath"><h2 class="hand">Make It</h2><p>Crafts, DIY projects, art and easy recipes.</p><a href="../category-make.html">Open Make It</a></div>
    <div id="questions" class="cat c-questions breath"><h2 class="hand">Big Questions</h2><p>Space, science and curious questions explained.</p><a href="../category-questions.html">Open Big Questions</a></div>
@@ -173,7 +133,7 @@ footer a{color:#7a2f4d}
  <section id="featured" class="frame">
   <div class="golden">
    <div class="panel"><h2 class="hand">Featured</h2><div id="feat-slot"><p><a href="../category.html">All articles</a></p></div></div>
-   <div class="panel"><h3>Fresh this week</h3><div id="fresh-slot"><p><a href="../category.html">See what's new</a></p></div></div>
+   <div class="panel" id="fresh"><h3>Fresh this week</h3><div id="fresh-slot"><p><a href="../category.html">See what's new</a></p></div></div>
   </div>
  </section>
  <section id="sphere" class="frame" aria-label="The sphere">

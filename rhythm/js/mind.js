@@ -1,31 +1,29 @@
-// Rebella rhythm tier 3: mind overlay. 21 (Fibonacci) leaky integrate-and-fire neurons placed by phyllotaxis.
-// dV/dt = (I - V) / tau_m, spike at V >= 1, then refractory. Biology ratio tau_m : tau_ref ~ 10 (cortex ~20 ms : 2 ms)
-// kept as phi^5 = 11.1, time-scaled so tau_m = 1/phi s. Synapses run to the parastichy neighbours (i +- 5, i +- 8),
-// spikes travel at a finite conduction velocity (delay = distance / v). Input = site physics band energies.
-const RB = window.RB, PHI = RB.PHI, pw = RB.pw, GA = 2 * Math.PI / (PHI * PHI);
-const amb = document.getElementById('amb'), cv = document.createElement('canvas'); cv.id = 'rb-mind'; amb.appendChild(cv);
-const cx = cv.getContext('2d'), N = 21, TM = 1 / PHI, TR = TM / pw(5), V = new Float32Array(N), ref = new Float32Array(N), glow = new Float32Array(N);
-let W, H, P = [], sig = [], reveal = 0;
-function size() { W = cv.width = Math.ceil(innerWidth / 2); H = cv.height = Math.ceil(innerHeight / 2); const m = Math.min(W, H) / PHI;
-  P = []; for (let i = 0; i < N; i++) { const r = m * Math.sqrt((i + 0.5) / N); P.push([W / 2 + r * Math.cos(i * GA), H / 2 + r * Math.sin(i * GA)]); } }
-size(); addEventListener('resize', size, { passive: true });
-const T = i => [i - 8, i - 5, i + 5, i + 8].filter(j => j >= 0 && j < N);
-RB.cue(k => { if (k === 'knee') reveal = 1; });
-reveal = 1 / PHI;
+// Rebella rhythm: the mind overlay (spec 13, 15). You are also inside Edger's mind, and nothing says so.
+// Revelation is stepped by phi on engagement (dwell + attention): stage k at T0 * phi^(k+1) s = 12.6, 20.4, 33, 53, 86 s.
+// 1 neuron sites glow faintly among the nebula; 2 they fire; 3 they answer where you look; 4 spikes travel to their
+// parastichy neighbours (i +- 5, i +- 8) with a conduction delay; 5 the tunnel walls fold into ridges (cortex-like fBm).
+// Leaky integrate-and-fire: dV/dt = (I - V)/tau_m, tau_m = phi^3 s, refractory tau_ref = phi^-2 s, so no neuron can
+// flash faster than 1/tau_ref = 2.6 Hz (spec 18: never > 3 flashes/s). Drawn by the field shader (one pass).
+const RB = window.RB, S = RB.S, PHI = RB.PHI, pw = RB.pw, GA = S.GA;
+const NN = 21, TM = pw(3), TR = pw(-2), V = new Float32Array(NN), ref = new Float32Array(NN), glow = new Float32Array(NN), N = new Float32Array(NN * 3);
+const mind = RB.mind = { N, M: 0, stage: 0 }; let sig = [];
+const T = i => [i - 8, i - 5, i + 5, i + 8].filter(j => j >= 0 && j < NN);
 RB.on((S, dt) => {
-  const vc = Math.min(W, H) / PHI;
-  for (let i = 0; i < N; i++) {
-    let I = S.D / pw(2);
-    for (let k = 0; k < 5; k++) I += S.E[k] * (1 + Math.cos(i * k * GA)) / 2 / PHI;
-    glow[i] *= Math.exp(-dt * pw(2));
-    if (ref[i] > 0) { ref[i] -= dt; continue; }
-    V[i] += (I - V[i]) * dt / TM;
-    if (V[i] >= 1) { V[i] = 0; ref[i] = TR; glow[i] = 1; for (const j of T(i)) { const d = Math.hypot(P[j][0] - P[i][0], P[j][1] - P[i][1]); sig.push({ i, j, t: 0, T: d / vc }); } }
+  const st = Math.max(0, Math.min(5, Math.floor(Math.log(Math.max(1, S.eng / S.T0)) / Math.log(PHI)) - 1));
+  if (st !== mind.stage) { mind.stage = st; RB.emit('mind', { stage: st }); }
+  mind.M += (st / 5 - mind.M) * (1 - Math.exp(-dt / S.T0));
+  const W = innerWidth, H = innerHeight, m = Math.min(W, H) / PHI, I0 = RB.input;
+  for (let i = 0; i < NN; i++) {
+    const r = m * Math.sqrt((i + 1 / PHI) / NN), a = i * GA + S.psi;
+    const x = W / 2 + r * Math.cos(a), y = H / 2 + r * Math.sin(a); N[i * 3] = x; N[i * 3 + 1] = y;
+    glow[i] *= Math.exp(-dt / TR);
+    if (st >= 2 && ref[i] <= 0) {
+      let I = S.D * pw(-2); for (let k = 0; k < 5; k++) I += S.E[k] * (1 + Math.cos(i * k * GA)) / 2 / PHI;
+      if (st >= 3) I += Math.exp(-Math.hypot(x - I0.p[0], y - I0.p[1]) / (m / PHI)) * PHI;    // answers your gaze
+      V[i] += (I - V[i]) * dt / TM;
+      if (V[i] >= 1) { V[i] = 0; ref[i] = TR; glow[i] = 1; if (st >= 4) for (const j of T(i)) sig.push({ j, t: Math.hypot(N[j * 3] - x, N[j * 3 + 1] - y) / (m / PHI) }); }
+    } else ref[i] -= dt;
+    N[i * 3 + 2] = glow[i];
   }
-  cx.clearRect(0, 0, W, H);
-  const a = reveal * (0.382 + 0.618 * S.D); if (a < 0.01) return;
-  cx.strokeStyle = 'rgba(180,67,108,' + (a * 0.382).toFixed(3) + ')'; cx.lineWidth = 0.618;
-  sig = sig.filter(s => { s.t += dt; if (s.t >= s.T) { V[s.j] += 1 / pw(2); return false; } return true; });
-  for (const s of sig) { const f = s.t / s.T, p = P[s.i], q = P[s.j]; cx.beginPath(); cx.moveTo(p[0], p[1]); cx.lineTo(p[0] + (q[0] - p[0]) * f, p[1] + (q[1] - p[1]) * f); cx.stroke(); }
-  for (let i = 0; i < N; i++) { const g = glow[i]; cx.fillStyle = 'rgba(180,67,108,' + (a * (0.146 + 0.618 * g)).toFixed(3) + ')'; cx.beginPath(); cx.arc(P[i][0], P[i][1], 1.618 + g * 2.618, 0, 6.2832); cx.fill(); }
+  sig = sig.filter(s => (s.t -= dt) > 0 || (V[s.j] += pw(-2), false));
 });
