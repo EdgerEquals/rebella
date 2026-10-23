@@ -179,8 +179,8 @@
   document.addEventListener("animationiteration", function(ev){ if(ev.target.id === "wx-tick-track" && tickN && ev.target.getAnimations){
     var ta = ev.target.getAnimations()[0]; if(ta) PT.retime(ta, tickN * PT.ms("fact")); } });
   function loadAgeAndFacts(){
-    var q = clampAge(qs.get("age"));
-    var ageP = q ? Promise.resolve((ageSrc = "?age", q)) :
+    var q = clampAge(qs.get("age")), dial = window.RebellaAgeDial && clampAge(window.RebellaAgeDial.age());
+    var ageP = q ? Promise.resolve((ageSrc = "?age", q)) : dial ? Promise.resolve((ageSrc = "age dial", dial)) :
       fetch(CHAT + "age-dial.json?t=" + Date.now(), {cache:"no-store", credentials:"omit"}).then(function(r){ if(!r.ok) throw 0; return r.json(); })
         .then(function(j){ var a = clampAge(j && j.age); if(!a) throw 0; ageSrc = "age-dial.json"; return a; }).catch(function(){ ageSrc = "default"; return 13; });
     ageP.then(function(a){ age = a; paintTicker(); LOG("refresh: age " + a + " (" + ageSrc + ")"); return fetch("data/facts.json?t=" + Date.now(), {cache:"no-store", credentials:"omit"}); })
@@ -258,6 +258,8 @@
     }
     paintStatus(ev.detail || {});
   });
+  // the age dial buttons (js/agedial.js): fun facts follow the new age straight away (no reload)
+  document.addEventListener("rebella:age", function(ev){ var a = clampAge(ev.detail && ev.detail.age); if(!a || a === age || !started) return; loadAgeAndFacts(); });
   document.addEventListener("rebella:locked", function(){ var v = $("#wx-bg-video"); if(v) v.pause(); });
 
   // keep the content clear of the fixed footer, whatever height it ends up (talk mode, small screens)

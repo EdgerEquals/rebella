@@ -292,5 +292,14 @@ html #app main#main .ibx-count.on{background:#F2A541;color:#24292E}
 html #app main#main .ibx-chev{color:#19FF9C}
 /* LOCKED age dial panel: never themed. Its inherited text colour is pinned to the value it had before the restyle
    (pink theme berry), so the panel renders exactly as tagged locked-family-silhouette-2026-10-24. Do not change. */
-html #app main#main .agedial{color:#3D1226}
+html #app .agedial{color:#3D1226}   /* the panel moved into the sticky header (02:53), selector widened from main#main */
+/* Age dial panel background (Danny, voice 02:51 AWST 24 Oct 2026: "teal / light green", then "much lighter"): #FFFFFF -> #D6ECEF,
+   the pale tint of the Dad header teal (#0F5C6E) already used on this dashboard (--tc-13, World chip text). Silhouette colours,
+   artwork and the .618s kid animation are unchanged. Lock moved to tag locked-family-silhouette-2026-10-24b. */
+html #app .agedial{background:#D6ECEF}
+/* age dial strip behind the panel (inside the black header) + the - / + buttons (Danny 02:53-02:54) */
+html #app .ad-pin{background:var(--tc-12)}
+html #app .agedial .ad-step{background:#0F5C6E;color:#FFFFFF}
+html #app .agedial .ad-step:hover{background:#0A3F4C}
+html #app .agedial .ad-step:focus-visible{outline:2px solid #0A3F4C;outline-offset:2px}
 /* ===== END COMMAND-CENTRE BODY LAYER ===== */

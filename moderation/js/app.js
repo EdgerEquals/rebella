@@ -22,7 +22,7 @@
   // and only carries what is already on screen (counts, titles, times), never the key or the relay topic.
   function emitStatus(counts){
     try{
-      var pend = ITEMS.filter(function(it){ return statusOf(it.id) === "pending"; });
+      var pend = ITEMS.filter(function(it){ return forAge(it) && statusOf(it.id) === "pending"; });
       var newest = ITEMS.filter(function(it){ return it.published; }).sort(function(a,b){ return a.published < b.published ? 1 : -1; })[0];
       document.dispatchEvent(new CustomEvent("rebella:status", {detail:{
         pending:counts.pending, approved:counts.approved, rejected:counts.rejected, all:counts.all,
@@ -93,6 +93,27 @@
   }
   function statusOf(id){ var r = rec(id); return r ? r.status : "pending"; }
   function nonce(){ return Date.now().toString(36) + "-" + Math.random().toString(36).slice(2,10); }
+
+  // ---------- age dial (Danny 24 Oct 2026 02:54 AWST): the queue follows the dial straight away ----------
+  // Each item carries the pipeline's suggested age label (scan.py age_for: "All ages", "10+", "12+" ... "16+").
+  // At dial age A an item is in the queue when its minimum age <= A. Labels with no number other than "All ages"
+  // (e.g. "Not suitable") only show at 16, the top of the dial, so a younger setting never surfaces them.
+  function dialAge(){ var b = document.getElementById("agedial"), a = b ? parseInt(b.getAttribute("data-age"), 10) : 13; return a >= 10 && a <= 16 ? a : 13; }
+  function minAge(label){ var t = String(label || ""); if(/all\s*ages/i.test(t)) return 0; var m = t.match(/(\d{1,2})\s*\+/); return m ? +m[1] : (t ? 16 : 0); }
+  function forAge(it){ return minAge(it.age) <= dialAge(); }
+  function perthNow(){ return new Date().toLocaleString("sv-SE", {timeZone:"Australia/Perth"}).replace(" ", "T") + "+08:00"; }
+  var ageSendT = 0, ageSentFrom = null;
+  document.addEventListener("rebella:age", function(ev){
+    var d = ev.detail || {}; if(Q) render();
+    if(d.source !== "bonnie") return;
+    if(ageSentFrom == null) ageSentFrom = d.from;
+    clearTimeout(ageSendT);   // one message per burst of presses: PHI^0.5 s (1.272 s) after the last press
+    ageSendT = setTimeout(function(){
+      var from = ageSentFrom, to = dialAge(); ageSentFrom = null;
+      if(!qkey || !Q || !Q.relay || from === to) return;
+      send({type:"age-dial-change", from:from, to:to, by:"bonnie", at:perthNow(), decidedAt:new Date().toISOString(), nonce:nonce()}).catch(function(){});
+    }, 1272);
+  });
 
   async function send(obj){
     var body = JSON.stringify(Object.assign({v:1}, await CR.encryptJSON(qkey, obj)));
@@ -267,17 +288,18 @@
     if(!Q) return;
     if(panel && !ITEMS.some(function(it){ return it.id === panel.id && statusOf(it.id) === "pending"; })) panel = null;
     var keepFocus = panel && document.activeElement && document.activeElement.closest && document.activeElement.closest(".inline-panel");
-    var q = $("#queue"), counts = {pending:0,approved:0,rejected:0,all:ITEMS.length};
-    ITEMS.forEach(function(it){ counts[statusOf(it.id)]++; });
+    var VIS = ITEMS.filter(forAge), hid = ITEMS.length - VIS.length;
+    var q = $("#queue"), counts = {pending:0,approved:0,rejected:0,all:VIS.length};
+    VIS.forEach(function(it){ counts[statusOf(it.id)]++; });
     Object.keys(counts).forEach(function(k){ $("#c-"+k).textContent = counts[k]; });
     document.querySelectorAll(".tab").forEach(function(t){ t.setAttribute("aria-selected", t.dataset.filter===filter ? "true":"false"); });
     emitStatus(counts);
-    $("#queue-meta").textContent = "Queue updated " + new Date(Q.updated*1000).toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"}) + ". Highest score first.";
+    $("#queue-meta").textContent = "Queue updated " + new Date(Q.updated*1000).toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"}) + ". Highest score first. Showing age " + dialAge() + (hid ? " (" + hid + " for older readers hidden)." : ".");
     if(keepFocus){   // don't rebuild the cards while someone is typing in an open panel; just refresh the counts
       return;
     }
     q.textContent = "";
-    var shown = ITEMS.filter(function(it){ return filter==="all" || statusOf(it.id)===filter; });
+    var shown = VIS.filter(function(it){ return filter==="all" || statusOf(it.id)===filter; });
     shown.forEach(function(it){ q.appendChild(card(it)); });
     $("#empty").hidden = shown.length > 0;
   }

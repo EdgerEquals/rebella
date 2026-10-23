@@ -6,15 +6,16 @@
                                                                      # (needs playwright + a browser; use a TEST copy
                                                                      #  and a test passcode, never print a real one)
 Static: every required id/selector in index.html, every required script/stylesheet include (theme loaded last),
-the LOCKED age dial (section, agedial.css, agedial.js) byte-identical to tag locked-family-silhouette-2026-10-24,
+the LOCKED age dial (section, agedial.css, agedial.js) byte-identical to tag locked-family-silhouette-2026-10-24b,
 and no colour literal outside the theme file. Render: the JS-built parts (music button, Music tab, Approve/Reject,
 sounds switch, the five flavours, status lights, weather chip) exist and the locked panel + silhouette are visible."""
 import hashlib, pathlib, re, sys
 from html.parser import HTMLParser
 D = pathlib.Path(__file__).resolve().parent.parent
-LOCK = {  # sha256 at tag locked-family-silhouette-2026-10-24
-  "css/agedial.css": "6cb088dad9b121b9", "js/agedial.js": "3e50e90bbe0a8634",
-  "section": "ee6cd889c23827e31292658bc9038bf9f4f2e6d503426368354ed4ee3a226805"}
+LOCK = {  # sha256 at tag locked-family-silhouette-2026-10-24b (was ...-24; Danny 24 Oct 2026 02:51-02:54 AWST: pale teal, half height,
+         #   pinned in the sticky header, - / + buttons that change the age on the spot)
+  "css/agedial.css": "8950f3b5fcde4ab4", "js/agedial.js": "0b501961d57d7daa",
+  "section": "dae8b1e6f2a2296a9fa4f65dae0eef988e3fc8b92abcac6b0fb5f82b47f267cf"}
 REQ_IDS = {  # label -> ids that must exist in index.html
   "passcode gate": ["gate", "gate-form", "passcode", "gate-msg"],
   "Lock button": ["lock"],
@@ -26,7 +27,7 @@ REQ_IDS = {  # label -> ids that must exist in index.html
   "footer (locked)": ["app-foot"],
   "tab counts": ["c-pending", "c-approved", "c-rejected", "c-all"],
   "queue": ["queue", "queue-meta", "main"],
-  "age dial panel": ["agedial", "ad-age"],
+  "age dial panel": ["agedial", "ad-age", "ad-dn", "ad-up"],
   "family silhouette SVG": ["ad-family", "ad-dad", "ad-mum", "ad-kid-b", "ad-kid-g"],
   "Simmie terminal": ["tty", "tty-open", "tty-cloud", "tty-form", "wx-foot"],
   "status gauge": ["wx-gauge"],
@@ -34,7 +35,7 @@ REQ_IDS = {  # label -> ids that must exist in index.html
 # "Bonnie's Dashboard" pill + small wordmark logo removed "for now" (Danny 24 Oct 2026 02:31 AWST; restore from 8a7e6d7)
 REQ_TEXT = {"Rebella logo (top bar)": r'class="tb-logo" src="\.\./img/rebella-wordmark-dark\.svg" alt="Rebella"',
   "Dad's world mark": r'class="dad-mark"',
-  "tagline (own line under the header)": r'class="tagline-line"><div class="container"><span class="tagline">Keep Rebella safe, fun and cool<',
+  "tagline (header bottom row, beside Dad's mark; Danny 02:59 AWST)": r'class="dad-mark"[^>]*>\s*(<!--.*?-->\s*)?<span class="tagline mh-tagline">Keep Rebella safe, fun and cool<',
   "tabs Pending/Approved/Rejected/All": r'data-filter="pending".*data-filter="approved".*data-filter="rejected".*data-filter="all"',
   "status lights QUEUE/FRESH/LINK/SKY": r'data-light="queue".*data-light="fresh".*data-light="link".*data-light="sky"',
   "page title": r"<title>Bonnie's Dashboard</title>"}

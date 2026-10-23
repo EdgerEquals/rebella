@@ -27,7 +27,7 @@ html #app #app-foot .container span{overflow:hidden;text-overflow:ellipsis}
 /* header: Rebella logo where the tagline was (not a link); sized to the bar so its height doesn't change */
 html #app .topbar .tb-logo{display:block;flex:none;height:32px;width:auto;max-width:40vw}
 @media (max-width:575px){ html #app .topbar .tb-logo{height:26px} }
-/* tagline: its own line directly under the header bar, same font and colours as before */
+/* (unused since 02:59: the tagline line was removed; rules kept for a quick restore from 517e809) */
 html #app .tagline-line{background:var(--tc-12);border-bottom:1px solid var(--nt-line)}
 html #app .tagline-line .container{padding-top:.3rem;padding-bottom:.3rem}
 html #app .tagline-line .tagline{display:block;font-family:var(--f-hand);font-size:1rem;letter-spacing:1.5px;color:var(--nt-blush);text-transform:uppercase}
@@ -35,3 +35,10 @@ html #app .tagline-line .tagline{display:block;font-family:var(--f-hand);font-si
 /* masthead keeps a steady height now its wordmark, pill and buttons are gone (just Dad's mark) */
 html #app .dash-head .masthead .container{min-height:40px;padding-top:.25rem;padding-bottom:.25rem}
 html #app .dash-head .dad-mark{width:26px;height:26px}
+
+/* tagline moved into the header's bottom row beside Dad's mark (Danny 24 Oct 2026 02:59 AWST); the separate line is gone so the
+   pinned age dial sits right under the header. Same font and colour as before; one line, ellipsis if a phone is very narrow. */
+html #app .masthead .brand{display:flex;align-items:center;gap:.55rem;min-width:0}
+html #app .masthead .mh-tagline{display:block;min-width:0;font-family:var(--f-hand);font-size:1rem;letter-spacing:1.5px;color:var(--nt-blush);
+  text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
+@media (max-width:575px){ html #app .masthead .mh-tagline{font-size:.78rem;letter-spacing:1px} }

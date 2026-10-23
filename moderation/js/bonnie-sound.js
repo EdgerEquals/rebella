@@ -234,7 +234,7 @@
     cue(lv > 1 ? 'peak' : 'press', lv);
   });
   // dials and radios: detent clicks instead of the generic press note
-  var dialHeld = false, dialKey = 0, DIAL_SEL = '.pl-dial, .bs-flav input, input[type="radio"]';
+  var dialHeld = false, dialKey = 0, DIAL_SEL = '.pl-dial, .bs-flav input, input[type="radio"], .ad-step'   /* .ad-step: age dial -/+ play their own dial-click (js/agedial.js) */;
   function dialBusy() { return dialHeld || performance.now() - dialKey < 200; }
   document.addEventListener('pointerdown', function (e) { if (e.target.closest && e.target.closest('.pl-dial')) dialHeld = true; }, true);
   ['pointerup', 'pointercancel'].forEach(function (k) { document.addEventListener(k, function () { if (dialHeld) setTimeout(function () { dialHeld = false; }, 120); }, true); });
