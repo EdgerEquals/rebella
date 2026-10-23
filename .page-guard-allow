@@ -70,3 +70,17 @@ submit.html :: nav:recommendations.html
 # Danny (24 Oct 2026, 01:50 AWST, on voice): live Bonnie's Dashboard aligned with the dashboard preview. The header wrapper #app-head (+ js/bars.js fixed bars) is replaced by the preview's sticky black header #dash-head (js/sticky-head.js).
 moderation/index.html :: id:app-head
 moderation/index.html :: script:js/bars.js
+# Danny (24 Oct 2026, 02:31 AWST, on voice): Bonnie's Dashboard - removed the "Export decisions (JSON)" and "Reset all" buttons (+ reset confirm strip)
+# and, "for now", the small "rebella" wordmark logo (div.wordmark.small role=img) and the "Bonnie's Dashboard" pill. Restore from 8a7e6d7.
+moderation/index.html :: button:export
+moderation/index.html :: button:reset
+moderation/index.html :: button:reset-no
+moderation/index.html :: button:reset-yes
+moderation/index.html :: id:export
+moderation/index.html :: id:reset
+moderation/index.html :: id:reset-msg
+moderation/index.html :: id:reset-no
+moderation/index.html :: id:reset-q
+moderation/index.html :: id:reset-strip
+moderation/index.html :: id:reset-yes
+moderation/index.html :: role:img

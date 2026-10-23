@@ -287,25 +287,7 @@
   });
 
 
-  // ---------- export / reset ----------
-  $("#export").addEventListener("click", function(){
-    var out = {exportedAt:new Date().toISOString(), note:"Rebella moderation decisions", decisions:
-      ITEMS.map(function(it){ var r=rec(it.id)||{}; return {id:it.id,title:it.title,source:it.source,source_url:it.source_url,licence:it.licence,type:it.type,category:it.category,status:r.status||"pending",reason:r.reason||"",decidedAt:r.decidedAt||null,url:live[it.id]||r.url||null}; })};
-    var blob = new Blob([JSON.stringify(out,null,2)],{type:"application/json"});
-    var a = document.createElement("a"); a.href = URL.createObjectURL(blob);
-    a.download = "rebella-decisions-"+new Date().toISOString().slice(0,10)+".json";
-    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
-  });
-  function resetStrip(open){
-    $("#reset-strip").hidden = !open; $("#reset").setAttribute("aria-expanded", open ? "true" : "false");
-    if(open){ $("#reset-msg").textContent = ""; $("#reset-no").focus(); }
-  }
-  $("#reset").addEventListener("click", function(){ resetStrip($("#reset-strip").hidden); });
-  $("#reset-no").addEventListener("click", function(){ resetStrip(false); $("#reset").focus(); });
-  $("#reset-yes").addEventListener("click", function(){
-    localStorage.removeItem(DKEY); resetStrip(false); render(); $("#reset-msg").textContent = "Cleared the decisions saved in this browser."; $("#reset").focus();
-  });
-  $("#reset-strip").addEventListener("keydown", function(e){ if(e.key === "Escape"){ e.preventDefault(); resetStrip(false); $("#reset").focus(); } });
+  // export / reset buttons removed (Danny 24 Oct 2026 02:31 AWST); restore from commit 8a7e6d7
 
   // ---------- boot ----------
   (async function(){

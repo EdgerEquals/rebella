@@ -17,8 +17,6 @@
   function onScroll() {
     raf = 0;
     var y = window.scrollY || root.scrollTop || 0, want = compact ? y > OFF_AT : y > ON_AT;
-    var strip = document.getElementById('reset-strip');
-    head.classList.toggle('keep-actions', !!(strip && !strip.hidden));   // never fold away an open "clear decisions?" question
     if (want !== compact) { compact = want; head.classList.toggle('is-scrolled', compact); }
     measure();
   }

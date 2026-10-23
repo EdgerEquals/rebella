@@ -22,7 +22,8 @@ REQ_IDS = {  # label -> ids that must exist in index.html
   "emoji strip / fact ticker": ["il-head", "wx-ticker", "wx-tick-track"],
   "Perth weather chip": ["wx-chip"],
   "sticky black header": ["dash-head"],
-  "export / reset": ["export", "reset", "reset-strip"],
+  # "export / reset" (#export, #reset, #reset-strip) removed on purpose (Danny 24 Oct 2026 02:31 AWST)
+  "footer (locked)": ["app-foot"],
   "tab counts": ["c-pending", "c-approved", "c-rejected", "c-all"],
   "queue": ["queue", "queue-meta", "main"],
   "age dial panel": ["agedial", "ad-age"],
@@ -30,15 +31,16 @@ REQ_IDS = {  # label -> ids that must exist in index.html
   "Simmie terminal": ["tty", "tty-open", "tty-cloud", "tty-form", "wx-foot"],
   "status gauge": ["wx-gauge"],
 }
-REQ_TEXT = {"Bonnie's Dashboard pill": r'<span class="mod-pill">Bonnie\'s Dashboard</span>',
-  "Rebella logo": r'class="wordmark small"', "Dad's world mark": r'class="dad-mark"',
-  "tagline": r'class="tagline">Keep Rebella safe, fun and cool<',
+# "Bonnie's Dashboard" pill + small wordmark logo removed "for now" (Danny 24 Oct 2026 02:31 AWST; restore from 8a7e6d7)
+REQ_TEXT = {"Rebella logo (top bar)": r'class="tb-logo" src="\.\./img/rebella-wordmark-dark\.svg" alt="Rebella"',
+  "Dad's world mark": r'class="dad-mark"',
+  "tagline (own line under the header)": r'class="tagline-line"><div class="container"><span class="tagline">Keep Rebella safe, fun and cool<',
   "tabs Pending/Approved/Rejected/All": r'data-filter="pending".*data-filter="approved".*data-filter="rejected".*data-filter="all"',
   "status lights QUEUE/FRESH/LINK/SKY": r'data-light="queue".*data-light="fresh".*data-light="link".*data-light="sky"',
   "page title": r"<title>Bonnie's Dashboard</title>"}
 REQ_INC = ["css/mod.css", "css/hud.css", "css/night.css", "css/play.css", "css/inbox-dash.css", "css/bonnie-music.css",
   "css/bonnie-sound.css", "css/music-glow.css", "css/sticky-head.css", "css/agedial.css", "css/theme-command-centre.css",
-  "js/config.js", "js/crypto.js", "js/app.js", "js/hud.js", "js/talk.js", "js/inbox-dash.js", "js/bonnie-music.js",
+  "css/dash-foot-lock.css", "js/config.js", "js/crypto.js", "js/app.js", "js/hud.js", "js/talk.js", "js/inbox-dash.js", "js/bonnie-music.js",
   "js/bonnie-sound.js", "js/music-glow.js", "js/sticky-head.js", "js/agedial.js", "js/ad-plane.js"]
 REQ_JS = {"Music tab (inbox-dash.js)": ("js/inbox-dash.js", "ibx-music-tab"), "Approve button (app.js)": ("js/app.js", "btn-approve"),
   "Reject button (app.js)": ("js/app.js", "\\u2715 Reject"), "music button (bonnie-music.js)": ("js/bonnie-music.js", "bm-pill"),
@@ -87,7 +89,7 @@ def render(url, pw):
       "Reject buttons": "#queue .btn-primary", "sounds switch": ".bs-toggle", "sound flavours": ".bs-flav",
       "status lights": ".wx-light[data-light]", "weather chip": "#wx-chip", "emoji strip": "#il-head",
       "Simmie terminal": "#tty", "Lock": "#lock", "Ask Dad": "#ask-dad", "age dial panel": "#agedial", "silhouette": "#ad-family",
-      "Bonnie's Dashboard pill": ".masthead .mod-pill", "logo": ".masthead .wordmark"}
+      "Rebella logo": ".topbar img.tb-logo", "tagline": ".tagline-line .tagline", "footer": "#app-foot"}
     async def go():
         fail = []
         async with async_playwright() as p:
@@ -103,8 +105,8 @@ def render(url, pw):
             for f in FLAVOURS:
                 if not any(f.lower() in x.lower() for x in fl): fail.append("render: flavour missing: " + f)
             if await pg.locator(".wx-light[data-light]").count() < 4: fail.append("render: fewer than 4 status lights")
-            pill = (await pg.text_content(".masthead .mod-pill") or "").strip()
-            if pill != "Bonnie's Dashboard": fail.append("render: pill says %r" % pill)
+            pos = await pg.evaluate("[getComputedStyle(document.getElementById('wx-foot')).position, getComputedStyle(document.getElementById('app-foot')).position]")
+            if pos != ["fixed", "fixed"]: fail.append("render: footer not locked (%s)" % pos)
             await b.close()
         return fail
     return asyncio.run(go())

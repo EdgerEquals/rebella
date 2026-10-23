@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="css/music-glow.css?v=9">
 <link rel="stylesheet" href="css/sticky-head.css?v=9">
 <link rel="stylesheet" href="css/agedial.css?v=2">
+<link rel="stylesheet" href="css/dash-foot-lock.css?v=1">
 <link rel="stylesheet" href="css/theme-command-centre.css?v=9">
 <script src="js/phi-timing.js?v=9"></script>
 <script src="js/config.js?v=2"></script>
@@ -68,7 +69,8 @@
   <!-- sticky black header (css/sticky-head.css, js/sticky-head.js) -->
   <div class="dash-head" id="dash-head">
   <div class="topbar"><div class="container">
-    <span class="tagline">Keep Rebella safe, fun and cool</span>
+    <!-- Rebella logo (the public site's header wordmark in its black-background version, ../img/rebella-wordmark-dark.svg; not a link here, so Bonnie stays in the dashboard). Danny 24 Oct 2026 02:31 AWST: it takes the tagline's old spot; the tagline now sits on its own line just under the header. -->
+    <img class="tb-logo" src="../img/rebella-wordmark-dark.svg" alt="Rebella" width="121" height="47" decoding="async">
     <span class="tb-right"><button id="lock" class="lockbtn" type="button" aria-label="Lock dashboard">&#128274; Lock</button>
     <!-- Ask Dad: amber circle pinned top-right of the header, Lock just to its left -->
     <button id="ask-dad" class="ask-dad" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="dad-panel" aria-label="Ask Dad"><span class="ad-orbit" aria-hidden="true"><span class="ad-sat">🛰️</span></span><span class="ad-w" aria-hidden="true">Ask</span><span class="ad-w" aria-hidden="true">Dad</span></button></span>
@@ -81,20 +83,16 @@
   <header class="masthead"><div class="container">
     <div class="brand">
       <img class="dad-mark" src="img/dad-mark.svg?v=2" width="32" height="32" alt="" title="Dad's world mark">
-      <div class="wordmark small" role="img" aria-label="Rebella"><span class="script" aria-hidden="true">rebel</span><span class="serif" aria-hidden="true">la</span></div>
-      <span class="mod-pill">Bonnie's Dashboard</span>
+      <!-- Removed "for now" (Danny 24 Oct 2026 02:31 AWST): the small "rebella" wordmark logo (div.wordmark.small) and the
+           "Bonnie's Dashboard" pill (span.mod-pill). Restore both from commit 8a7e6d7 (moderation/index.html, .masthead .brand). -->
     </div>
-    <div class="head-actions">
-      <button id="export" class="btn btn-info" type="button">Export decisions (JSON)</button>
-      <button id="reset" class="btn btn-secondary" type="button" aria-expanded="false" aria-controls="reset-strip">Reset all</button>
-      <div id="reset-strip" class="confirm-strip danger" hidden>
-        <span class="cs-text" id="reset-q">Clear the decisions saved in this browser? Decisions already sent to the publisher stay.</span>
-        <span class="cs-btns"><button id="reset-yes" class="btn btn-danger" type="button" aria-describedby="reset-q">Yes, clear them</button><button id="reset-no" class="btn btn-secondary" type="button">Cancel</button></span>
-      </div>
-      <p id="reset-msg" class="inline-msg" aria-live="polite"></p>
-    </div>
+    <!-- Removed (Danny 24 Oct 2026 02:31 AWST): the "Export decisions (JSON)" button #export and the "Reset all" button #reset
+         with its confirm strip (#reset-strip, #reset-q, #reset-yes, #reset-no, #reset-msg) and their handlers in js/app.js.
+         Restore from commit 8a7e6d7 (div.head-actions). -->
   </div></header>
   </div><!-- /dash-head -->
+  <!-- tagline: moved out of the top bar to its own line directly under the header (Danny 24 Oct 2026 02:31 AWST); css/dash-foot-lock.css -->
+  <div class="tagline-line"><div class="container"><span class="tagline">Keep Rebella safe, fun and cool</span></div></div>
 
   <main class="container" id="main">
     <!-- Age dial line + family silhouette (display only: shows the current age dial value; no buttons, sends nothing) -->
@@ -123,8 +121,10 @@
     <p id="empty" class="empty hand" hidden>Nothing here. Nice work!</p>
   </main>
 
+  <!-- footer: locked to the bottom of the screen in the lane just above the fixed bar (css/dash-foot-lock.css). The "Bonnie's Dashboard"
+       span was removed with the header text (Danny 24 Oct 2026 02:31 AWST); restore from commit 8a7e6d7. -->
   <footer class="footer" id="app-foot"><div class="container">
-    <span>Bonnie's Dashboard</span><span>Decisions are sent securely to Simmie's publisher</span>
+    <span>Decisions are sent securely to Simmie's publisher</span>
   </div></footer>
 
   <template id="biplane-tpl"><svg class="biplane" viewBox="0 0 48 30" width="64" height="40" aria-hidden="true" focusable="false">
