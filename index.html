@@ -22,11 +22,14 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Rebella", "alternateName": "Rebella: learn what you love", "url": "https://edgerequals.github.io/rebella/", "description": "Rebella is an online magazine for teen girls: learn what you love with make-it projects, big questions, books and real advice.", "inLanguage": "en-AU"}</script>
 <meta name="referrer" content="no-referrer">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&display=swap">
-<link rel="stylesheet" href="css/styles.css?v=3">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&family=Special+Elite&display=swap">
+<link rel="stylesheet" href="css/styles.css?v=4">
+<link rel="stylesheet" href="css/zine.css?v=1">
 <script src="js/main.js"></script>
+<script src="js/quotes.js" defer></script>
+<script src="js/quotes-render.js" defer></script>
 </head>
-<body>
+<body class="zine">
 <a class="skip" href="#main">Skip to content</a>
 <a class="escape" href="index.html" data-escape aria-label="Emergency stop: leave this page now and go to the Rebella homepage">
   <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M15 2h18l13 13v18L33 46H15L2 33V15z" fill="#fff"/><path d="M16.5 6h15L42 16.5v15L31.5 42h-15L6 31.5v-15z" fill="#B23A35"/><rect x="13" y="20.5" width="22" height="7" rx="3.5" fill="#fff"/></svg>
@@ -79,7 +82,7 @@
 </nav>
 <main id="main">
 <section class="site-intro container">
-  <h1 class="hand">Learn what you love.</h1>
+  <h1 class="hand ransom-h"><span class="sr-only">Learn what you love.</span><span class="ransom" aria-hidden="true"><span class="rw"><span class="rl rl3">L</span><span class="rl rl4">e</span><span class="rl rl5">a</span><span class="rl rl0">r</span><span class="rl rl1">n</span></span> <span class="rw"><span class="rl rl2">w</span><span class="rl rl3">h</span><span class="rl rl4">a</span><span class="rl rl5">t</span></span> <span class="rw"><span class="rl rl0">y</span><span class="rl rl1">o</span><span class="rl rl2">u</span></span> <span class="rw"><span class="rl rl3">l</span><span class="rl rl4">o</span><span class="rl rl5">v</span><span class="rl rl0">e</span><span class="rl rl1">.</span></span></span></h1>
   <p>Rebella is an online magazine for teen girls: a safe, fun and cool place to learn and grow with things you actually want to. Make-it projects, big questions about space and science, books, feel-good ideas and real advice. If you've been searching for <strong>fun websites for teens</strong>, or <strong>educational and cool sites for girls</strong>, welcome. You're in the right place.</p>
 </section>
 <section class="hero container c-questions">
@@ -107,7 +110,9 @@
 </article><article class="card c-mind">
   <figure class="thumb-link"><img class="photo" src="img/articles/tea.jpg" alt="A glass cup of herbal tea resting on books" width="600" height="900" loading="lazy" decoding="async"><span class="band" aria-hidden="true">Mind &amp; Body</span><span class="view" aria-hidden="true">Read it</span></figure>
   <div class="text"><a class="tag" href="category-mind.html">Mind &amp; Body</a><h3><a href="articles/five-minute-wind-down.html">A five-minute wind-down for busy brains</a></h3><p>Three simple steps to help you switch off before bed, without needing an app.</p></div>
-</article><article class="card c-voice">
+</article>
+  <aside class="rebel-quote" data-rebel-quote aria-label="Rebel quote"><figure class="rq-paper"><blockquote class="rq-text" cite="https://www.space.com/17169-mae-jemison-biography.html"><p>Never be limited by other people&#x27;s limited imaginations.</p></blockquote><figcaption class="rq-cap"><span class="rq-person">Mae Jemison</span><span class="rq-who">Doctor, engineer and the first African American woman to travel into space.</span><a class="rq-src" href="https://www.space.com/17169-mae-jemison-biography.html" rel="noopener">Source: Biomedical research conference for students, November 2009</a></figcaption></figure></aside>
+  <article class="card c-voice">
   <figure class="thumb-link"><img class="photo" src="img/articles/code.jpg" alt="Lines of code on a laptop screen" width="900" height="598" loading="lazy" decoding="async"><span class="band" aria-hidden="true">Your Voice</span><span class="view" aria-hidden="true">Read it</span></figure>
   <div class="text"><a class="tag" href="category-voice.html">Your Voice</a><h3><a href="articles/start-a-coding-club.html">How to start a coding club at lunch</a></h3><p>A room, a teacher and a first project: a step-by-step guide to starting your own coding crew.</p></div>
 </article><article class="card c-rwl">
@@ -124,11 +129,14 @@
       <div class="issue-btns"><a class="btn btn-primary" href="#join">Subscribe</a><a class="btn btn-info" href="#join">View issue</a></div></div>
       <p class="issue-note">Example copy. Print edition placeholder.</p></section><section class="widget"><div class="house-ad recs-ad dots-mustard"><h5>&#9733; Recommendations</h5><p>Song of the week, quote of the week, a goal for everyone and more picks.</p><a class="btn btn-secondary dots-mustard btn-block" href="recommendations.html">See the picks</a></div></section><section class="widget sticky-widget"><div class="house-ad dots-brick"><h5>Your Voice</h5><p>Write it, draw it, film it. Soon you'll be able to share what you're proud of, safely, with every piece checked by an adult editor.</p><a class="btn btn-primary dots-brick btn-block" href="submit.html">How it will work</a></div></section></aside>
 </div>
+<div class="zine-tear" aria-hidden="true"></div>
 <section class="pillars container" aria-label="Explore by interest"><ul><li class="c-make"><a href="category-make.html"><svg aria-hidden="true"><use href="#blob"/></svg><span>Make It</span></a></li><li class="c-questions"><a href="category-questions.html"><svg aria-hidden="true"><use href="#blob"/></svg><span>Big Questions</span></a></li><li class="c-mind"><a href="category-mind.html"><svg aria-hidden="true"><use href="#blob"/></svg><span>Mind &amp; Body</span></a></li><li class="c-world"><a href="category-world.html"><svg aria-hidden="true"><use href="#blob"/></svg><span>Your World</span></a></li><li class="c-rwl"><a href="category-rwl.html"><svg aria-hidden="true"><use href="#blob"/></svg><span>Read Watch Listen</span></a></li><li class="c-voice"><a href="category-voice.html"><svg aria-hidden="true"><use href="#blob"/></svg><span>Your Voice</span></a></li></ul></section>
+<div class="container quote-row"><aside class="rebel-quote" data-rebel-quote aria-label="Rebel quote"><figure class="rq-paper"><blockquote class="rq-text" cite="https://www.independent.co.uk/news/world/asia/the-full-text-malala-yousafzai-delivers-defiant-riposte-to-taliban-militants-with-speech-to-the-un-general-assembly-8706606.html"><p>One child, one teacher, one book and one pen can change the world.</p></blockquote><figcaption class="rq-cap"><span class="rq-person">Malala Yousafzai</span><span class="rq-who">Pakistani activist who stood up for girls&#x27; right to go to school, and the youngest-ever Nobel Peace Prize winner.</span><a class="rq-src" href="https://www.independent.co.uk/news/world/asia/the-full-text-malala-yousafzai-delivers-defiant-riposte-to-taliban-militants-with-speech-to-the-un-general-assembly-8706606.html" rel="noopener">Source: Speech to the United Nations, 12 July 2013</a></figcaption></figure></aside></div>
 <section class="create-promo container" aria-labelledby="cp-title"><div class="cp-inner dots-brick">
   <div class="cp-stickers" aria-hidden="true"><img src="img/stickers/word-dream-big.svg" alt="" class="s1"><img src="img/stickers/flower-peach.svg" alt="" class="s2"><img src="img/stickers/washi-mint-stripes.svg" alt="" class="s3"><img src="img/stickers/star-butter.svg" alt="" class="s4"><img src="img/library/tulips.jpg" alt="" class="p1"><img src="img/library/hot-air-balloon.jpg" alt="" class="p2"></div>
   <div class="cp-copy"><h2 id="cp-title" class="hand">Make a mood board</h2><p>Mood boards, collages and vision boards: drag in stickers and photos, add your own words, then save it as a picture.</p><a class="btn btn-primary dots-brick" href="create.html">Start creating</a></div>
 </div></section>
+<div class="zine-tear" aria-hidden="true"></div>
 <div class="container feed-wrap">
   <div class="feed"><article class="card c-world">
   <figure class="thumb-link"><img class="photo" src="img/articles/money-jar.jpg" alt="A glass jar filled with coins and notes" width="900" height="600" loading="lazy" decoding="async"><span class="band" aria-hidden="true">Your World</span><span class="view" aria-hidden="true">Read it</span></figure>
@@ -136,7 +144,9 @@
 </article><article class="card c-make">
   <figure class="thumb-link"><img class="photo" src="img/articles/cookies.jpg" alt="Chocolate chip cookies on a chopping board" width="900" height="675" loading="lazy" decoding="async"><span class="band" aria-hidden="true">Make It</span><span class="view" aria-hidden="true">Read it</span></figure>
   <div class="text"><a class="tag" href="category-make.html">Make It</a><h3><a href="articles/no-bake-oat-cookies.html">Easy no-bake cookies for a rainy afternoon</a></h3><p>Five ingredients, one bowl and zero oven time.</p></div>
-</article><article class="card c-questions">
+</article>
+  <aside class="rebel-quote" data-rebel-quote aria-label="Rebel quote"><figure class="rq-paper"><blockquote class="rq-text" cite="https://en.wikiquote.org/wiki/Audre_Lorde"><p>I am not free while any woman is unfree, even when her shackles are very different from my own.</p></blockquote><figcaption class="rq-cap"><span class="rq-person">Audre Lorde</span><span class="rq-who">American poet and activist who wrote about speaking up, identity and justice.</span><a class="rq-src" href="https://en.wikiquote.org/wiki/Audre_Lorde" rel="noopener">Source: “The Uses of Anger” (1981)</a></figcaption></figure></aside>
+  <article class="card c-questions">
   <figure class="thumb-link"><img class="photo" src="img/articles/mars.jpg" alt="The planet Mars seen from space" width="900" height="900" loading="lazy" decoding="async"><span class="band" aria-hidden="true">Big Questions</span><span class="view" aria-hidden="true">Read it</span></figure>
   <div class="text"><a class="tag" href="category-questions.html">Big Questions</a><h3><a href="articles/living-on-mars.html">What would it be like to live on Mars?</a></h3><p>Air, food, gravity and the very long commute, explained.</p></div>
 </article><article class="card c-mind">
@@ -149,6 +159,7 @@
   <p class="all-link"><a class="btn btn-info dots-aqua" href="category.html">See all articles</a></p></div>
   <aside class="sidebar"><section class="widget nl-widget"><h5>Join our newsletter</h5><form data-demo><label class="sr-only" for="sn1">First name</label><input class="field dots-mustard" id="sn1" placeholder="First name"><label class="sr-only" for="se1">Email</label><input class="field dots-mustard" id="se1" type="email" placeholder="Email"><button class="btn btn-secondary dots-mustard btn-block">Sign up</button><p class="form-msg" role="status"></p></form></section><section class="widget"><div class="house-ad recs-ad dots-mustard"><h5>&#9733; Recommendations</h5><p>Song of the week, quote of the week, a goal for everyone and more picks.</p><a class="btn btn-secondary dots-mustard btn-block" href="recommendations.html">See the picks</a></div></section><section class="widget sticky-widget"><div class="house-ad dots-brick"><h5>Your Voice</h5><p>Write it, draw it, film it. Soon you'll be able to share what you're proud of, safely, with every piece checked by an adult editor.</p><a class="btn btn-primary dots-brick btn-block" href="submit.html">How it will work</a></div></section></aside>
 </div>
+<div class="zine-tear" aria-hidden="true"></div>
 <section class="follow container" id="follow"><h2>Follow us</h2><p class="motto">Be curious. Be bold. Be you.</p><div class="icons"><a href="#" aria-label="Facebook (placeholder)"><svg><use href="#i-fb"/></svg></a><a href="#" aria-label="Instagram (placeholder)"><svg><use href="#i-ig"/></svg></a></div><div class="tiles" aria-label="Photo tiles"><img class="tile" src="img/library/sunflower.jpg" alt="A bright yellow sunflower" loading="lazy" decoding="async" width="800" height="595"><img class="tile" src="img/library/pink-cupcakes.jpg" alt="Cupcakes with pink swirled icing" loading="lazy" decoding="async" width="800" height="600"><img class="tile" src="img/library/night-sky.jpg" alt="The Milky Way in a starry night sky" loading="lazy" decoding="async" width="800" height="533"><img class="tile" src="img/library/kitten-daisies.jpg" alt="A tabby kitten in the grass with daisies" loading="lazy" decoding="async" width="800" height="542"><img class="tile" src="img/library/watercolours.jpg" alt="A tin of watercolour paints" loading="lazy" decoding="async" width="800" height="534"><img class="tile" src="img/library/tulips.jpg" alt="Pink and purple tulips" loading="lazy" decoding="async" width="800" height="577"><img class="tile" src="img/library/hot-air-balloon.jpg" alt="A hot air balloon reflected in a lake" loading="lazy" decoding="async" width="800" height="533"><img class="tile" src="img/library/bookshop.jpg" alt="Piles of books in a bookshop" loading="lazy" decoding="async" width="800" height="533"><img class="tile" src="img/library/strawberries.jpg" alt="Two ripe strawberries" loading="lazy" decoding="async" width="800" height="497"><img class="tile" src="img/library/great-wave.jpg" alt="The Great Wave off Kanagawa, woodblock print by Hokusai" loading="lazy" decoding="async" width="800" height="552"></div></section>
 <section class="newsletter container" id="newsletter"><h2>Join our newsletter</h2>
 <p>One email a fortnight with new projects, big questions and reader stories. <span class="example">Example copy</span></p>

@@ -33,8 +33,29 @@ def cover():
     # placeholder magazine cover (CSS/SVG only)
     return '''<svg viewBox="0 0 120 160" aria-hidden="true" style="width:100%;height:100%;display:block"><rect width="120" height="160" fill="#B5E3E0"/><rect y="118" width="120" height="42" fill="#FBE7B0"/><circle cx="60" cy="88" r="30" fill="#F8C8D5"/><circle cx="60" cy="76" r="12" fill="#FCD9C0"/><path d="M36 112c4-18 44-18 48 0z" fill="#DCD0F2"/><text x="8" y="26" font-family="Kaushan Script,cursive" font-size="22" fill="#B4436C">rebel</text><text x="66" y="26" font-family="Lora,serif" font-size="20" fill="#5B3A50">la</text><text x="8" y="136" font-family="Gochi Hand,cursive" font-size="9" fill="#5B3A50">ISSUE 01 · EXAMPLE</text><path d="M96 40l3 7 7 1-5 5 1 7-6-4-6 4 1-7-5-5 7-1z" fill="#E9C25A"/></svg>'''
 
-import re, html as _html
+import re, html as _html, zlib
 from _articles import ARTICLES
+# Rebel quotes (Moxie zine refresh, Oct 2026): ONE data file, js/quotes.js, shared with the browser.
+QUOTES=json.loads(open(os.path.join(OUT,'js','quotes.js')).read().split('window.REBELLA_QUOTES =',1)[1].strip().rstrip(';'))
+def rebel_quote(seed):
+    """Cut-out paper quote card. Pre-rendered (stable per page+slot) so it's never blank without JS;
+    js/quotes-render.js swaps in a random quote on every page load."""
+    q=QUOTES[zlib.crc32(seed.encode())%len(QUOTES)]
+    e=lambda t:_html.escape(t,quote=True)
+    return (f'<aside class="rebel-quote" data-rebel-quote aria-label="Rebel quote"><figure class="rq-paper">'
+            f'<blockquote class="rq-text" cite="{e(q["source"])}"><p>{e(q["quote"])}</p></blockquote>'
+            f'<figcaption class="rq-cap"><span class="rq-person">{e(q["person"])}</span><span class="rq-who">{e(q["who"])}</span>'
+            f'<a class="rq-src" href="{e(q["source"])}" rel="noopener">Source: {e(q["context"])}</a></figcaption></figure></aside>')
+TEAR='<div class="zine-tear" aria-hidden="true"></div>'
+def ransom(text):
+    """Cut-out-letter (ransom note) heading text. Screen readers get the plain text; letters are decorative."""
+    t=_html.unescape(text); i=0; words=[]
+    for w in t.split(' '):
+        letters=''
+        for ch in w:
+            letters+=f'<span class="rl rl{(i*7+3)%6}">{_html.escape(ch)}</span>'; i+=1
+        words.append(f'<span class="rw">{letters}</span>')
+    return f'<span class="sr-only">{_html.escape(t)}</span><span class="ransom" aria-hidden="true">{" ".join(words)}</span>'
 SITE='https://edgerequals.github.io/rebella/'
 UPDATED='2026-10-23'
 CATNAME=dict(CATS)
@@ -129,11 +150,14 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <meta name="twitter:image" content="{SITE}{og_img}">{head_more}
 <meta name="referrer" content="no-referrer">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&display=swap">
-<link rel="stylesheet" href="css/styles.css?v=3">
-<script src="js/main.js"></script>{extra_head}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&family=Special+Elite&display=swap">
+<link rel="stylesheet" href="css/styles.css?v=4">
+<link rel="stylesheet" href="css/zine.css?v=1">
+<script src="js/main.js"></script>
+<script src="js/quotes.js" defer></script>
+<script src="js/quotes-render.js" defer></script>{extra_head}
 </head>
-<body>
+<body class="zine">
 <a class="skip" href="#main">Skip to content</a>
 <a class="escape" href="index.html" data-escape aria-label="Emergency stop: leave this page now and go to the Rebella homepage">
   <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M15 2h18l13 13v18L33 46H15L2 33V15z" fill="#fff"/><path d="M16.5 6h15L42 16.5v15L31.5 42h-15L6 31.5v-15z" fill="#B23A35"/><rect x="13" y="20.5" width="22" height="7" rx="3.5" fill="#fff"/></svg>
@@ -201,7 +225,7 @@ HOME_LATER=['talk-money-with-your-family','no-bake-oat-cookies','living-on-mars'
 moon=BY['moon-garden']
 home=f'''<main id="main">
 <section class="site-intro container">
-  <h1 class="hand">Learn what you love.</h1>
+  <h1 class="hand ransom-h">{ransom("Learn what you love.")}</h1>
   <p>Rebella is an online magazine for teen girls: a safe, fun and cool place to learn and grow with things you actually want to. Make-it projects, big questions about space and science, books, feel-good ideas and real advice. If you've been searching for <strong>fun websites for teens</strong>, or <strong>educational and cool sites for girls</strong>, welcome. You're in the right place.</p>
 </section>
 <section class="hero container c-questions">
@@ -210,19 +234,27 @@ home=f'''<main id="main">
 </section>
 <div class="container feed-wrap">
   <div class="feed"><h2 class="section-title">Fresh this week</h2>
-  {''.join(card(s) for s in HOME_FIRST)}
+  {''.join(card(s) for s in HOME_FIRST[:3])}
+  {rebel_quote('index-1')}
+  {''.join(card(s) for s in HOME_FIRST[3:])}
   <h2 class="featured-title">Featured</h2>
   {card('reader-art-wall-home')}
   </div>
   {sidebar(True)}
 </div>
+{TEAR}
 {pillars()}
+<div class="container quote-row">{rebel_quote('index-2')}</div>
 {CREATE_PROMO}
+{TEAR}
 <div class="container feed-wrap">
-  <div class="feed">{''.join(card(s) for s in HOME_LATER)}
+  <div class="feed">{''.join(card(s) for s in HOME_LATER[:2])}
+  {rebel_quote('index-3')}
+  {''.join(card(s) for s in HOME_LATER[2:])}
   <p class="all-link"><a class="btn btn-info dots-aqua" href="category.html">See all articles</a></p></div>
   {sidebar(False)}
 </div>
+{TEAR}
 {FOLLOW}
 {NEWSLETTER}
 </main>'''
@@ -231,16 +263,19 @@ def cat_page(k):
     lead,_=CAT_INFO[k]
     posts=[a for a in ARTICLES if a['cat']==k]
     return f'''<main id="main" class="c-{k}">
-<header class="page-header container"><span class="cat-chip">Section</span><h1 class="page-title">{CATNAME[k]}</h1><p class="lead-banner">{lead}</p></header>
+<header class="page-header container"><span class="cat-chip">Section</span><h1 class="page-title ransom-h">{ransom(CATNAME[k])}</h1><p class="lead-banner">{lead}</p></header>
 <div class="container feed-wrap">
-  <div class="feed">{''.join(card(a['slug']) for a in posts)}
+  <div class="feed">{''.join(card(a['slug']) for a in posts[:2])}
+  {rebel_quote('cat-'+k+'-1')}
+  {''.join(card(a['slug']) for a in posts[2:])}
+  {rebel_quote('cat-'+k+'-2') if len(posts)>3 else ''}
   <p class="all-link"><a class="btn btn-info dots-aqua" href="category.html">See all articles</a></p></div>
   {sidebar(True)}
 </div>
 </main>'''
 
 def all_page():
-    secs=''.join(f'<section class="all-section c-{k}" aria-labelledby="sec-{k}"><h2 id="sec-{k}" class="section-title"><a href="{catlink(k)}">{n}</a></h2>{"".join(card(a["slug"]) for a in ARTICLES if a["cat"]==k)}</section>' for k,n in CATS)
+    secs=''.join((rebel_quote('all-'+k) if i in (2,4) else '')+f'<section class="all-section c-{k}" aria-labelledby="sec-{k}"><h2 id="sec-{k}" class="section-title"><a href="{catlink(k)}">{n}</a></h2>{"".join(card(a["slug"]) for a in ARTICLES if a["cat"]==k)}</section>' for i,(k,n) in enumerate(CATS))
     return f'''<main id="main" class="c-voice">
 <header class="page-header container"><span class="cat-chip">Explore</span><h1 class="page-title">All articles</h1><p class="lead-banner">Every Rebella article, sorted by section. Pick something you love and dive in.</p></header>
 <div class="container feed-wrap">
@@ -277,6 +312,7 @@ def article_page(a):
     <figure class="feature-art">{photo(a["img"],'photo',True)}<span class="band">{CATNAME[k]}</span><figcaption class="photo-credit">Photo: {c['artist']}, {c['licLabel'].split(' (')[0]}, via <a href="{c['page']}" rel="noopener">Wikimedia Commons</a></figcaption></figure>
     <p class="lead">{a["lead"]}</p>
     {a["body"]}
+    {rebel_quote('art-'+a['slug'])}
     {SUPPORT if a.get('support') else ''}
     <hr>
     <div class="author-box"><div class="avatar">{thumb('voice','i-star')}</div><div><strong>Written by the Rebella team</strong><br><small>Spotted a mistake? We check our facts, and we'll fix it.</small></div></div>
