@@ -7,8 +7,11 @@
     if (!has(url) || !/^https:\/\//i.test(url.trim())) return null;
     var a = el('a', 'rec-link', text); a.href = url.trim(); a.rel = 'noopener nofollow noreferrer'; a.target = '_blank'; return a;
   }
-  function why(body, text, label) {
-    if (!has(text)) return;
+  function why(body, text, label, soon) {
+    if (!has(text)) {
+      if (!soon) return;
+      var ph = el('p', 'placeholder why'); ph.appendChild(el('span', 'ph-chip', 'Placeholder')); ph.appendChild(document.createTextNode((label || 'Why I chose this') + ': coming soon.')); body.appendChild(ph); return;
+    }
     var p = el('p', 'why'); p.appendChild(el('strong', null, (label || 'Why I chose this') + ': ')); p.appendChild(document.createTextNode(text)); body.appendChild(p);
   }
   function fill(key, build) {
@@ -21,30 +24,30 @@
     var s = R.song || {}; if (!has(s.title)) return false;
     b.appendChild(el('p', 'rec-title', s.title));
     if (has(s.artist)) b.appendChild(el('p', 'rec-sub', 'by ' + s.artist));
-    why(b, s.why);
+    why(b, s.why, null, true);
     var a = safeLink(s.link, 'Listen (opens another site)'); if (a) b.appendChild(a);
     return true;
   });
   fill('celebrity', function (b) {
-    var c = R.celebrity || {}; if (!has(c.name) || !has(c.deed)) return false;
+    var c = R.celebrity || {}; if (!has(c.name)) return false;
     b.appendChild(el('p', 'rec-title', c.name));
     if (has(c.who)) b.appendChild(el('p', 'rec-sub', c.who));
-    var d = el('p'); d.appendChild(el('strong', null, 'Kind deed: ')); d.appendChild(document.createTextNode(c.deed)); b.appendChild(d);
-    why(b, c.why);
-    var a = safeLink(c.source, 'Read the story'); if (a) b.appendChild(a);
+    if (has(c.deed)) { var d = el('p'); d.appendChild(el('strong', null, 'Kind deed: ')); d.appendChild(document.createTextNode(c.deed)); b.appendChild(d); }
+    why(b, c.why, 'Why she\u2019s rightfully famous', true);
+    var a = safeLink(c.source, 'Read more about her'); if (a) b.appendChild(a);
     return true;
   });
   fill('quote', function (b) {
     var q = R.quote || {}; if (!has(q.text)) return false;
     var bq = el('blockquote', 'rec-quote', '\u201C' + q.text + '\u201D'); b.appendChild(bq);
-    if (has(q.by)) b.appendChild(el('p', 'rec-sub', '\u2014 ' + q.by));
-    why(b, q.why);
+    b.appendChild(el('p', 'rec-sub', '\u2014 ' + (has(q.by) ? q.by : 'Author unknown')));
+    why(b, q.why, null, true);
     return true;
   });
   fill('goal', function (b) {
     var g = R.goal || {}; if (!has(g.goal)) return false;
     b.appendChild(el('p', 'rec-title', g.goal));
-    why(b, g.why);
+    why(b, g.why, null, true);
     return true;
   });
   fill('other', function (b) {

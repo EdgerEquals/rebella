@@ -6,37 +6,40 @@
      shows a friendly "coming soon" placeholder for that section instead.
    - Links must start with https:// (songs and videos are LINKS only: never
      upload audio to the site).
-   - For the celebrity's kind deed, add a "source" link to a trustworthy news
-     article so readers (and Bonnie) can check it really happened.
+   - "Rightfully Famous" (the celebrity block): add a "source" link to a
+     trustworthy news article so readers (and Bonnie) can check it's true.
+     Leave "source" empty rather than guess.
+   - Any "why" left as "" shows "coming soon" for that note.
    - About me: interests only. NO name, school, suburb, age or photos.
    - Bonnie checks every update before it goes live.
    ========================================================================== */
 window.REBELLA_RECS = {
-  updated: "",            // e.g. "Week of 26 October 2026"
+  updated: "Week of 23 October 2026",
 
   song: {
-    title: "",            // song name
-    artist: "",           // who sings it
-    why: "",              // why I chose this
-    link: ""              // optional https:// link to the song (e.g. a music site)
+    title: "Tattoos",     // song name
+    artist: "Natalie Jane", // who sings it
+    why: "",              // why I chose this (coming soon)
+    link: "https://www.youtube.com/watch?v=Zw8r03tVVFg"  // official video (NatalieJaneVEVO)
   },
 
+  // "Rightfully Famous" section (key stays "celebrity" so nothing else breaks)
   celebrity: {
-    name: "",             // who they are
-    who: "",              // one line: what they're known for
-    deed: "",             // the kind thing they did
-    why: "",              // why I chose them
-    source: ""            // https:// link to a news story about the kind deed
+    name: "Spencer Barbosa", // who they are
+    who: "Canadian TikTok creator who shares self-love and body-acceptance videos and talks openly about being bullied at school.",
+    deed: "",             // optional: one specific kind thing they did
+    why: "For standing up against bullying and using her fame to encourage everyone to be a better, kinder person.",
+    source: "https://ca.style.yahoo.com/tiktok-star-spencer-barbosa-interview-193504407.html"  // Yahoo Canada interview, Aug 2023
   },
 
   quote: {
-    text: "",             // the quote, without quote marks
-    by: "",               // who said it
+    text: "Change the world with your smile, but don't let the world change your smile",  // without quote marks
+    by: "",               // who said it: left empty because its origin is unclear (shows "Author unknown")
     why: ""               // why I chose it
   },
 
   goal: {
-    goal: "",             // the goal for everyone this week
+    goal: "Compliment a stranger.", // the goal for everyone this week
     why: ""               // why I chose it
   },
 
