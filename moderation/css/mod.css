@@ -198,3 +198,20 @@ body:not(.locked){background:var(--pk-pale,#FDEEF2);color:#3D1226}
 .inline-msg{flex-basis:100%;margin:0;font-size:.95rem;min-height:0}
 .inline-msg:empty{display:none}
 @media(max-width:575px){.ip-btns .btn,.cs-btns .btn{flex:1}}
+/* ===== STATIC BARS (unlocked dashboard only; gate untouched). Header pinned to the top, footer pinned to the bottom.
+   No sticky, transform, transition or scroll JS on the bars; js/bars.js only measures their height for the content padding. ===== */
+#app .app-head{position:fixed;top:0;left:0;right:0;z-index:50;transform:none;transition:none;animation:none;
+  padding-top:env(safe-area-inset-top,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px);
+  background:#000;max-height:calc(100% - var(--app-foot-h,60px));overflow-y:auto;overscroll-behavior:contain}
+#app .footer{position:fixed;bottom:0;left:0;right:0;z-index:50;transform:none;transition:none;animation:none;
+  padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+body:not(.locked) #app{padding-top:var(--app-head-h,190px);padding-bottom:var(--app-foot-h,90px)}
+#app main{scroll-margin-top:var(--app-head-h,190px)}
+/* Header background: black (was plum #6B1F3D top bar + white #FFFFFF masthead). Header text colours lifted for >= 4.5:1 on #000. */
+#app .app-head .topbar,#app .app-head .masthead{background:#000}
+#app .app-head .masthead{border-bottom-color:var(--pk-mid)}
+#app .app-head .wordmark .script{color:#F48FB1}
+#app .app-head .wordmark .serif{color:#FDEEF2}
+#app .app-head .inline-msg{color:#FDEEF2}
+#app .app-head .confirm-strip.danger{color:#3D1226}
+/* ===== END STATIC BARS ===== */
