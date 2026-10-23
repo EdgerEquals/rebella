@@ -114,10 +114,10 @@
       .catch(function(){}).then(function(){ setTimeout(function(){ checking[id] = false; }, 15000); });
   }
   setInterval(function(){ if(isUnlocked()) render(); }, 20000);
-  setInterval(async function(){   // pick up queue changes (new scan, other devices) every 2 minutes
+  setInterval(async function(){   // pick up queue changes (top-ups, new scans, other devices) every minute
     if(!isUnlocked()) return;
     try{ var doc = await fetchQueueDoc(); await openQueue(doc); render(); }catch(e){}
-  }, 120000);
+  }, 60000);
 
   function pipeLine(it, r){
     var rm = remote[it.id], url = (r && r.url) || (rm && rm.url) || it.url;
