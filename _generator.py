@@ -407,6 +407,7 @@ PAGES.append(('credits.html','Photo credits | Rebella',credits_page(),'Credits f
 PAGES.append(('article.html','This page has moved | Rebella',MOVED,'This page has moved. Rebella now has a page for every article.',None,'','img/articles/moon.jpg','website',ahref(moon),KEYWORDS,f'\n<meta http-equiv="refresh" content="0; url={ahref(moon)}">',False,None))
 
 if MUSIC_SECTION: from music._music import install; page=install(PAGES,page,globals())  # Music section hook (see music/REMOVE.md)
+if MUSIC_SECTION and os.path.isdir(os.path.join(OUT,'music','playground')): from music.playground._playground import install as _pg; page=_pg(PAGES,page,globals())  # MUSIC PLAYGROUND hook (see music/playground/REMOVE.md)
 os.makedirs(os.path.join(OUT,'articles'),exist_ok=True)
 sm=[]
 for path,t,b,d,act,x,img,typ,can,kw,hm,insm,pri in PAGES:
