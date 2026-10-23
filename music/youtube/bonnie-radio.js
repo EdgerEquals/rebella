@@ -19,10 +19,10 @@
   'use strict';
   var PHI = 1.6180339887, G = 0.6180339887;
   function P(n) { return Math.pow(PHI, n); }
-  var host = document.querySelector('[data-bonnie-radio]'); if (!host) return;
+  var host = document.querySelector('[data-bonnie-radio]');
   var DATA = window.BONNIE_STATIONS || { genres: [], main: [], pools: {} };
   var ID_RE = /^[A-Za-z0-9_-]{12,64}$/, HOSTYT = 'https://www.youtube-nocookie.com';
-  var PG = host.getAttribute('data-variant') === 'playground';
+  var PG = !!host && host.getAttribute('data-variant') === 'playground';
   function emit(n, d) { try { document.dispatchEvent(new CustomEvent(n, { detail: d })); } catch (e) {} }
   var reduce = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
   var GEN = (DATA.genres && DATA.genres.length) ? DATA.genres : [
@@ -44,63 +44,6 @@
   var order = null;
   try { order = JSON.parse(sessionStorage.getItem(KEY) || 'null'); } catch (e) {}
   if (!order || order.length !== N) { order = shuffled(); try { sessionStorage.setItem(KEY, JSON.stringify(order)); } catch (e) {} }
-
-  // ---- UI ----
-  var wrap = el('div', 'br');
-  var intro = el('p', 'br-intro', PG ? 'Turn the dial to pick a station. Your band below follows its tempo and key. Music plays from YouTube, only after you press play.' : 'Music picked by Bonnie. It plays from YouTube, only after you press play.');
-  var play = el('button', 'br-play'); play.type = 'button';
-  var pIco = el('span', 'br-play-ico', '\u25B6'); pIco.setAttribute('aria-hidden', 'true');
-  var pTxt = el('span', 'br-play-txt', "Play Bonnie's playlist (from YouTube)");
-  play.appendChild(pIco); play.appendChild(pTxt); play.setAttribute('data-help', 'radio-play');
-
-  var tuner = el('div', 'br-tuner');
-  var dial = el('div', 'br-dial');
-  dial.tabIndex = 0;
-  dial.setAttribute('role', 'slider'); dial.setAttribute('aria-label', 'Genre tuner');
-  dial.setAttribute('aria-valuemin', '0'); dial.setAttribute('aria-valuemax', String(N - 1));
-  dial.setAttribute('aria-describedby', 'br-dial-help'); dial.setAttribute('data-help', 'dial');
-  var svgNS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(svgNS, 'svg');
-  svg.setAttribute('viewBox', '0 0 120 120'); svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('class', 'br-face');
-  var ring = document.createElementNS(svgNS, 'circle'); ring.setAttribute('cx', '60'); ring.setAttribute('cy', '60'); ring.setAttribute('r', '46'); ring.setAttribute('class', 'br-ring'); svg.appendChild(ring);
-  for (var i = 0; i < N; i++) {
-    var a = (A0 + i * STEP) * Math.PI / 180, tk = document.createElementNS(svgNS, 'line');
-    tk.setAttribute('x1', String(60 + Math.sin(a) * 50)); tk.setAttribute('y1', String(60 - Math.cos(a) * 50));
-    tk.setAttribute('x2', String(60 + Math.sin(a) * 57)); tk.setAttribute('y2', String(60 - Math.cos(a) * 57));
-    tk.setAttribute('class', 'br-tick'); svg.appendChild(tk);
-  }
-  var knob = document.createElementNS(svgNS, 'circle'); knob.setAttribute('cx', '60'); knob.setAttribute('cy', '60'); knob.setAttribute('r', '34'); knob.setAttribute('class', 'br-knob'); svg.appendChild(knob);
-  var needleG = document.createElementNS(svgNS, 'g'); needleG.setAttribute('class', 'br-needle');
-  var sway = document.createElementNS(svgNS, 'g'); sway.setAttribute('class', 'br-sway');
-  var nd = document.createElementNS(svgNS, 'line'); nd.setAttribute('x1', '60'); nd.setAttribute('y1', '60'); nd.setAttribute('x2', '60'); nd.setAttribute('y2', '18'); nd.setAttribute('class', 'br-nd');
-  var hub = document.createElementNS(svgNS, 'circle'); hub.setAttribute('cx', '60'); hub.setAttribute('cy', '60'); hub.setAttribute('r', '5'); hub.setAttribute('class', 'br-hub');
-  sway.appendChild(nd); needleG.appendChild(sway); svg.appendChild(needleG); svg.appendChild(hub);
-  dial.appendChild(svg);
-  var tside = el('div', 'br-tside');
-  var tuned = el('p', 'br-tuned'); tuned.setAttribute('aria-live', 'polite');
-  var help = el('p', 'br-help', 'Turn the dial to change station. Double-tap it (or press R) to shuffle the stations.'); help.id = 'br-dial-help';
-  var mute = el('button', 'br-mute'); mute.type = 'button'; mute.setAttribute('data-help', 'radio-mute');
-  tside.appendChild(tuned); tside.appendChild(help); tside.appendChild(mute);
-  tuner.appendChild(dial); tuner.appendChild(tside);
-  var status = el('p', 'br-status'); status.setAttribute('role', 'status');
-  wrap.appendChild(intro); wrap.appendChild(play); wrap.appendChild(tuner); wrap.appendChild(status);
-  host.appendChild(wrap);
-
-  // the mini-player panel (only built on the first press)
-  var panel = el('section', 'br-panel'); panel.hidden = true; panel.setAttribute('aria-label', "Bonnie's radio player"); panel.setAttribute('data-help', 'player');
-  var frame = el('div', 'br-frame'), pside = el('div', 'br-pside');
-  var ptitle = el('p', 'br-ptitle', "Bonnie's radio"), pnow = el('p', 'br-pnow');
-  var ctl = el('div', 'br-ctl');
-  function cb(cls, label, g) { var b = el('button', 'br-btn ' + cls); b.type = 'button'; b.setAttribute('aria-label', label); b.title = label; var s = el('span', '', g); s.setAttribute('aria-hidden', 'true'); b.appendChild(s); return b; }
-  var bNext = cb('br-next', 'Next song (random)', '\u23ED'), bStop = cb('br-stop', 'Stop the music and close the player', '\u2715');
-  ctl.appendChild(bNext); ctl.appendChild(bStop);
-  var legal = el('p', 'br-legal'); legal.appendChild(document.createTextNode('Plays from YouTube \u00B7 '));
-  var aT = el('a', '', 'YouTube Terms'); aT.href = 'https://www.youtube.com/t/terms';
-  var aP = el('a', '', 'Google Privacy'); aP.href = 'https://policies.google.com/privacy';
-  [aT, aP].forEach(function (x) { x.target = '_blank'; x.rel = 'noopener'; });
-  legal.appendChild(aT); legal.appendChild(document.createTextNode(' \u00B7 ')); legal.appendChild(aP);
-  pside.appendChild(ptitle); pside.appendChild(pnow); pside.appendChild(ctl); pside.appendChild(legal);
-  panel.appendChild(frame); panel.appendChild(pside);
-  document.body.appendChild(panel);
 
   // ---- Web Audio: static + clicks (separate from the player) ----
   var AC = window.AudioContext || window.webkitAudioContext, ac = null, sGain = null, master = null, muted = false;
@@ -133,6 +76,104 @@
   }
   var lastBuzz = 0;
   function buzz(ms) { try { var now = Date.now(); if (navigator.vibrate && now - lastBuzz >= P(1) * 1000) { lastBuzz = now; navigator.vibrate(ms); } } catch (e) {} }
+
+  // ---- shared dial face (main dial + header dial use the same drawing and classes) ----
+  var svgNS = 'http://www.w3.org/2000/svg';
+  function svgEl(t, at) { var n = document.createElementNS(svgNS, t); Object.keys(at).forEach(function (k) { n.setAttribute(k, String(at[k])); }); return n; }
+  function face() {
+    var svg = svgEl('svg', { viewBox: '0 0 120 120', 'aria-hidden': 'true', 'class': 'br-face' });
+    svg.appendChild(svgEl('circle', { cx: 60, cy: 60, r: 46, 'class': 'br-ring' }));
+    for (var i = 0; i < N; i++) { var a = (A0 + i * STEP) * Math.PI / 180;
+      svg.appendChild(svgEl('line', { x1: 60 + Math.sin(a) * 50, y1: 60 - Math.cos(a) * 50, x2: 60 + Math.sin(a) * 57, y2: 60 - Math.cos(a) * 57, 'class': 'br-tick' })); }
+    svg.appendChild(svgEl('circle', { cx: 60, cy: 60, r: 34, 'class': 'br-knob' }));
+    var needleG = svgEl('g', { 'class': 'br-needle' }), sway = svgEl('g', { 'class': 'br-sway' });
+    sway.appendChild(svgEl('line', { x1: 60, y1: 60, x2: 60, y2: 18, 'class': 'br-nd' })); needleG.appendChild(sway); svg.appendChild(needleG);
+    svg.appendChild(svgEl('circle', { cx: 60, cy: 60, r: 5, 'class': 'br-hub' }));
+    return { svg: svg, needle: needleG, sway: sway };
+  }
+  function idxOfKey(k) { for (var i = 0; i < N; i++) if (GEN[order[i]].key === k) return i; return -1; }
+  var chParam = null; try { chParam = new URLSearchParams(location.search).get('ch'); } catch (e) {}
+  if (chParam && !/^[a-z0-9-]{1,32}$/.test(chParam)) chParam = null;   // a genre key only; never an id, never loads anything
+
+  // ---- header radio dial: a compact copy of the same dial in the shared header. Turning steps through the stations
+  //      (detents, click + haptic); pressing goes to the radio on the Music Playground with that station picked.
+  //      Never plays, never loads YouTube, no pop-up. ----
+  (function mini() {
+    var mh = document.querySelector('[data-radio-mini]'); if (!mh) return;
+    var link = mh.querySelector('a'), dest = link ? link.getAttribute('href') : 'music/playground/#radio';
+    var d = el('span', 'br-mini'); d.tabIndex = 0;
+    d.setAttribute('role', 'slider'); d.setAttribute('aria-label', 'Rebella radio'); d.setAttribute('aria-valuemin', '0'); d.setAttribute('aria-valuemax', String(N - 1));
+    d.setAttribute('aria-describedby', 'br-mini-help'); d.setAttribute('data-help', 'radio-mini');
+    var f = face(); f.sway.style.animation = 'none';
+    var lab = el('span', 'br-mini-lab', 'Radio'); lab.setAttribute('aria-hidden', 'true');
+    var hp = el('span', 'sr-only', 'Turn to choose a station, press Enter to go to the radio.'); hp.id = 'br-mini-help';
+    d.appendChild(f.svg); mh.innerHTML = ''; mh.appendChild(d); mh.appendChild(lab); mh.appendChild(hp);
+    var i0 = chParam ? idxOfKey(chParam) : -1, at = i0 >= 0 ? i0 : 0;
+    try { var sv = +sessionStorage.getItem('rebella.radio.mini'); if (i0 < 0 && sv >= 0 && sv < N) at = sv; } catch (e) {}
+    function paint() { f.needle.style.transform = 'rotate(' + (A0 + at * STEP) + 'deg)'; d.setAttribute('aria-valuenow', String(at)); d.setAttribute('aria-valuetext', GEN[order[at]].label); d.title = 'Rebella radio: ' + GEN[order[at]].label; }
+    function step(n) { var j = Math.max(0, Math.min(N - 1, at + n)); if (j === at) return; at = j; audio(); if (ac && ac.resume) try { ac.resume(); } catch (x) {} click(); buzz(8); paint(); try { sessionStorage.setItem('rebella.radio.mini', String(at)); } catch (e) {} }
+    function go() {
+      var k = GEN[order[at]].key;
+      if (window.BonnieRadio && PG) { window.BonnieRadio.select(k, true); return; }        // already on the Playground: no reload
+      var u = new URL(dest, location.href); u.searchParams.set('ch', k); u.hash = 'radio'; location.href = u.href;
+    }
+    var dr = null, wheelT = 0;
+    d.addEventListener('pointerdown', function (e) { dr = { id: e.pointerId, y: e.clientY, x: e.clientX, acc: 0, moved: false }; try { d.setPointerCapture(e.pointerId); } catch (x) {} e.preventDefault(); });
+    d.addEventListener('pointermove', function (e) { if (!dr || e.pointerId !== dr.id) return; var v = (e.clientX - dr.x) - (e.clientY - dr.y); dr.x = e.clientX; dr.y = e.clientY; dr.acc += v;
+      if (Math.abs(dr.acc) > 14) { dr.moved = true; step(dr.acc > 0 ? 1 : -1); dr.acc = 0; } });
+    function up(e) { if (!dr || (e && e.pointerId !== dr.id)) return; var m = dr.moved; dr = null; if (!m && e.type === 'pointerup') go(); }
+    d.addEventListener('pointerup', up); d.addEventListener('pointercancel', up);
+    d.addEventListener('wheel', function (e) { e.preventDefault(); var t = performance.now(); if (t - wheelT < 140) return; wheelT = t; step(e.deltaY > 0 || e.deltaX > 0 ? 1 : -1); }, { passive: false });
+    d.addEventListener('keydown', function (e) { var k = e.key;
+      if (k === 'ArrowRight' || k === 'ArrowUp') step(1); else if (k === 'ArrowLeft' || k === 'ArrowDown') step(-1);
+      else if (k === 'Home') step(-N); else if (k === 'End') step(N); else if (k === 'Enter' || k === ' ') go(); else return; e.preventDefault(); });
+    paint();
+  })();
+
+  if (!host) return;
+  // ---- UI ----
+  var wrap = el('div', 'br');
+  var intro = el('p', 'br-intro', PG ? 'Turn the dial to pick a station. Your band below follows its tempo and key. Music plays from YouTube, only after you press play.' : 'Music picked by Bonnie. It plays from YouTube, only after you press play.');
+  var play = el('button', 'br-play'); play.type = 'button';
+  var pIco = el('span', 'br-play-ico', '\u25B6'); pIco.setAttribute('aria-hidden', 'true');
+  var pTxt = el('span', 'br-play-txt', "Play Bonnie's playlist (from YouTube)");
+  play.appendChild(pIco); play.appendChild(pTxt); play.setAttribute('data-help', 'radio-play');
+
+  var tuner = el('div', 'br-tuner');
+  var dial = el('div', 'br-dial');
+  dial.tabIndex = 0;
+  dial.setAttribute('role', 'slider'); dial.setAttribute('aria-label', 'Genre tuner');
+  dial.setAttribute('aria-valuemin', '0'); dial.setAttribute('aria-valuemax', String(N - 1));
+  dial.setAttribute('aria-describedby', 'br-dial-help'); dial.setAttribute('data-help', 'dial');
+  var F = face(), svg = F.svg, needleG = F.needle, sway = F.sway;
+  dial.appendChild(svg);
+  var tside = el('div', 'br-tside');
+  var tuned = el('p', 'br-tuned'); tuned.setAttribute('aria-live', 'polite');
+  var help = el('p', 'br-help', 'Turn the dial to change station. Double-tap it (or press R) to shuffle the stations.'); help.id = 'br-dial-help';
+  var mute = el('button', 'br-mute'); mute.type = 'button'; mute.setAttribute('data-help', 'radio-mute');
+  tside.appendChild(tuned); tside.appendChild(help); tside.appendChild(mute);
+  tuner.appendChild(dial); tuner.appendChild(tside);
+  var status = el('p', 'br-status'); status.setAttribute('role', 'status');
+  wrap.appendChild(intro); wrap.appendChild(play); wrap.appendChild(tuner); wrap.appendChild(status);
+  host.appendChild(wrap);
+
+  // the mini-player panel (only built on the first press)
+  var panel = el('section', 'br-panel'); panel.hidden = true; panel.setAttribute('aria-label', "Bonnie's radio player"); panel.setAttribute('data-help', 'player');
+  var frame = el('div', 'br-frame'), pside = el('div', 'br-pside');
+  var ptitle = el('p', 'br-ptitle', "Bonnie's radio"), pnow = el('p', 'br-pnow');
+  var ctl = el('div', 'br-ctl');
+  function cb(cls, label, g) { var b = el('button', 'br-btn ' + cls); b.type = 'button'; b.setAttribute('aria-label', label); b.title = label; var s = el('span', '', g); s.setAttribute('aria-hidden', 'true'); b.appendChild(s); return b; }
+  var bNext = cb('br-next', 'Next song (random)', '\u23ED'), bStop = cb('br-stop', 'Stop the music and close the player', '\u2715');
+  ctl.appendChild(bNext); ctl.appendChild(bStop);
+  var legal = el('p', 'br-legal'); legal.appendChild(document.createTextNode('Plays from YouTube \u00B7 '));
+  var aT = el('a', '', 'YouTube Terms'); aT.href = 'https://www.youtube.com/t/terms';
+  var aP = el('a', '', 'Google Privacy'); aP.href = 'https://policies.google.com/privacy';
+  [aT, aP].forEach(function (x) { x.target = '_blank'; x.rel = 'noopener'; });
+  legal.appendChild(aT); legal.appendChild(document.createTextNode(' \u00B7 ')); legal.appendChild(aP);
+  pside.appendChild(ptitle); pside.appendChild(pnow); pside.appendChild(ctl); pside.appendChild(legal);
+  panel.appendChild(frame); panel.appendChild(pside);
+  document.body.appendChild(panel);
+
   function paintMute() {
     mute.textContent = muted ? '\uD83D\uDD07 Unmute' : '\uD83D\uDD08 Mute';
     mute.setAttribute('aria-pressed', muted ? 'true' : 'false');
@@ -282,6 +323,7 @@
   function station(g, initial) { var d = { initial: !!initial }; Object.keys(g).forEach(function (k) { d[k] = g[k]; }); return d; }
   function tune(g) {
     curGenre = g; emit('rebella:station', station(g, false));
+    if (PG) try { var u = new URL(location.href); u.searchParams.set('ch', g.key); history.replaceState(history.state, '', u.href); } catch (e) {}   // shareable station URL, no extra Back steps
     var pl = pool(g.key);
     if (!pl.length) { status.textContent = g.label + ' is tuning in soon ✨ Try another station, or come back later.'; wrap.setAttribute('data-soon', g.key); return; }
     wrap.removeAttribute('data-soon');
@@ -340,8 +382,17 @@
   sway.style.animationDuration = P(4).toFixed(3) + 's';
   sway.style.animationDelay = (-(P(4) * ((1 * G) % 1))).toFixed(3) + 's';
   if (reduce.matches) sway.style.animation = 'none';
+  function select(k, focus) {
+    var i = idxOfKey(k); if (i >= 0) { angle = A0 + i * STEP; setNeedle(angle, false); landed = i; paintTuned(i, false); tune(genreAt(i)); }
+    if (focus) { var hb = 0, fb = innerHeight; try { hb = document.getElementById('app-head').getBoundingClientRect().bottom; fb = document.getElementById('app-foot').getBoundingClientRect().top; } catch (e) {}
+      var r = dial.getBoundingClientRect(); window.scrollBy(0, r.top - (hb + Math.max(0, (fb - hb - r.height) / 2)));
+      try { dial.focus({ preventScroll: true }); } catch (e) { dial.focus(); } }
+  }
+  if (PG) host.id = host.id || 'radio';
+  var i1 = chParam ? idxOfKey(chParam) : -1; if (i1 >= 0) angle = A0 + i1 * STEP;
   setNeedle(angle, false); landed = nearest(angle); paintTuned(landed, false); paintMute(); curGenre = genreAt(landed);
   window.BonnieRadio = { get order() { return order.map(function (i) { return GEN[i].label; }); }, get genre() { return curGenre && curGenre.label; },
-    get station() { return curGenre ? station(curGenre, true) : null; }, reroll: reroll, land: land, playReading: playReading, setMuted: setMuted };
+    get station() { return curGenre ? station(curGenre, true) : null; }, reroll: reroll, land: land, select: select, playReading: playReading, setMuted: setMuted };
+  if (PG && location.hash === '#radio') { var foc = function () { select(curGenre.key, true); }; if (document.readyState === 'complete') setTimeout(foc, 50); else addEventListener('load', function () { setTimeout(foc, 50); }); }
   emit('rebella:station', station(curGenre, true));
 })();

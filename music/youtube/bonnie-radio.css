@@ -44,3 +44,15 @@
 .br-legal a{color:#fff;text-decoration:underline}
 @media (prefers-reduced-motion:reduce){.br-sway{animation:none!important}.br-needle{transition:none!important}}
 .br[data-soon] .br-status{color:#B0416A;font-weight:600}
+/* header radio dial (same face, compact): lives in the shared header on every page; colours come from the bar theme */
+.br-mini-host{display:inline-flex;align-items:center;gap:.35rem;flex:0 0 auto}
+.br-mini{display:inline-block;width:32px;height:32px;border-radius:50%;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;flex:0 0 32px}
+.br-mini:focus-visible{outline:3px solid var(--bar-focus,#8E2350);outline-offset:2px}
+.br-mini .br-ring{fill:var(--mini-ring,#8E2350)}
+.br-mini .br-tick{stroke:#FFFFFF;stroke-width:5}
+.br-mini .br-knob{fill:var(--mini-knob,#FFFFFF);stroke:var(--mini-ring,#8E2350);stroke-width:3}
+.br-mini .br-nd{stroke:var(--mini-needle,#8E2350);stroke-width:9}
+.br-mini .br-hub{fill:var(--mini-needle,#8E2350)}
+.br-mini .br-needle{transition:none}
+.br-mini-lab{font:700 .8rem/1 "Alegreya Sans",system-ui,sans-serif;letter-spacing:1.2px;text-transform:uppercase;color:var(--mini-ink,#5B3A50);white-space:nowrap}
+@media(max-width:400px){.br-mini-lab{display:none}}

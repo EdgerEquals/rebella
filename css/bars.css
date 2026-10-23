@@ -74,4 +74,15 @@ body.has-bars .escape{bottom:calc(var(--app-foot-h,60px) + 12px)}
 }
 @media (prefers-reduced-motion:reduce){#app-head .tagline,#app-foot .ft-line{transition:none}}
 @media print{.rb-bars{position:static!important}body.has-bars{padding:0}}
+/* static header (24 Oct 2026): logo image instead of web-font text, nothing in the header moves */
+#app-head,#app-head *{animation:none!important;transition:none!important}
+#app-head .wm-logo{display:inline-flex;align-items:center;line-height:0}
+#app-head .wm-logo img{display:block;height:47.5px;width:auto}
+@media(max-width:575px){#app-head .wm-logo img{height:36.4px}}
+#app-head .head-actions:empty{display:none}
+#app-head .bar-right{display:flex;align-items:center;gap:.9rem;flex:0 0 auto}
+/* header radio dial (mounted by music/youtube/bonnie-radio.js): compact, pinks, AA in both themes */
+.rb-bars[data-audience=visitor]{--mini-ring:#8E2350;--mini-knob:#FFFFFF;--mini-needle:#8E2350;--mini-ink:#5B3A50}
+.rb-bars[data-audience=bonnie]{--mini-ring:#F6C9D4;--mini-knob:#FFFFFF;--mini-needle:#8E2350;--mini-ink:#F6C9D4}
+#app-head .br-mini-link{font:700 .8rem/1 var(--f-body);letter-spacing:1.2px;text-transform:uppercase;color:var(--mini-ink);text-decoration:none;white-space:nowrap}
 /* ===== END SHARED BARS ===== */

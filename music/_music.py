@@ -90,7 +90,7 @@ def install(PAGES, page, G):
             assert anchor in s, 'music: anchor not found in ' + path + ': ' + anchor[:40]
             return s.replace(anchor, anchor + add if after else add + anchor, 1)
         fix = lambda s: s.replace('href="music/', 'href="' + pre + 'music/')
-        out = ins(out, '<span class="short" aria-hidden="true">Picks</span></a>', fix(NAV_PILL.replace('{cur}', cur)))
+        out = ins(out, '<div class="nav-right">', '\n    ' + fix(NAV_PILL.replace('{cur}', cur)))
         out = ins(out, '&#9733; Recommendations</a></li>', fix(DRAWER_LI))
         out = ins(out, '</head>', fix(SITE_CSS), after=False)
         if path == 'index.html':

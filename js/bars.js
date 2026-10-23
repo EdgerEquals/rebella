@@ -73,9 +73,7 @@
     if (!greet || greet.textContent === text) return;
     // the help orb may be showing an answer in this line: update what it will restore to instead
     if (greet.hasAttribute('data-help-busy')) { greet.setAttribute('data-help-original', text); return; }
-    if (reduce) { greet.textContent = text; return; }
-    greet.classList.add('fading');
-    setTimeout(function () { greet.textContent = text; greet.classList.remove('fading'); }, FADE);
+    greet.textContent = text;   // header is fully static (Danny, 24 Oct 2026): no fade, no motion
   }
   function show(state, rec, fresh) {
     ask.hidden = state !== 'ask'; known.hidden = state !== 'known'; form.hidden = state !== 'edit';

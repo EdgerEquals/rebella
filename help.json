@@ -3,7 +3,7 @@
  "entries": {
   "_miss": {
    "title": "Drop me on something",
-   "text": "Drag the orb onto any part of the page, like a button, a picture or a link. I'll tell you what it does."
+   "text": "Drag the orb onto anything that glows, like a button, a picture or a link."
   },
   "greeting": {
    "title": "Your hello",
@@ -353,9 +353,15 @@
    "text": "Silences the dial's static and clicks and the YouTube player. It remembers your choice.",
    "try": "Mute it, then turn the dial and feel the clicks instead."
   },
+  "radio-mini": {
+   "title": "Rebella radio",
+   "text": "A little radio dial. Turn it to choose a station, then press it to go to the radio on the Music Playground with that station ready. It never starts playing by itself.",
+   "try": "Turn it slowly and feel each click."
+  },
   "help-orb": {
    "title": "The help orb",
-   "text": "That's me. I'm the only way to ask questions here. Drag me onto anything and I'll explain it up top and down below."
+   "text": "That's me. Drag me onto anything with a glow and I'll explain it in a little box. Or tap me, then tap the thing you're curious about.",
+   "try": "Drag me onto the radio dial."
   }
  },
  "targets": [

@@ -14,8 +14,13 @@ import os
 HERE = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = open(os.path.join(HERE, '_bars.html')).read()
 
-WORDMARK_DASH = '<div class="wordmark small"><span class="script">rebel</span><span class="serif">la</span></div>'
-WORDMARK_SITE = '<a class="wordmark small" href="index.html" aria-label="Rebella home"><span class="script">rebel</span><span class="serif">la</span></a>'
+# Static logo (outlined vector wordmark, no web-font swap, no motion). Light = visitor theme, dark = black dashboard header.
+WORDMARK_DASH = '<div class="wordmark small wm-logo"><img src="img/rebella-wordmark-dark.svg" alt="Rebella" width="121" height="47" decoding="async"></div>'
+WORDMARK_SITE = '<a class="wordmark small wm-logo" href="index.html"><img src="img/rebella-wordmark-light.svg" alt="Rebella" width="121" height="47" decoding="async"></a>'
+# Header radio dial: js in music/youtube/bonnie-radio.js mounts a compact genre dial here (same dial, smaller).
+# Without JS it is a plain link to the radio on the Music Playground.
+RADIO_MINI = ('<span class="br-mini-host" data-radio-mini data-help="radio-mini">'
+              '<a class="br-mini-link" href="music/playground/#radio" aria-label="Rebella radio">&#128251; Radio</a></span>')
 
 WORDING = {
   'bonnie': dict(
@@ -28,11 +33,10 @@ WORDING = {
   'visitor': dict(
     # js/bars.js swaps this for "Hey Sam, ..." / "Welcome back, Sam" when the reader has chosen a nickname.
     tagline='Hey there, welcome to Rebella', greet_help='greeting',
-    top_right='<nav class="bar-links" aria-label="Utility"><a href="recommendations.html" data-help="picks-link">Picks</a>'
-              '<a href="category.html" data-help="all-articles">All articles</a><a href="submit.html" data-help="submit">Share your work</a></nav>',
+    top_right='<span class="bar-right"><nav class="bar-links" aria-label="Utility">'
+              '<a href="category.html" data-help="all-articles">All articles</a><a href="submit.html" data-help="submit">Share your work</a></nav>' + RADIO_MINI + '</span>',
     wordmark=WORDMARK_SITE, pill='Learn what you love',
-    actions='<a class="btn btn-info" href="create.html" data-help="create-pill">Make a board</a>'
-            '<a class="btn btn-secondary" href="recommendations.html" data-help="picks-link">See the picks</a>',
+    actions='',   # Create and Picks removed from the header (Danny, 24 Oct 2026); still in the phone menu, footer and page bodies
     foot_left='Rebella <span aria-hidden="true">&middot;</span> <a class="ft-cookies" href="cookies/" data-help="cookies">Cookies and your device</a>',
     foot_line='Made for curious minds like you',
     # Optional nickname: collapsed to one tappable phrase; js/bars.js expands it in place. No form is ever submitted.

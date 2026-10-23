@@ -85,8 +85,7 @@ def header(active=None):
   <button class="icon-btn burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><svg><use href="#i-burger"/></svg></button>
   <ul class="menu">{items}</ul>
   <div class="nav-right">
-    <a class="create-pill" href="create.html"{cur("create")}><svg aria-hidden="true"><use href="#i-sparkle"/></svg>Create</a>
-    <a class="create-pill recs-pill" href="recommendations.html"{cur("recs")} aria-label="Recommendations"><svg aria-hidden="true"><use href="#i-star"/></svg><span class="long">Recommendations</span><span class="short" aria-hidden="true">Picks</span></a>
+    <!-- Create and Picks links removed from the header nav (Danny, 24 Oct 2026); the pages stay, reachable from the phone menu, footer and page bodies -->
     <a class="social" href="#follow" aria-label="Facebook (placeholder)"><svg><use href="#i-fb"/></svg></a>
     <a class="social" href="#follow" aria-label="Instagram (placeholder)"><svg><use href="#i-ig"/></svg></a>
     <a class="sub-link" href="#newsletter">Join</a>
@@ -151,10 +150,13 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&family=Special+Elite&display=swap">
 <link rel="stylesheet" href="css/styles.css?v=5">
 <link rel="stylesheet" href="css/zine.css?v=5">
-<link rel="stylesheet" href="css/bars.css?v=1">
+<link rel="stylesheet" href="css/bars.css?v=2">
+<link rel="stylesheet" href="music/youtube/bonnie-radio.css?v=2">
 <script src="js/main.js"></script>
-<script src="js/bars.js?v=1" defer></script>
-<script src="js/help-orb.js?v=1" defer></script>
+<script src="js/bars.js?v=2" defer></script>
+<script src="music/youtube/stations.js?v=2" defer></script>
+<script src="music/youtube/bonnie-radio.js?v=2" defer></script>
+<script src="js/help-orb.js?v=2" defer></script>
 <script src="js/help-init.js?v=1" defer></script>
 <script src="js/quotes.js" defer></script>
 <script src="js/quotes-render.js" defer></script>{extra_head}
@@ -399,7 +401,7 @@ HOME_JSONLD='\n<script type="application/ld+json">'+json.dumps({"@context":"http
 PAGES=[]  # (path, title, body, desc, active, extra, og_img, og_type, canonical, keywords, head_more, in_sitemap, priority)
 PAGES.append(('index.html','Rebella | Learn what you love: fun websites for teens',home,
   "Learn what you love with Rebella, an online magazine for teen girls. Make-it projects, big questions, books and real advice: one of the fun websites for teens, and one of the educational and cool sites for girls.",
-  None,_yt_music.HEAD,'img/articles/moon.jpg','website',None,KEYWORDS,HOME_JSONLD,True,'1.0'))
+  None,'','img/articles/moon.jpg','website',None,KEYWORDS,HOME_JSONLD,True,'1.0'))
 PAGES.append(('category.html','All articles | Rebella',all_page(),'Every Rebella article in one place: crafts, science, books, friendships and feel-good ideas for teens who want to learn what they love.','all','','img/articles/pencils.jpg','website',None,KEYWORDS,'',True,'0.8'))
 for k,n in CATS:
     first=[a for a in ARTICLES if a['cat']==k][0]

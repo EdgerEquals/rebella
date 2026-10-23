@@ -24,10 +24,13 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&family=Special+Elite&display=swap">
 <link rel="stylesheet" href="../css/styles.css?v=5">
 <link rel="stylesheet" href="../css/zine.css?v=5">
-<link rel="stylesheet" href="../css/bars.css?v=1">
+<link rel="stylesheet" href="../css/bars.css?v=2">
+<link rel="stylesheet" href="../music/youtube/bonnie-radio.css?v=2">
 <script src="../js/main.js"></script>
-<script src="../js/bars.js?v=1" defer></script>
-<script src="../js/help-orb.js?v=1" defer></script>
+<script src="../js/bars.js?v=2" defer></script>
+<script src="../music/youtube/stations.js?v=2" defer></script>
+<script src="../music/youtube/bonnie-radio.js?v=2" defer></script>
+<script src="../js/help-orb.js?v=2" defer></script>
 <script src="../js/help-init.js?v=1" defer></script>
 <script src="../js/quotes.js" defer></script>
 <script src="../js/quotes-render.js" defer></script>
@@ -61,14 +64,14 @@
 <div class="app-head rb-bars" id="app-head" data-audience="visitor">
   <div class="topbar"><div class="container">
     <span class="tagline" id="bar-greet" data-help-slot="header" data-help="greeting">Hey there, welcome to Rebella</span>
-    <nav class="bar-links" aria-label="Utility"><a href="../recommendations.html" data-help="picks-link">Picks</a><a href="../category.html" data-help="all-articles">All articles</a><a href="../submit.html" data-help="submit">Share your work</a></nav>
+    <span class="bar-right"><nav class="bar-links" aria-label="Utility"><a href="../category.html" data-help="all-articles">All articles</a><a href="../submit.html" data-help="submit">Share your work</a></nav><span class="br-mini-host" data-radio-mini data-help="radio-mini"><a class="br-mini-link" href="../music/playground/#radio" aria-label="Rebella radio">&#128251; Radio</a></span></span>
   </div></div>
   <header class="masthead"><div class="container">
     <div class="brand">
-      <a class="wordmark small" href="../index.html" aria-label="Rebella home"><span class="script">rebel</span><span class="serif">la</span></a>
+      <a class="wordmark small wm-logo" href="../index.html"><img src="../img/rebella-wordmark-light.svg" alt="Rebella" width="121" height="47" decoding="async"></a>
       <span class="mod-pill">Learn what you love</span>
     </div>
-    <div class="head-actions"><a class="btn btn-info" href="../create.html" data-help="create-pill">Make a board</a><a class="btn btn-secondary" href="../recommendations.html" data-help="picks-link">See the picks</a></div>
+    <div class="head-actions"></div>
   </div></header>
 </div>
 
@@ -76,8 +79,8 @@
   <button class="icon-btn burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><svg><use href="#i-burger"/></svg></button>
   <ul class="menu"><li class="c-make"><a class="navlink" href="../category-make.html">Make It</a></li><li class="c-questions"><a class="navlink" href="../category-questions.html">Big Questions</a></li><li class="c-mind"><a class="navlink" href="../category-mind.html">Mind &amp; Body</a></li><li class="c-world"><a class="navlink" href="../category-world.html">Your World</a></li><li class="c-rwl"><a class="navlink" href="../category-rwl.html">Read Watch Listen</a></li><li class="c-voice"><a class="navlink" href="../category-voice.html">Your Voice</a></li></ul>
   <div class="nav-right">
-    <a class="create-pill" href="../create.html"><svg aria-hidden="true"><use href="#i-sparkle"/></svg>Create</a>
-    <a class="create-pill recs-pill" href="../recommendations.html" aria-label="Recommendations"><svg aria-hidden="true"><use href="#i-star"/></svg><span class="long">Recommendations</span><span class="short" aria-hidden="true">Picks</span></a><a class="create-pill music-pill" href="../music/index.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 17.5V6l11-2.5v11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><ellipse cx="6.4" cy="17.6" rx="3.2" ry="2.5" fill="currentColor"/><ellipse cx="17.4" cy="15" rx="3.2" ry="2.5" fill="currentColor"/></svg>Music</a>
+    <a class="create-pill music-pill" href="../music/index.html"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 17.5V6l11-2.5v11" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><ellipse cx="6.4" cy="17.6" rx="3.2" ry="2.5" fill="currentColor"/><ellipse cx="17.4" cy="15" rx="3.2" ry="2.5" fill="currentColor"/></svg>Music</a>
+    <!-- Create and Picks links removed from the header nav (Danny, 24 Oct 2026); the pages stay, reachable from the phone menu, footer and page bodies -->
     <a class="social" href="#follow" aria-label="Facebook (placeholder)"><svg><use href="#i-fb"/></svg></a>
     <a class="social" href="#follow" aria-label="Instagram (placeholder)"><svg><use href="#i-ig"/></svg></a>
     <a class="sub-link" href="#newsletter">Join</a>
