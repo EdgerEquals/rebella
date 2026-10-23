@@ -17,6 +17,22 @@
 
   function hex(buf){return Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,"0");}).join("");}
   function fromHex(h){var a=new Uint8Array(h.length/2);for(var i=0;i<a.length;i++)a[i]=parseInt(h.substr(i*2,2),16);return a;}
+  var linkState = "ok", linkAt = Date.now(), linkMs = null;   // did the last queue fetch work, and when (read by the footer)
+  // Tell the header/footer (js/hud.js, js/talk.js) what the dashboard really knows. Fires only once unlocked,
+  // and only carries what is already on screen (counts, titles, times), never the key or the relay topic.
+  function emitStatus(counts){
+    try{
+      var pend = ITEMS.filter(function(it){ return statusOf(it.id) === "pending"; });
+      var newest = ITEMS.filter(function(it){ return it.published; }).sort(function(a,b){ return a.published < b.published ? 1 : -1; })[0];
+      document.dispatchEvent(new CustomEvent("rebella:status", {detail:{
+        pending:counts.pending, approved:counts.approved, rejected:counts.rejected, all:counts.all,
+        updated:Q && Q.updated, link:linkState, linkAt:linkAt, linkMs:linkMs,
+        top:pend[0] ? {title:pend[0].title, score:pend[0].score} : null,
+        newest:newest ? {title:newest.title, date:newest.published} : null,
+        published:Q && Q.published ? Object.keys(Q.published).length : 0, liveChecked:Object.keys(live).length
+      }}));
+    }catch(e){}
+  }
   function safeEq(a,b){if(a.length!==b.length)return false;var r=0;for(var i=0;i<a.length;i++)r|=a.charCodeAt(i)^b.charCodeAt(i);return r===0;}
   async function derive(code){
     var key = await crypto.subtle.importKey("raw", new TextEncoder().encode(code), "PBKDF2", false, ["deriveBits"]);
@@ -63,7 +79,7 @@
       } else { fails++; input.value=""; msg.textContent="That passcode didn't work."; await new Promise(function(r){setTimeout(r, Math.min(4000, 400*fails));}); }
     } finally { btn.disabled = false; if(!isUnlocked()) input.focus(); }
   });
-  $("#lock").addEventListener("click", function(){ sessionStorage.removeItem(SKEY); sessionStorage.removeItem(KKEY); qkey=null; Q=null; ITEMS=[]; if(es){es.close(); es=null;} show(); });
+  $("#lock").addEventListener("click", function(){ sessionStorage.removeItem(SKEY); sessionStorage.removeItem(KKEY); qkey=null; Q=null; ITEMS=[]; if(es){es.close(); es=null;} try{ document.dispatchEvent(new CustomEvent("rebella:locked")); }catch(e){} show(); });
 
   // ---------- decisions ----------
   function load(){ try{ return JSON.parse(localStorage.getItem(DKEY)) || {}; }catch(e){ return {}; } }
@@ -84,6 +100,7 @@
     if(!r.ok) throw new Error("HTTP " + r.status);
   }
   async function decide(id, status, reason){
+    try{ document.dispatchEvent(new CustomEvent("rebella:decision", {detail:{n:ITEMS.findIndex(function(it){ return it.id === id; }) + 1, status:status}})); }catch(e){}
     var d = load(), now = new Date().toISOString();
     if(status === "pending") d[id] = {status:"pending", decidedAt:now, state:"sending"};
     else d[id] = {status:status, reason:reason||"", decidedAt:now, state:"sending"};
@@ -118,7 +135,8 @@
   setInterval(function(){ if(isUnlocked()) render(); }, 20000);
   setInterval(async function(){   // pick up queue changes (top-ups, new scans, other devices) every minute
     if(!isUnlocked()) return;
-    try{ var doc = await fetchQueueDoc(); await openQueue(doc); render(); }catch(e){}
+    var t0 = performance.now();
+    try{ var doc = await fetchQueueDoc(); await openQueue(doc); linkState = "ok"; linkAt = Date.now(); linkMs = Math.round(performance.now() - t0); render(); }catch(e){ linkState = "fail"; linkAt = Date.now(); linkMs = null; render(); }
   }, 60000);
 
   function pipeLine(it, r){
@@ -253,6 +271,7 @@
     ITEMS.forEach(function(it){ counts[statusOf(it.id)]++; });
     Object.keys(counts).forEach(function(k){ $("#c-"+k).textContent = counts[k]; });
     document.querySelectorAll(".tab").forEach(function(t){ t.setAttribute("aria-selected", t.dataset.filter===filter ? "true":"false"); });
+    emitStatus(counts);
     $("#queue-meta").textContent = "Queue updated " + new Date(Q.updated*1000).toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"}) + ". Highest score first.";
     if(keepFocus){   // don't rebuild the cards while someone is typing in an open panel; just refresh the counts
       return;

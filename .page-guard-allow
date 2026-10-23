@@ -67,3 +67,6 @@ recommendations.html :: nav:create.html
 recommendations.html :: nav:recommendations.html
 submit.html :: nav:create.html
 submit.html :: nav:recommendations.html
+# Danny (24 Oct 2026, 01:50 AWST, on voice): live Bonnie's Dashboard aligned with the dashboard preview. The header wrapper #app-head (+ js/bars.js fixed bars) is replaced by the preview's sticky black header #dash-head (js/sticky-head.js).
+moderation/index.html :: id:app-head
+moderation/index.html :: script:js/bars.js
