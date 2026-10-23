@@ -1,0 +1,20 @@
+/* Bonnie's Dashboard: age dial line + family silhouette (display only). Moved from the dashboard preview
+   (simmie-chat moderation-bg-preview.html), light pink theme. Only animation: the kids' height change when the
+   age value updates, PHI^-1 = 0.618 s (phi timing rule 1); none with reduced motion. */
+#app .agedial{background:#fff;border-radius:8px;padding:.7rem 1rem .6rem;margin:0 0 1.25rem;border:2px dotted var(--pk-mid,#EFA9BB);position:relative}
+#app .agedial .ad-row{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem .9rem}
+#app .agedial .ad-label{font-family:var(--f-hand);text-transform:uppercase;letter-spacing:1.5px;font-size:1.2rem;color:var(--pk-plum,#6B1F3D)}
+#app .agedial .ad-label strong{font-family:var(--f-body);font-size:1.35rem;display:inline-block;min-width:1.6em;text-align:center;color:var(--pk-raspberry,#8E2350)}
+#app .agedial .ad-vis{display:flex;align-items:center;margin-top:.15rem;justify-content:space-between;gap:.5rem .9rem;flex-wrap:wrap}
+#app .agedial .ad-note{flex:1 1 130px;margin:0;font-size:.95rem;color:var(--pk-berry,#3D1226)}
+#app .agedial .ad-family{width:92px;height:68px;flex:0 0 auto;display:block;overflow:visible}
+#app .agedial .ad-family .fm-p{fill:#6F9C9C;stroke:#6F9C9C}#app .agedial .ad-family .fm-p .fm-hair{fill:#4D7477;stroke:none}
+#app .agedial .ad-family .fm-k{fill:#C4B5C0;stroke:#C4B5C0}#app .agedial .ad-family .fm-k .fm-hair{fill:#9A8696;stroke:none}
+#app .agedial .ad-family g>*{stroke-width:0}#app .agedial .ad-family .fm-arm{fill:none;stroke-width:3.3;stroke-linecap:round;stroke-linejoin:round}
+#app .agedial .ad-family .fm-floor{fill:#2A9D9F;opacity:.35}
+#app .agedial .ad-family .fm-k,#app .agedial .ad-family #ad-mum{transform-box:view-box;transition:transform .618s cubic-bezier(.2,.8,.2,1)}
+#app .agedial .ad-family #ad-kid-b{transform-origin:33px 62px}#app .agedial .ad-family #ad-kid-g{transform-origin:51px 62px}#app .agedial .ad-family #ad-mum{transform-origin:69px 62px}
+/* heights from CDC 2000 stature-for-age P50; all figures drawn 59 units tall = dad (age-20 male median 176.85 cm); kids shown at age 13 */
+#app .agedial .ad-family #ad-mum{transform:scale(0.9236)}
+#app .agedial .ad-family #ad-kid-b{transform:scale(0.8826)}#app .agedial .ad-family #ad-kid-g{transform:scale(0.8886)}
+@media (prefers-reduced-motion:reduce){#app .agedial .ad-family .fm-k{transition:none}}
