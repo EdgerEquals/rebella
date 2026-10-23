@@ -17,7 +17,7 @@
   },
   "cookies": {
    "title": "Cookies and your device",
-   "text": "Cookies are little notes a website saves in your browser. Rebella doesn't set any. It saves a couple of things on your device only, like your nickname and your mood board, and never sends them to us. Tap the link to read the whole story.",
+   "text": "Cookies are little notes a website saves in your browser. Rebella doesn't set any. It saves a couple of things on your device only, like your nickname and your mood board, and never sends them to us. Read the whole story at edgerequals.github.io/rebella/cookies",
    "try": "Open your browser's settings and find where it lists site data. It's like peeking in your own pocket."
   },
   "nav": {
@@ -356,6 +356,24 @@
   "help-orb": {
    "title": "The help orb",
    "text": "That's me. I'm the only way to ask questions here. Drag me onto anything and I'll explain it up top and down below."
+  },
+  "fb-status": {
+   "title": "The status lights",
+   "text": "Four little lights. Sky is the weather in Perth, where Rebella is made. Time is the time of day where you are, and the gauge shows how far through your day it is. Radio glows while Bonnie's radio plays, and the wave follows its beat. Device glows when your nickname is kept on this device."
+  },
+  "fb-device": {
+   "title": "What stays on your device",
+   "text": "Rebella sets no cookies and has no accounts. Your nickname, your mood board and your Pause choice are kept on this device only, and never sent anywhere. The full story is on the Cookies and your device page: edgerequals.github.io/rebella/cookies",
+   "try": "Tap forget my name at the bottom to wipe your nickname straight away."
+  },
+  "fb-facts": {
+   "title": "Fun facts",
+   "text": "A new fun fact every few seconds. Now and then it shows the Perth weather or the radio station you picked."
+  },
+  "fb-pause": {
+   "title": "Pause motion",
+   "text": "Stops everything moving at the bottom of the page: the facts, the animals, the lights and the wave. Your device remembers your choice.",
+   "try": "Press it again to start things moving."
   }
  },
  "targets": [
