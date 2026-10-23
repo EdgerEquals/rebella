@@ -1,7 +1,7 @@
 /* Bonnie's Dashboard: age dial line + family silhouette (display only). Moved from the dashboard preview
    (simmie-chat moderation-bg-preview.html), light pink theme. Only animation: the kids' height change when the
    age value updates, PHI^-1 = 0.618 s (phi timing rule 1); none with reduced motion. */
-#app .agedial{background:#fff;border-radius:8px;padding:.7rem 1rem .6rem;margin:0 0 1.25rem;border:2px dotted var(--pk-mid,#EFA9BB);position:relative}
+#app .agedial{background:#fff;border-radius:8px;padding:.7rem 1rem .6rem;margin:1rem 0 1.25rem;border:2px dotted var(--pk-mid,#EFA9BB);position:relative}
 #app .agedial .ad-row{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem .9rem}
 #app .agedial .ad-label{font-family:var(--f-hand);text-transform:uppercase;letter-spacing:1.5px;font-size:1.2rem;color:var(--pk-plum,#6B1F3D)}
 #app .agedial .ad-label strong{font-family:var(--f-body);font-size:1.35rem;display:inline-block;min-width:1.6em;text-align:center;color:var(--pk-raspberry,#8E2350)}
