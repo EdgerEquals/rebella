@@ -8,7 +8,7 @@
 <title>Rebella Moderation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&display=swap">
-<link rel="stylesheet" href="css/mod.css?v=6">
+<link rel="stylesheet" href="css/mod.css?v=7">
 <link rel="stylesheet" href="css/agedial.css?v=2">
 <script src="js/config.js?v=2"></script>
 <script src="js/crypto.js?v=3"></script>
@@ -39,14 +39,14 @@
 <div id="app" hidden>
   <div class="app-head" id="app-head">
   <div class="topbar"><div class="container">
-    <span class="tagline">Keep Rebella safe, fun and cool</span>
+    <div class="brand">
+      <div class="wordmark small" role="img" aria-label="Rebella"><span class="script" aria-hidden="true">rebel</span><span class="serif" aria-hidden="true">la</span></div>
+      <span class="mod-pill">Moderation</span>
+    </div>
     <button id="lock" class="lockbtn" type="button" aria-label="Lock dashboard">&#128274; Lock</button>
   </div></div>
   <header class="masthead"><div class="container">
-    <div class="brand">
-      <div class="wordmark small"><span class="script">rebel</span><span class="serif">la</span></div>
-      <span class="mod-pill">Moderation</span>
-    </div>
+    <span class="tagline">Keep Rebella safe, fun and cool</span>
     <div class="head-actions">
       <button id="export" class="btn btn-info" type="button">Export decisions (JSON)</button>
       <button id="reset" class="btn btn-secondary" type="button" aria-expanded="false" aria-controls="reset-strip">Reset all</button>
