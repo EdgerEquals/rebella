@@ -20,7 +20,7 @@ Open with any static server from this folder, e.g. `python3 -m http.server 8765`
 - `recommendations.html` reads everything from `js/recs.js` (rendered by `js/recs-render.js`). To update the picks, edit `js/recs.js` only, then commit and push. No need to run the generator.
 - Any field left as `""` shows a "coming soon" placeholder for that section.
 - Links must start with `https://`. Songs are links only, never upload audio. The `celebrity` block is shown as **Rightfully Famous** (key name unchanged); add a `source` news link so it can be checked, or leave it empty. `deed` is optional. Empty `why` notes are simply left out; an empty quote `by` shows "Author unknown".
-- About me: interests only. No name, school, suburb, age or photos. Bonnie checks every update before it goes live.
+- About me: Florence's approved text (23 Oct 2026) is `about.note` in `js/recs.js` (\n = new line) AND `ABOUT_ME` in `_generator.py` (home page About me card + no-JS copy on the Picks page). Keep the two in sync. Interests only otherwise. No name, school, suburb, age or photos. Bonnie checks every update before it goes live.
 
 Example:
 ```js

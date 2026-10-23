@@ -66,7 +66,7 @@
   fill('about', function (b) {
     var a = R.about || {}; var ints = (a.interests || []).filter(has);
     if (!ints.length && !has(a.note)) return false;
-    if (has(a.note)) b.appendChild(el('p', null, a.note));
+    if (has(a.note)) a.note.split('\n').forEach(function (line) { if (line.trim()) b.appendChild(el('p', null, line)); });
     if (ints.length) { var ul = el('ul', 'interest-chips'); ints.forEach(function (i) { ul.appendChild(el('li', null, i)); }); b.appendChild(ul); }
     return true;
   });

@@ -150,7 +150,7 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&family=Special+Elite&display=swap">
 <link rel="stylesheet" href="css/styles.css?v=4">
-<link rel="stylesheet" href="css/zine.css?v=4">
+<link rel="stylesheet" href="css/zine.css?v=5">
 <script src="js/main.js"></script>
 <script src="js/quotes.js" defer></script>
 <script src="js/quotes-render.js" defer></script>{extra_head}
@@ -218,6 +218,9 @@ NEWSLETTER='''<section class="newsletter container" id="newsletter"><h2>Join our
 FOLLOW='<section class="follow container" id="follow"><h2>Follow us</h2><p class="motto">Be curious. Be bold. Be you.</p><div class="icons"><a href="#" aria-label="Facebook (placeholder)"><svg><use href="#i-fb"/></svg></a><a href="#" aria-label="Instagram (placeholder)"><svg><use href="#i-ig"/></svg></a></div><div class="tiles" aria-label="Photo tiles">'+''.join(
     f'<img class="tile" src="{CRED[f]["file"]}" alt="{CRED[f]["alt"]}" loading="lazy" decoding="async" width="{CRED[f]["w"]}" height="{CRED[f]["h"]}">' for f in ['img/library/'+n+'.jpg' for n in ['sunflower','pink-cupcakes','night-sky','kitten-daisies','watercolours','tulips','hot-air-balloon','bookshop','strawberries','great-wave']])+'</div></section>'
 
+# Florence's About me (approved 23 Oct 2026). Same text as about.note in js/recs.js (Picks page): keep both in sync.
+ABOUT_ME=["Hello!!", "My name is Florence and I created this website!", "I play soccer, and I love camping and swimming at the beach (even though I'm deathly scared of sharks!!). I paint, and I play the viola, the guitar and a range of other instruments.", "I'm a proud Aussie girl!! I love learning about nutrition, herbal medicines and botany, and I adore everlasting flowers!", "I hope you have a wonderful day. Sending you all love xx", "Be brave. Be different. Be a rebel."]
+ABOUT_CARD='<section class="container about-home" aria-labelledby="about-home-title"><div class="about-me about-card c-world"><h2 id="about-home-title">About me <span class="about-by">by Florence</span></h2><div class="rec-body">'+''.join(f'<p>{_html.escape(l)}</p>' for l in ABOUT_ME)+'</div></div></section>'
 HOME_FIRST=[p['slug'] for p in PIPE[:3]]+['t-shirt-tote-bag','why-is-the-sky-blue','five-minute-wind-down','start-a-coding-club','six-adventure-books']
 HOME_LATER=['talk-money-with-your-family','no-bake-oat-cookies','living-on-mars','desk-stretches','group-chat-drama']
 moon=BY['moon-garden']
@@ -245,6 +248,7 @@ home=f'''<main id="main">
   </div>
   {sidebar(True)}
 </div>
+{ABOUT_CARD}
 {TEAR}
 {pillars()}
 <div class="container quote-row">{rebel_quote('index-2')}</div>
@@ -360,7 +364,7 @@ RECS_BODY='''<main id="main" class="recs-page c-rwl"><div class="container">
   <section class="rec c-mind" data-rec="goal"><h2><span aria-hidden="true">&#10003;</span> Goal for everyone</h2><div class="rec-body"><p class="placeholder"><span class="ph-chip">Placeholder</span> Her first picks are coming soon.</p></div></section>
   <section class="rec rec-wide c-make" data-rec="other"><h2><span aria-hidden="true">&#10024;</span> Other picks: anything else I recommend</h2><div class="rec-body"><p class="placeholder"><span class="ph-chip">Placeholder</span> Her first picks are coming soon.</p></div></section>
 </div>
-<section class="about-me c-world" id="about-me" aria-labelledby="about-title"><h2 id="about-title">About me</h2><div class="rec-body"><p class="placeholder"><span class="ph-chip">Placeholder</span> A few things our curator loves are coming soon.</p></div></section>
+<section class="about-me c-world" id="about-me" aria-labelledby="about-title"><h2 id="about-title">About me <span class="about-by">by Florence</span></h2><div class="rec-body">{ABOUT_P}</div></section>
 <noscript><p class="recs-note">Turn on JavaScript to see this week's picks.</p></noscript>
 <p class="recs-note">Song and video picks are links to other sites, so ask a parent or carer before you open them. Rebella doesn't host any music.</p>
 </div></main>'''
@@ -395,7 +399,7 @@ for k,n in CATS:
     PAGES.append((catlink(k),f'{n} | Rebella',cat_page(k),CAT_INFO[k][1],k,'','img/articles/'+first['img']+'.jpg','website',None,f'{strip(n)}, '+KEYWORDS,'',True,'0.7'))
 for a in ARTICLES:
     PAGES.append((ahref(a),f'{a["title"]} | Rebella',article_page(a),a['desc'],a['cat'],'','img/articles/'+a['img']+'.jpg','article',a.get('canonical'),f'{strip(a["title"])}, {strip(CATNAME[a["cat"]])}, '+KEYWORDS,article_jsonld(a),True,'0.6'))
-PAGES.append(('recommendations.html','Recommendations: song, quote and goal of the week | Rebella',RECS_BODY,'Rebella Recommendations: song of the week, Rightfully Famous (someone famous for the right reasons), quote of the week, a goal for everyone and more picks.','recs','\n<script src="js/recs.js" defer></script>\n<script src="js/recs-render.js" defer></script>','img/articles/reading.jpg','website',None,'recommendations, song of the week, quote of the week, '+KEYWORDS,'',True,'0.7'))
+PAGES.append(('recommendations.html','Recommendations: song, quote and goal of the week | Rebella',RECS_BODY.replace('{ABOUT_P}',''.join(f'<p>{_html.escape(l)}</p>' for l in ABOUT_ME)),'Rebella Recommendations: song of the week, Rightfully Famous (someone famous for the right reasons), quote of the week, a goal for everyone and more picks.','recs','\n<script src="js/recs.js" defer></script>\n<script src="js/recs-render.js" defer></script>','img/articles/reading.jpg','website',None,'recommendations, song of the week, quote of the week, '+KEYWORDS,'',True,'0.7'))
 PAGES.append(('submit.html','Share your work with Your Voice | Rebella',SUBMIT.replace('{SIDEBAR}',sidebar(False)),'How sharing your art, writing and projects with Rebella\'s Your Voice section will work, safely and with an adult editor checking everything.','voice','','img/articles/art-wall.jpg','website',None,KEYWORDS,'',True,'0.4'))
 PAGES.append(('create.html','Create a mood board, collage or vision board | Rebella',CREATE_BODY,'Make mood boards, collages and vision boards with stickers and photos, add your own words, and save it as a picture. Free and private on Rebella.','create','\n<link rel="stylesheet" href="css/create.css">\n<script src="js/library.js" defer></script>\n<script src="js/create.js" defer></script>','img/library/tulips.jpg','website',None,'mood board maker, vision board, collage, '+KEYWORDS,'',True,'0.7'))
 PAGES.append(('credits.html','Photo credits | Rebella',credits_page(),'Credits for the CC0 and public domain photos used on Rebella (Wikimedia Commons, NASA, museum open access) and for republished articles.',None,'','img/library/sunflower.jpg','website',None,KEYWORDS,'',True,'0.3'))

@@ -50,6 +50,7 @@ window.REBELLA_RECS = {
 
   about: {
     interests: [],        // e.g. ["drawing", "space", "netball", "baking"]
-    note: ""              // one or two sentences about what I love. No personal details!
+    // Approved by Florence 23 Oct 2026. Each "\n" starts a new line on the page. Keep in sync with ABOUT_ME in _generator.py (home page card).
+    note: "Hello!!\nMy name is Florence and I created this website!\nI play soccer, and I love camping and swimming at the beach (even though I'm deathly scared of sharks!!). I paint, and I play the viola, the guitar and a range of other instruments.\nI'm a proud Aussie girl!! I love learning about nutrition, herbal medicines and botany, and I adore everlasting flowers!\nI hope you have a wonderful day. Sending you all love xx\nBe brave. Be different. Be a rebel."
   }
 };
