@@ -56,6 +56,7 @@ PIPE=json.load(open(_PJ)) if os.path.exists(_PJ) else []
 ARTICLES=PIPE+[a for a in ARTICLES if a['slug'] not in {p['slug'] for p in PIPE}]
 SITE='https://edgerequals.github.io/rebella/'
 UPDATED='2026-10-23'
+MUSIC_SECTION=True  # Music section: everything lives in music/. Set False (or delete music/ and the 'if MUSIC_SECTION' line below) to remove it. See music/REMOVE.md
 CATNAME=dict(CATS)
 CAT_INFO={
  'make':('Crafts, DIY, art and cooking: learn by doing, mess allowed.','Make It: crafts, DIY projects, art and easy recipes for teens on Rebella.'),
@@ -405,6 +406,7 @@ PAGES.append(('create.html','Create a mood board, collage or vision board | Rebe
 PAGES.append(('credits.html','Photo credits | Rebella',credits_page(),'Credits for the CC0 and public domain photos used on Rebella (Wikimedia Commons, NASA, museum open access) and for republished articles.',None,'','img/library/sunflower.jpg','website',None,KEYWORDS,'',True,'0.3'))
 PAGES.append(('article.html','This page has moved | Rebella',MOVED,'This page has moved. Rebella now has a page for every article.',None,'','img/articles/moon.jpg','website',ahref(moon),KEYWORDS,f'\n<meta http-equiv="refresh" content="0; url={ahref(moon)}">',False,None))
 
+if MUSIC_SECTION: from music._music import install; page=install(PAGES,page,globals())  # Music section hook (see music/REMOVE.md)
 os.makedirs(os.path.join(OUT,'articles'),exist_ok=True)
 sm=[]
 for path,t,b,d,act,x,img,typ,can,kw,hm,insm,pri in PAGES:

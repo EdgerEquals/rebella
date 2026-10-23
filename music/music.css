@@ -1,0 +1,55 @@
+/* Rebella Music page (music/index.html). Self-contained, part of music/ (see REMOVE.md).
+   Pastel palette from css/styles.css. Phi timings (PHI = 1.618, every interval PHI^n s):
+   hover/press transitions PHI^-2 = 0.382s; "now playing" bars use the blink slot PHI^2 = 2.618s,
+   each bar k = 1..3 offset by -period*frac(k*0.618) (golden angle); cards k start their bars the same way.
+   Rebella has no weather state on this page, so the weather sweep is s = 0. Reduced motion: no animation. */
+.music-page{--mu-blink:2.618s;--mu-t:.382s}
+.mu-intro,.mu-featured{max-width:870px;margin:0 auto 2rem;background:#fff;border-radius:10px;padding:1.4rem 1.8rem 1.2rem;box-shadow:0 4px 14px rgba(58,43,53,.10)}
+.mu-intro{border-top:8px solid var(--blush)}
+.mu-intro h2,.mu-featured h2{text-transform:none;letter-spacing:1px;font-size:1.8rem;margin:0 0 .6rem;color:var(--heading)}
+.mu-intro p,.mu-featured p{margin:0 0 .8rem}
+.mu-how{font-family:var(--f-hand);letter-spacing:1px;color:var(--accent)}
+.mu-list{list-style:none;margin:0 auto 2.4rem;padding:0;max-width:870px;display:grid;gap:1rem}
+.mu-card{background:#fff;border-radius:10px;border-left:10px solid var(--mood,var(--lavender));padding:1rem 1.2rem .8rem;box-shadow:0 4px 14px rgba(58,43,53,.10);transition:box-shadow var(--mu-t),transform var(--mu-t)}
+.mood-chill{--mood:var(--aqua)}.mood-upbeat{--mood:var(--butter-deep)}.mood-dreamy{--mood:var(--lavender)}.mood-acoustic{--mood:var(--peach)}
+.mu-card.is-playing{box-shadow:0 0 0 3px var(--mood),0 6px 18px rgba(58,43,53,.14)}
+.mu-row{display:flex;align-items:center;gap:1rem}
+.mu-play{flex:0 0 auto;width:56px;height:56px;border-radius:50%;border:0;cursor:pointer;background:var(--accent);color:#fff;display:grid;place-items:center;
+  box-shadow:0 3px 0 #7A2448;transition:transform var(--mu-t),box-shadow var(--mu-t),background var(--mu-t);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.mu-play svg{width:28px;height:28px}
+.mu-play .i-pause{display:none}
+.mu-play[aria-pressed="true"] .i-play{display:none}.mu-play[aria-pressed="true"] .i-pause{display:block}
+.mu-play:hover{background:#9C365B}
+.mu-play:active{transform:translateY(2px);box-shadow:0 1px 0 #7A2448}
+.mu-play:focus-visible,.mu-range:focus-visible,.music-page a:focus-visible{outline:3px solid var(--heading);outline-offset:3px}
+.mu-info{flex:1 1 auto;min-width:0}
+.mu-title{margin:0;font-size:1.25rem;text-transform:none;line-height:1.25;color:var(--heading);overflow-wrap:anywhere}
+.mu-artist{margin:.1rem 0 .3rem;font-family:var(--f-hand);letter-spacing:1px;font-size:1.15rem;color:var(--ink)}
+.mu-chips{margin:0;display:flex;flex-wrap:wrap;gap:.35rem}
+.mu-chip{display:inline-flex;align-items:center;gap:.25rem;font-size:.85rem;line-height:1;padding:.32rem .6rem .3rem;border-radius:999px;background:var(--bg);color:var(--ink);box-shadow:inset 0 0 0 1.5px rgba(91,58,80,.18)}
+.mu-mood{background:var(--mood);font-weight:700}
+.mood-upbeat .mu-mood{background:var(--butter)}
+.mu-local{background:var(--blush);font-weight:700}.mu-local.mu-wa{background:var(--mint)}
+.mu-local svg{width:13px;height:13px;color:var(--accent)}
+.mu-about{margin:.6rem 0 .4rem;font-size:1.05rem}
+.mu-audio{width:100%;margin:.2rem 0 .4rem}
+.js .mu-ready .mu-audio{display:none}
+.mu-seek{display:flex;align-items:center;gap:.8rem;margin:.2rem 0 .3rem}
+.mu-range{flex:1 1 auto;accent-color:var(--accent);height:28px;min-width:0}
+.mu-time{font-size:.9rem;font-variant-numeric:tabular-nums;white-space:nowrap;color:#6A5560}
+.mu-credit{margin:.2rem 0 0;font-size:.85rem;line-height:1.45;color:#5E4A56}
+.mu-credit a{color:#7A2448;text-decoration:underline}
+.mu-eq{flex:0 0 auto;display:flex;align-items:flex-end;gap:3px;height:22px;width:21px;opacity:0;transition:opacity var(--mu-t)}
+.mu-eq i{display:block;width:5px;height:100%;border-radius:2px;background:var(--accent);transform-origin:bottom;transform:scaleY(.382)}
+.is-playing .mu-eq{opacity:1}
+.is-playing .mu-eq i{animation:mu-bar var(--mu-blink) ease-in-out infinite}
+/* golden-angle offsets: bar k starts at -2.618*frac(k*0.618) */
+.mu-eq i:nth-child(1){animation-delay:-1.618s}.mu-eq i:nth-child(2){animation-delay:-0.618s}.mu-eq i:nth-child(3){animation-delay:-2.236s}
+@keyframes mu-bar{0%,100%{transform:scaleY(.382)}25%{transform:scaleY(1)}50%{transform:scaleY(.618)}75%{transform:scaleY(.854)}}
+.mu-featured{border-top:8px solid var(--butter-deep);background-image:repeating-linear-gradient(transparent 0 33px,rgba(91,58,80,.06) 33px 34px)}
+.mu-featured a{color:#7A2448;text-decoration:underline}
+.mu-note{max-width:870px;margin:0 auto 2.4rem}
+@media(max-width:575px){.mu-intro,.mu-featured{padding:1.1rem 1rem 1rem}.mu-intro h2,.mu-featured h2{font-size:1.5rem}
+  .mu-card{padding:.9rem .8rem .7rem;border-left-width:8px}.mu-play{width:52px;height:52px}.mu-title{font-size:1.12rem}.mu-row{gap:.75rem}}
+@media(prefers-reduced-motion:reduce){.mu-card,.mu-play,.mu-eq{transition:none}.is-playing .mu-eq i{animation:none;transform:scaleY(.854)}}
+@media(forced-colors:active){.mu-play{border:2px solid ButtonText}}
