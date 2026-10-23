@@ -374,6 +374,14 @@
    "title": "Pause motion",
    "text": "Stops everything moving at the bottom of the page: the facts, the animals, the lights and the wave. Your device remembers your choice.",
    "try": "Press it again to start things moving."
+  },
+  "db-hello": {
+   "title": "Your greeting",
+   "text": "This says hello for the time of day on your device. If you've picked a name at the bottom of the page, it uses that too. It's worked out on your device and never sent anywhere."
+  },
+  "db-weather": {
+   "title": "Perth weather",
+   "text": "The weather in Perth right now, where Rebella is made. It comes from Open-Meteo, for Perth only. Rebella never asks where you are."
   }
  },
  "targets": [
