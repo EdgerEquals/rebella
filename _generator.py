@@ -219,8 +219,8 @@ FOLLOW='<section class="follow container" id="follow"><h2>Follow us</h2><p class
     f'<img class="tile" src="{CRED[f]["file"]}" alt="{CRED[f]["alt"]}" loading="lazy" decoding="async" width="{CRED[f]["w"]}" height="{CRED[f]["h"]}">' for f in ['img/library/'+n+'.jpg' for n in ['sunflower','pink-cupcakes','night-sky','kitten-daisies','watercolours','tulips','hot-air-balloon','bookshop','strawberries','great-wave']])+'</div></section>'
 
 # Bonnie's About me (approved 23 Oct 2026). Same text as about.note in js/recs.js (Picks page): keep both in sync.
-ABOUT_ME=["Hello!!", "My name is Florence and I created this website!", "I play soccer, and I love camping and swimming at the beach (even though I'm deathly scared of sharks!!). I paint, and I play the viola, the guitar and a range of other instruments.", "I'm a proud Aussie girl!! I love learning about nutrition, herbal medicines and botany, and I adore everlasting flowers!", "I hope you have a wonderful day. Sending you all love xx", "Be brave. Be different. Be a rebel."]
-ABOUT_CARD='<section class="container about-home" aria-labelledby="about-home-title"><div class="about-me about-card c-world"><h2 id="about-home-title">About me <span class="about-by">by Florence</span></h2><div class="rec-body">'+''.join(f'<p>{_html.escape(l)}</p>' for l in ABOUT_ME)+'</div></div></section>'
+ABOUT_ME=["Hello!!", "My name is Bonnie and I created this website!", "I play soccer, and I love camping and swimming at the beach (even though I'm deathly scared of sharks!!). I paint, and I play the viola, the guitar and a range of other instruments.", "I'm a proud Aussie girl!! I love learning about nutrition, herbal medicines and botany, and I adore everlasting flowers!", "I hope you have a wonderful day. Sending you all love xx", "Be brave. Be different. Be a rebel."]
+ABOUT_CARD='<section class="container about-home" aria-labelledby="about-home-title"><div class="about-me about-card c-world"><h2 id="about-home-title">About me <span class="about-by">by Bonnie</span></h2><div class="rec-body">'+''.join(f'<p>{_html.escape(l)}</p>' for l in ABOUT_ME)+'</div></div></section>'
 HOME_FIRST=[p['slug'] for p in PIPE[:3]]+['t-shirt-tote-bag','why-is-the-sky-blue','five-minute-wind-down','start-a-coding-club','six-adventure-books']
 HOME_LATER=['talk-money-with-your-family','no-bake-oat-cookies','living-on-mars','desk-stretches','group-chat-drama']
 moon=BY['moon-garden']
@@ -229,7 +229,7 @@ home=f'''<main id="main">
   <h1 class="hand ransom-h">{ransom("Learn what you love.")}</h1>
   <div class="creator-note" aria-label="A note from Rebella's creator">
     <p class="cn-hi">Hi all!!</p>
-    <p>My name is Florence and I am the creator of this website. I made Rebella for teenage girls (older are always welcome!) to feel welcome and safe online, to have a platform to express yourself and learn the things you want to, not the things that everyone else wants you to learn at school. I hope that this site helps you realise that the world is waiting for you. And that nobody else can replicate the wonders that you might bring to it.</p>
+    <p>My name is Bonnie and I am the creator of this website. I made Rebella for teenage girls (older are always welcome!) to feel welcome and safe online, to have a platform to express yourself and learn the things you want to, not the things that everyone else wants you to learn at school. I hope that this site helps you realise that the world is waiting for you. And that nobody else can replicate the wonders that you might bring to it.</p>
     <p class="cn-motto">Be brave. Be different. Be a rebel.</p>
     <p class="cn-sign">Live it up sis.</p>
   </div>
@@ -364,7 +364,7 @@ RECS_BODY='''<main id="main" class="recs-page c-rwl"><div class="container">
   <section class="rec c-mind" data-rec="goal"><h2><span aria-hidden="true">&#10003;</span> Goal for everyone</h2><div class="rec-body"><p class="placeholder"><span class="ph-chip">Placeholder</span> Her first picks are coming soon.</p></div></section>
   <section class="rec rec-wide c-make" data-rec="other"><h2><span aria-hidden="true">&#10024;</span> Other picks: anything else I recommend</h2><div class="rec-body"><p class="placeholder"><span class="ph-chip">Placeholder</span> Her first picks are coming soon.</p></div></section>
 </div>
-<section class="about-me c-world" id="about-me" aria-labelledby="about-title"><h2 id="about-title">About me <span class="about-by">by Florence</span></h2><div class="rec-body">{ABOUT_P}</div></section>
+<section class="about-me c-world" id="about-me" aria-labelledby="about-title"><h2 id="about-title">About me <span class="about-by">by Bonnie</span></h2><div class="rec-body">{ABOUT_P}</div></section>
 <noscript><p class="recs-note">Turn on JavaScript to see this week's picks.</p></noscript>
 <p class="recs-note">Song and video picks are links to other sites, so ask a parent or carer before you open them. Rebella doesn't host any music.</p>
 </div></main>'''
