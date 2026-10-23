@@ -3,7 +3,8 @@
      dict: {key: {title, text, try}} from help.json; targets: [[cssSelector, key], ...] (adds data-help at runtime).
      headerSlot/footerSlot are accepted for compatibility; answers now open in a small anchored help pop-up instead
      (Danny's one exception to Rebella's no-pop-ups rule, 24 Oct 2026, for the help orb only).
-   Home: fixed bottom-left, above the locked footer (--app-foot-h) and safe-area insets; lifts above any YouTube player.
+   Home: fixed bottom-right, just above the Get me out button, which sits above the locked footer (--app-foot-h), with
+   safe-area insets; lifts above any YouTube player.
    Drag (pointer events, touch-action:none, no page scroll while dragging): every target glows; the one under the orb gets
    a pink outline and a small name label. Drop on a target -> pop-up anchored to it (title, text, "try this", Close;
    Esc or a tap outside closes; focus is trapped inside and returned). Drop on nothing -> nothing. The orb springs home.
@@ -20,7 +21,7 @@
   function css() {
     var s = document.createElement('style'); s.id = 'help-orb-css';
     s.textContent =
-      '.help-orb{position:fixed;left:calc(12px + env(safe-area-inset-left,0px));bottom:calc(var(--app-foot-h,60px) + 12px + env(safe-area-inset-bottom,0px));z-index:960;width:48px;height:48px;border-radius:50%;border:2px solid #fff;' +
+      '.help-orb{position:fixed;right:calc(14px + env(safe-area-inset-right,0px));bottom:calc(var(--app-foot-h,82px) + 84px + env(safe-area-inset-bottom,0px));z-index:960;width:48px;height:48px;border-radius:50%;border:2px solid #fff;' +
       'background:radial-gradient(circle at 35% 30%,#FDEEF2,#F48FB1 60%,#8E2350);color:#3D1226;font:700 1.5rem/1 "Alegreya Sans",sans-serif;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;' +
       'box-shadow:0 2px 10px rgba(61,18,38,.35);padding:0;-webkit-tap-highlight-color:transparent}' +
       '.help-orb.springing{transition:left .618s cubic-bezier(.34,1.4,.64,1),top .618s cubic-bezier(.34,1.4,.64,1)}' +
@@ -114,6 +115,8 @@
   function avoid() {
     var o = st.orb; if (o.classList.contains('dragging') || o.classList.contains('springing') || o.style.left) return;
     o.style.bottom = '';
+    var esc = document.querySelector('.escape'), er = esc && esc.getBoundingClientRect();
+    if (er && er.width) o.style.bottom = Math.round(window.innerHeight - er.top + 10) + 'px';
     var r = o.getBoundingClientRect();
     document.querySelectorAll('iframe[src*="youtube"], .br-panel:not([hidden])').forEach(function (f) {
       var p = f.getBoundingClientRect();

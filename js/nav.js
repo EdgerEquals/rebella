@@ -11,7 +11,7 @@
   'use strict';
   if (!window.fetch || !window.history || !history.pushState || !window.DOMParser) return;
   var me = document.currentScript, ROOT = new URL('../', me ? me.src : location.href).href;
-  var COMMON = /\/js\/(main|bars|help-orb|help-init|quotes|quotes-render|nav)\.js|\/music\/youtube\/(stations|bonnie-radio)\.js/;
+  var COMMON = /\/js\/(main|bars|footbar|help-orb|help-init|quotes|quotes-render|nav)\.js|\/music\/youtube\/(stations|bonnie-radio)\.js/;
   var RERUN = /\/(music\/music|js\/recs|js\/recs-render|js\/library)\.js/;   // only bind to their own page content: safe to run again
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var ran = {};   // page scripts that have run in this document
@@ -64,7 +64,7 @@
       if (!nm || !om) throw new Error('no main');
       var base = new URL(href, location.href);
       // page-specific scripts: load the ones not seen yet; a page whose script already ran gets a normal load
-      var need = [].map.call(doc.querySelectorAll('script[src]'), function (s) { return new URL(s.getAttribute('src'), base).href; }).filter(function (s) { return !COMMON.test(s); });
+      var need = [].map.call(doc.querySelectorAll('head script[src], main script[src]'), function (s) { return new URL(s.getAttribute('src'), base).href; }).filter(function (s) { return !COMMON.test(s); });
       if (need.some(function (s) { return ran[s.split('?')[0]] && !RERUN.test(s); })) throw new Error('script ran');
       if (push) history.pushState({ rbScroll: 0 }, '', href);
       shown = location.href.split('#')[0];

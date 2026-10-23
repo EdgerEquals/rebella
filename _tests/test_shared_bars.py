@@ -113,7 +113,7 @@ with sync_playwright() as p:
     ok(pg.evaluate("document.documentElement.classList.contains('help-seeking') && !!document.querySelector('.card.help-hot')"), 'orb drag: targets tinted, card under orb is hot')
     pg.screenshot(path=f'{SHOTS}/help_orb_dragging.png')
     pg.mouse.up(); pg.wait_for_timeout(1500)
-    ok(pg.text_content('#bar-greet').strip() == 'Article card' and 'card' in pg.text_content('#bar-line'), 'orb drop: answer in header + footer slots')
+    ok(pg.evaluate("!!document.querySelector('.help-pop') && document.querySelector('.help-pop h2').textContent === 'Article card'") and pg.text_content('#bar-greet').strip() == 'Hey there, welcome to Rebella', 'orb drop: answer in an anchored help pop-up (header line unchanged)')
     pg.screenshot(path=f'{SHOTS}/help_orb_answer.png')
     # cookies phrase
     pg.wait_for_timeout(23000)

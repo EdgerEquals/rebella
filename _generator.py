@@ -156,9 +156,9 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <script src="js/bars.js?v=2" defer></script>
 <script src="music/youtube/stations.js?v=2" defer></script>
 <script src="music/youtube/bonnie-radio.js?v=3" defer></script>
-<script src="js/help-orb.js?v=3" defer></script>
+<script src="js/help-orb.js?v=4" defer></script>
 <script src="js/help-init.js?v=1" defer></script>
-<script src="js/nav.js?v=1" defer></script>
+<script src="js/nav.js?v=2" defer></script>
 <script src="js/quotes.js" defer></script>
 <script src="js/quotes-render.js" defer></script>{extra_head}
 </head>

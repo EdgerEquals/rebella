@@ -19,7 +19,7 @@ PAGES = ['', 'music/', 'music/playground/', 'cookies/', 'articles/moon-garden.ht
 VIEWS = {'se-portrait': dict(viewport={'width': 375, 'height': 667}, is_mobile=True, has_touch=True, device_scale_factor=2),
          'se-landscape': dict(viewport={'width': 667, 'height': 375}, is_mobile=True, has_touch=True, device_scale_factor=2),
          'desktop': dict(viewport={'width': 1366, 'height': 900})}
-ALLOWED_EXT = ('fonts.googleapis.com', 'fonts.gstatic.com')
+ALLOWED_EXT = ('fonts.googleapis.com', 'fonts.gstatic.com', 'api.open-meteo.com')   # Perth weather in the live footer (Sky light)
 YT = re.compile(r'youtube|ytimg|googlevideo|doubleclick')
 def yt(u): return bool(YT.search(urlparse(u).netloc))   # host only (the site's own music/youtube/ folder is fine)
 NOAUDIO = "delete window.AudioContext; delete window.webkitAudioContext;"
@@ -105,7 +105,9 @@ with sync_playwright() as pw:
     pg.goto(BASE + 'music/playground/', wait_until='networkidle'); pg.wait_for_timeout(500)
     tgt = pg.locator('[data-help="tap-tempo"]').first; tgt.scroll_into_view_if_needed(); c = tgt.bounding_box(); o = pg.locator('#help-orb').bounding_box()
     pg.mouse.move(o['x'] + 20, o['y'] + 20); pg.mouse.down(); pg.mouse.move(c['x'] + 10, c['y'] + 10, steps=8); pg.mouse.up(); pg.wait_for_timeout(1600)
-    ok(pg.text_content('#bar-greet').strip() == 'Tap tempo', f'playground orb: answer from merged help.json ({pg.text_content("#bar-greet").strip()!r})')
+    t = pg.evaluate("document.querySelector('.help-pop h2') && document.querySelector('.help-pop h2').textContent")
+    ok(t == 'Tap tempo', f'playground orb: answer from merged help.json in the pop-up ({t!r})')
+    pg.keyboard.press('Escape')
     pg.screenshot(path=f'{SHOTS}/playground_orb_answer.png')
     reqs = []; pg.on('request', lambda r: reqs.append(r.url))
     pg.click('#vn-ask'); pg.fill('#vn-in', 'Sam'); pg.press('#vn-in', 'Enter'); pg.wait_for_timeout(1500)

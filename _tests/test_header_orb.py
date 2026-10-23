@@ -43,14 +43,14 @@ with sync_playwright() as pw:
                 miniIn: !!md && md.getBoundingClientRect().top>=tb.getBoundingClientRect().top-1 && md.getBoundingClientRect().bottom<=tb.getBoundingClientRect().bottom+1 && md.offsetWidth>0,
                 role: md?md.getAttribute('role'):null, name: md?md.getAttribute('aria-label'):null,
                 labCr: lab&&lab.offsetWidth?cr(getComputedStyle(lab).color,bg):99, ringCr: ring?Math.max(cr(ring,bg),cr(knob,bg)):0,
-                orbs: document.querySelectorAll('.help-orb').length, orbLeft: or.left<innerWidth/2, orbAbove: or.bottom<=fr.top+1,
+                orbs: document.querySelectorAll('.help-orb').length, orbLeft: or.left>innerWidth/2 && (()=>{const e=document.querySelector('.escape');if(!e)return true;const x=e.getBoundingClientRect();return or.bottom<=x.top+1})(), orbAbove: or.bottom<=fr.top+1,
                 maxC: conts.length?Math.max(...conts.map(e=>e.getBoundingClientRect().width)):0, col, ov: document.documentElement.scrollWidth>innerWidth+1} }""", LUM)
             ok(r['anims'] == 0, f'{tag}: nothing in the header animates ({r["anims"]})')
             ok(r['imgOk'] and abs(r['imgH'] - (36.4 if o['viewport']['width'] <= 575 else 47.5)) < 1, f'{tag}: logo image loaded, alt Rebella, height {r["imgH"]:.1f}')
             ok(not r['bad'], f'{tag}: no Create/Picks links in the header nav ({r["bad"]})')
             ok(r['miniIn'] and r['role'] == 'slider' and r['name'] == 'Rebella radio' and r['tbH'] <= 50, f'{tag}: radio dial in the one-row top bar (top bar {r["tbH"]}px)')
             ok(r['labCr'] >= 4.5 and r['ringCr'] >= 3, f'{tag}: dial contrast label {r["labCr"]:.1f}:1, dial {r["ringCr"]:.1f}:1')
-            ok(r['orbs'] == 1 and r['orbLeft'] and r['orbAbove'], f'{tag}: one orb, bottom-left, above the footer')
+            ok(r['orbs'] == 1 and r['orbLeft'] and r['orbAbove'], f'{tag}: one orb, bottom-right above Get me out and the footer')
             ok(not r['ov'], f'{tag}: no horizontal overflow')
             if o['viewport']['width'] == 1280: ok(round(r['maxC']) == 1058, f'{tag}: content box 1058px wide ({r["maxC"]})')
             if o['viewport']['width'] == 375: ok(r['col'] >= 300, f'{tag}: text column >= 300px ({r["col"]})')
@@ -87,7 +87,7 @@ with sync_playwright() as pw:
         pg.keyboard.press('Tab'); ok(pg.evaluate("document.querySelector('.help-pop').contains(document.activeElement)"), f'{vn}: focus trapped in the pop-up')
         pg.keyboard.press('Escape'); pg.wait_for_timeout(200)
         ok(pg.evaluate("!document.querySelector('.help-pop') && document.activeElement.id==='help-orb'"), f'{vn}: Esc closes, focus back on the orb')
-        home = pg.locator('#help-orb').bounding_box(); ok(home['x'] < 40, f'{vn}: orb sprang home bottom-left ({home["x"]:.0f})')
+        home = pg.locator('#help-orb').bounding_box(); ok(home['x'] > o['viewport']['width'] / 2, f'{vn}: orb sprang home bottom-right ({home["x"]:.0f})')
         drag_to(o['viewport']['width'] - 30, (pg.locator('#app-head').bounding_box()['height'] + 30))
         ok(pg.evaluate("!document.querySelector('.help-pop')") or True, f'{vn}: drop on nothing shows nothing')
         pg.evaluate("document.querySelector('.help-pop') && HelpOrb.close()")
