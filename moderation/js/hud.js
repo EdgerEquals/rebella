@@ -170,14 +170,25 @@
       });
       tr.appendChild(h);
     }
-    tickN = list.length; tr.setAttribute("data-phi-js", "");   // one item passes every PHI^4 (swept at the loop boundary)
+    tickN = list.length; tr.setAttribute("data-phi-js", "");   // speed set in px/s from the track width (swept + pumped at the loop boundary)
     var ta = tr.getAnimations ? tr.getAnimations()[0] : null;
-    if(ta && ta.effect){ PT.retime(ta, tickN * PT.ms("fact")); } else tr.style.animationDuration = (tickN * PT.s("fact")).toFixed(2) + "s";
+    if(ta && ta.effect){ PT.retime(ta, tickMs(tr)); } else tr.style.animationDuration = (tickMs(tr) / 1000).toFixed(2) + "s";
     $("#wx-ticker").setAttribute("aria-label", "Fun facts for age " + age);
   }
-  var tickN = 0;
+  var tickN = 0, tickW = 0;
+  // Ticker speed (Danny t667u 14:00 AWST 24 Oct): was one item per PT "fact" period (N items x 6.854 s / pump), i.e. ~100 px/s
+  // at pump 1 (~69 px/s at today's 0.69 rate), the same px/s in landscape and portrait (the portrait box is just ~8x narrower,
+  // so text crosses it in ~2 s instead of ~14 s). Now a fixed px/s from the track's real width, 1/3 of the old speed:
+  // TICK_PXPS at rate 1 and no weather sweep, then scaled by the same PT sweep + ratio pump as before (base/s), so it stays
+  // phi-timed and identical in every layout and browser.
+  var TICK_PXPS = 33.5;
+  function tickMs(tr){
+    var w = tr.offsetWidth / 2; if(w > 0) tickW = w; else w = tickW;   // header folded away (display:none): keep the last width
+    if(!(w > 0)) return 3 * tickN * PT.ms("fact");                     // never measured yet: same 1/3 speed by item count
+    return Math.round(w / (TICK_PXPS * PT.base("fact") / PT.s("fact")) * 1000);
+  }
   document.addEventListener("animationiteration", function(ev){ if(ev.target.id === "wx-tick-track" && tickN && ev.target.getAnimations){
-    var ta = ev.target.getAnimations()[0]; if(ta) PT.retime(ta, tickN * PT.ms("fact")); } });
+    var ta = ev.target.getAnimations()[0]; if(ta) PT.retime(ta, tickMs(ev.target)); } });
   function loadAgeAndFacts(){
     var q = clampAge(qs.get("age")), dial = window.RebellaAgeDial && clampAge(window.RebellaAgeDial.age());
     var ageP = q ? Promise.resolve((ageSrc = "?age", q)) : dial ? Promise.resolve((ageSrc = "age dial", dial)) :
