@@ -5,7 +5,7 @@
   position:relative;isolation:isolate;padding-bottom:calc(var(--hz-foot-h) + 10px)}
 /* ---------- background layers ---------- */
 .wx-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
-.wx-bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.3}
+.wx-bg-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.6}   /* was .3 (Danny 12:09 AWST 24 Oct: loop too faint) */
 .wx-code{position:absolute;left:0;right:0;top:0;height:calc(100% + 240px);opacity:.10;
   background:var(--tc-52) 0 0/320px 240px repeat;animation:wx-codeup var(--phi-bg-drift) linear var(--phi-bg-drift-d) infinite;will-change:transform}
 @keyframes wx-codeup{from{transform:translateY(0)}to{transform:translateY(-240px)}}

@@ -229,7 +229,7 @@ html #app main#main{
   --nt-amber:#F2A541;--nt-ink:#F6EBD9;--nt-soft:#B8CCC0;--nt-blush:#19FF9C;--nt-pink:#16B877;--nt-mint:#C8EBD5;--nt-lav:#D6ECEF;
   --nt-butter:#F2A541;--nt-peach:#F2A541;--nt-aqua:#D6ECEF;--nt-plum:#10261B;
   --hz-deep:#0B0F10;--hz-panel:#161D21;--hz-plum:#262E1F;--hz-teal:#0A3F4C;--hz-teal-hi:#16B877;--hz-sand:#F6EBD9;
-  background:#000;box-shadow:0 0 0 1px #0B8F5A;color:#F6EBD9}
+  background:rgba(0,0,0,.4);box-shadow:0 0 0 1px #0B8F5A;color:#F6EBD9}   /* was #000, which hid the background loop behind the whole content column (Danny 12:09 AWST 24 Oct); cards keep their solid panels */
 html #app main#main h1,html #app main#main h2,html #app main#main h3{color:#F6EBD9}
 /* notice: slate panel, amber hairline */
 html #app main#main .notice{background-color:#262E1F;border:1px solid #F2A541;color:#F6EBD9}
