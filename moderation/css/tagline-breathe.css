@@ -1,0 +1,24 @@
+/* Tagline breathing + wave (Danny 12:11 AWST 24 Oct 2026). Animation layers only: no font-size, width or position-in-flow
+   changes, so the header height is untouched (the wave is an absolutely placed ::after inside the tagline's own box).
+   Breathing: the same style as the dashboard's existing glow breathing (ad-glow / dpcBreathe): a tight glow that stays put and
+   a soft bloom that swells and settles (blur kept <= 8px: the tagline box clips overflow for its ellipsis), in the tagline's own colour (currentColor). Bonnie-ladder loop slot PHI^5 = 11.09 s,
+   golden-angle start (var(--phi-loop-effect[-d]) from js/phi-timing.js).
+   Wave: the footer wave line's own path (M0 8 Q5 2 10 8 T20 8 ...), stroke colour (--nt-line) and timing (var(--phi-wave[-d]),
+   3.33 s, weather-swept), scrolled one cycle per period like .wx-wave path.
+   Reduced motion: static glow, static wave. Pause motion (html.wx-paused) pauses both. */
+html #app .masthead .mh-tagline{position:relative;--tg-glow:currentColor;
+  animation:tg-breathe var(--phi-loop-effect,11.09s) ease-in-out var(--phi-loop-effect-d,0s) infinite}
+@keyframes tg-breathe{
+  0%,100%{text-shadow:0 0 1px color-mix(in srgb,var(--tg-glow) 45%,transparent),0 0 4px color-mix(in srgb,var(--tg-glow) 8%,transparent)}
+  50%{text-shadow:0 0 1px color-mix(in srgb,var(--tg-glow) 45%,transparent),0 0 4px color-mix(in srgb,var(--tg-glow) 62%,transparent),0 0 8px color-mix(in srgb,var(--tg-glow) 34%,transparent)}}
+html #app .masthead .mh-tagline::after{content:"";position:absolute;left:50%;bottom:0;width:min(62%,13em);height:4px;transform:translateX(-50%);
+  pointer-events:none;background:var(--nt-line);opacity:.75;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 16' preserveAspectRatio='none'%3E%3Cpath d='M0 8 Q5 2 10 8 T20 8' fill='none' stroke='%23000' stroke-width='2.2'/%3E%3C/svg%3E") 0 0/16px 100% repeat-x;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 16' preserveAspectRatio='none'%3E%3Cpath d='M0 8 Q5 2 10 8 T20 8' fill='none' stroke='%23000' stroke-width='2.2'/%3E%3C/svg%3E") 0 0/16px 100% repeat-x;
+  animation:tg-wave var(--phi-wave,3.33s) linear var(--phi-wave-d,0s) infinite}
+@keyframes tg-wave{from{-webkit-mask-position:0 0;mask-position:0 0}to{-webkit-mask-position:-16px 0;mask-position:-16px 0}}
+@media(max-width:575px){html #app .masthead .mh-tagline::after{height:3px}}
+html.wx-paused #app .masthead .mh-tagline::after{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){
+  html #app .masthead .mh-tagline{animation:none;text-shadow:0 0 1px color-mix(in srgb,var(--tg-glow) 45%,transparent),0 0 4px color-mix(in srgb,var(--tg-glow) 25%,transparent)}
+  html #app .masthead .mh-tagline::after{animation:none}}
