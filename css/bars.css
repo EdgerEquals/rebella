@@ -102,7 +102,7 @@ body.has-bars .escape{bottom:calc(var(--app-foot-h,60px) + var(--esc-ring,5.6px)
    (img/bonnies-logo.svg unchanged). 40px tall on desktop, 32px on phones (same 575px breakpoint). The box keeps its old width so nothing
    beside it moves, and a margin makes up the old height (47.5 / 36.4 / 41.6px) so the header keeps its height; the drawing sits left in the box
    (xMinYMid), so the pivot is the ink centre = height x 1810/893 / 2 from the left. */
-#app-head .wm-logo .bl-head{height:40px;width:122.3px;margin:3.75px 0;overflow:visible;transform:rotate(-8deg);transform-origin:40.5px 50%}
+#app-head .wm-logo .bl-head{height:40px;width:122.3px;margin:3.75px 0;overflow:visible;transform:rotate(-5.5deg);transform-origin:40.5px 50%}
 @media(max-width:575px){#app-head .wm-logo .bl-head{height:32px;width:93.7px;margin:2.2px 0;transform-origin:32.4px 50%}}
-.drawer .bl-wordmark .bl-drawer{height:40px;width:105.7px;margin:.8px 0;overflow:visible;transform:rotate(-8deg);transform-origin:40.5px 50%}
+.drawer .bl-wordmark .bl-drawer{height:40px;width:105.7px;margin:.8px 0;overflow:visible;transform:rotate(-5.5deg);transform-origin:40.5px 50%}
 @media(max-width:575px){.drawer .bl-wordmark .bl-drawer{height:32px;margin:4.8px 0;transform-origin:32.4px 50%}}
