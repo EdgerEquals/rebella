@@ -218,78 +218,86 @@
   --tc-211:#1E1E1E; /* index.html */
 }
 /* ===== END TOKENS ===== */
+/* ===== DASH PALETTE v2 (Danny t671u, 14:2x AWST 24 Oct 2026): the body layer below now uses the passcode screen's palette.
+   Login palette (night.css .gate, computed): card #171425, field #0E0C16, panel2 #1F1B30, ink #F3EAF0, soft #C9BFD3, blush #F8CFDB,
+   pink #E58AA6, lavender #DCD0F2, mint #C8EBD5, aqua #B5E3E0, teal ring #2A9D9F, deep teal #14555A, focus #8ED3CC, plum #2A1424.
+   Map: amber #F2A541 -> pink #E58AA6 (fills/rings) / blush #F8CFDB (small text); olive #262E1F -> #1F1B30; sand #F6EBD9 -> #F3EAF0;
+   neon green #19FF9C -> mint #C8EBD5; line #16B877 -> teal #2A9D9F; hairline #0B8F5A + deep #0E3A2A -> #14555A; #10261B -> #0E0C16;
+   panel #161D21 -> #171425; #0B0F10 -> #0E0C16; muted #B8CCC0 -> #C9BFD3; tab text #D6ECEF -> #DCD0F2; cyan #2EE6F0 -> aqua #B5E3E0.
+   Scope unchanged: main#main only (header #dash-head untouched), plus the footer Simmie box (#wx-foot .tty) at the end of this file.
+   Rollback: tag pre-dashpalette2-2026-10-24. */
 /* ===== COMMAND-CENTRE BODY LAYER (Danny 24 Oct 2026 01:48-01:50 AWST, live; sapphire 02:02 reversed to green 02:16) =====
    Inside the dashboard body (main) the command-centre look re-points the night palette variables: true-black page,
    dark panels #161D21 / olive #262E1F / teal #0A3F4C, emerald accents: fill #0B8F5A (hairlines, no text), deep #0E3A2A
    (fills that carry white/sand text), line #16B877, text #19FF9C, pale #C8EBD5, muted #B8CCC0. Sand #F6EBD9 body text.
-   WCAG AA: sand on #161D21 14.5 | sand on #262E1F 11.9 | white on #0E3A2A 12.6 | #19FF9C on #161D21 13+ | amber on #262E1F 6.9 */
+   WCAG AA: sand on #161D21 14.5 | sand on #262E1F 11.9 | white on #0E3A2A 12.6 | #19FF9C on #161D21 13+ | amber on #262E1F 6.9  (v1 values; v2 above replaces them) */
 html,html body,html body:not(.locked){background:#000}
 html #app main#main{
-  --nt-page:#000;--nt-bg:#0B0F10;--nt-panel:#161D21;--nt-panel2:#262E1F;--nt-line:#16B877;--nt-teal:#0A3F4C;
-  --nt-amber:#F2A541;--nt-ink:#F6EBD9;--nt-soft:#B8CCC0;--nt-blush:#19FF9C;--nt-pink:#16B877;--nt-mint:#C8EBD5;--nt-lav:#D6ECEF;
-  --nt-butter:#F2A541;--nt-peach:#F2A541;--nt-aqua:#D6ECEF;--nt-plum:#10261B;
-  --hz-deep:#0B0F10;--hz-panel:#161D21;--hz-plum:#262E1F;--hz-teal:#0A3F4C;--hz-teal-hi:#16B877;--hz-sand:#F6EBD9;
-  background:rgba(0,0,0,.4);box-shadow:0 0 0 1px #0B8F5A;color:#F6EBD9}   /* was #000, which hid the background loop behind the whole content column (Danny 12:09 AWST 24 Oct); cards keep their solid panels */
-html #app main#main h1,html #app main#main h2,html #app main#main h3{color:#F6EBD9}
+  --nt-page:#000;--nt-bg:#0E0C16;--nt-panel:#171425;--nt-panel2:#1F1B30;--nt-line:#2A9D9F;--nt-teal:#0A3F4C;
+  --nt-amber:#E58AA6;--nt-ink:#F3EAF0;--nt-soft:#C9BFD3;--nt-blush:#C8EBD5;--nt-pink:#2A9D9F;--nt-mint:#C8EBD5;--nt-lav:#DCD0F2;
+  --nt-butter:#F8CFDB;--nt-peach:#F8CFDB;--nt-aqua:#DCD0F2;--nt-plum:#0E0C16;
+  --hz-deep:#0E0C16;--hz-panel:#171425;--hz-plum:#1F1B30;--hz-teal:#0A3F4C;--hz-teal-hi:#2A9D9F;--hz-sand:#F3EAF0;
+  background:rgba(0,0,0,.4);box-shadow:0 0 0 1px #14555A;color:#F3EAF0}   /* was #000, which hid the background loop behind the whole content column (Danny 12:09 AWST 24 Oct); cards keep their solid panels */
+html #app main#main h1,html #app main#main h2,html #app main#main h3{color:#F3EAF0}
 /* notice: slate panel, amber hairline */
-html #app main#main .notice{background-color:#262E1F;border:1px solid #F2A541;color:#F6EBD9}
-html #app main#main .notice strong{color:#19FF9C}
-html #app main#main .example{background:#F2A541;color:#24292E}
-html #app main#main .queue-meta{color:#B8CCC0}
+html #app main#main .notice{background-color:#1F1B30;border:1px dashed #E58AA6;color:#F3EAF0}
+html #app main#main .notice strong{color:#C8EBD5}
+html #app main#main .example{background:#E58AA6;color:#24292E}
+html #app main#main .queue-meta{color:#C9BFD3}
 /* tabs + counts */
-html #app main#main .tabs{border-bottom:1px solid #16B877}
-html #app main#main .tab{color:#D6ECEF;background:transparent;box-shadow:inset 0 0 0 1px #0B8F5A}
-html #app main#main .tab[aria-selected="true"]{background:#0E3A2A;color:#fff;box-shadow:inset 0 0 0 1px #16B877}
-html #app main#main .tab .count{background:#262E1F;color:#F2A541}
-html #app main#main .tab[aria-selected="true"] .count{background:#10261B;color:#C8EBD5}
+html #app main#main .tabs{border-bottom:1px solid #2A9D9F}
+html #app main#main .tab{color:#DCD0F2;background:transparent;box-shadow:inset 0 0 0 1px #14555A}
+html #app main#main .tab[aria-selected="true"]{background:#14555A;color:#fff;box-shadow:inset 0 0 0 1px #2A9D9F}
+html #app main#main .tab .count{background:#1F1B30;color:#F8CFDB}
+html #app main#main .tab[aria-selected="true"] .count{background:#0E0C16;color:#C8EBD5}
 /* cards */
-html #app main#main .item{background:#161D21;color:#F6EBD9;box-shadow:0 0 0 1px #0B8F5A}
+html #app main#main .item{background:#171425;color:#F3EAF0;box-shadow:0 0 0 1px #14555A}
 html #app main#main .item .tag{color:var(--cat-text)}
-html #app main#main .item .type{background:#0A3F4C;color:#F6EBD9}
-html #app main#main .item .src{color:#F2A541}
-html #app main#main .item .sum{color:#F6EBD9}
-html #app main#main .item dt{color:#19FF9C}
-html #app main#main .item .why,html #app main#main .item .pic-credit{color:#B8CCC0}
-html #app main#main .item .links a{color:#19FF9C}
-html #app main#main .item .pic{background:#0B0F10}
+html #app main#main .item .type{background:#0A3F4C;color:#F3EAF0}
+html #app main#main .item .src{color:#E58AA6}
+html #app main#main .item .sum{color:#F3EAF0}
+html #app main#main .item dt{color:#C8EBD5}
+html #app main#main .item .why,html #app main#main .item .pic-credit{color:#C9BFD3}
+html #app main#main .item .links a{color:#B5E3E0}
+html #app main#main .item .pic{background:#0E0C16}
 html #app main#main .age.bad{color:#FFB4A8}
 html #app main#main .flags li{background:#2A1A1A;color:#FFB4A8;box-shadow:inset 0 0 0 1px #FFB4A8}
-html #app main#main .flags li.none{background:#0E3A2A;color:#fff;box-shadow:none}
-html #app main#main .status.pending{background:#262E1F;color:#F2A541}
-html #app main#main .status.approved{background:#0E3A2A;color:#fff}
+html #app main#main .flags li.none{background:#14555A;color:#fff;box-shadow:none}
+html #app main#main .status.pending{background:#1F1B30;color:#F8CFDB}
+html #app main#main .status.approved{background:#14555A;color:#fff}
 html #app main#main .status.rejected{background:#9E1B32;color:#fff}
-html #app main#main .decision{background:#0A3F4C;color:#F6EBD9}
-html #app main#main .pipe{background:#0B0F10;border:1px dashed #16B877;color:#F6EBD9}
-html #app main#main .pipe.live{background:#0E3A2A;border-color:#C8EBD5;color:#fff}
+html #app main#main .decision{background:#0A3F4C;color:#F3EAF0}
+html #app main#main .pipe{background:#0E0C16;border:1px dashed #2A9D9F;color:#F3EAF0}
+html #app main#main .pipe.live{background:#14555A;border-color:#C8EBD5;color:#fff}
 html #app main#main .pipe.err{background:#2A1A1A;border-color:#E5484D;color:#FFB4A8}
-html #app main#main .empty{color:#19FF9C}
-/* category stripes + tags (each still distinct; tag text >= 5.4:1 on #161D21) */
-html #app main#main .c-make{--cat:#16B877;--cat-text:#19FF9C}
-html #app main#main .c-questions{--cat:#2EE6F0;--cat-text:#2EE6F0}
-html #app main#main .c-mind{--cat:#F2A541;--cat-text:#F2A541}
+html #app main#main .empty{color:#C8EBD5}
+/* category stripes + tags (each still distinct; tag text >= 5.4:1 on #171425) */
+html #app main#main .c-make{--cat:#2A9D9F;--cat-text:#8ED3CC}
+html #app main#main .c-questions{--cat:#B5E3E0;--cat-text:#B5E3E0}
+html #app main#main .c-mind{--cat:#E58AA6;--cat-text:#F8CFDB}
 html #app main#main .c-world{--cat:#0F5C6E;--cat-text:#D6ECEF}
-html #app main#main .c-rwl{--cat:#F6EBD9;--cat-text:#F6EBD9}
+html #app main#main .c-rwl{--cat:#DCD0F2;--cat-text:#DCD0F2}
 html #app main#main .c-voice{--cat:#C8EBD5;--cat-text:#C8EBD5}
 /* buttons: Approve = sapphire fill, Reject / secondary = dark with hairlines, danger stays red */
-html #app main#main .btn-approve{background:#0E3A2A;color:#fff;box-shadow:inset 0 0 0 1px #16B877}
-html #app main#main .btn-primary{background:#161D21;color:#F6EBD9;box-shadow:inset 0 0 0 1px #F2A541}
-html #app main#main .btn-secondary,html #app main#main .btn-info{background:#0B0F10;color:#D6ECEF;box-shadow:inset 0 0 0 1px #16B877}
+html #app main#main .btn-approve{background:#14555A;color:#fff;box-shadow:inset 0 0 0 1px #2A9D9F}
+html #app main#main .btn-primary{background:#171425;color:#F8CFDB;box-shadow:inset 0 0 0 1px #E58AA6}
+html #app main#main .btn-secondary,html #app main#main .btn-info{background:#0E0C16;color:#DCD0F2;box-shadow:inset 0 0 0 1px #2A9D9F}
 html #app main#main .btn-danger{background:#9E1B32;color:#fff}
 html #app main#main .inline-panel .btn-primary{background:#9E1B32;color:#fff;box-shadow:none}
 /* inline panels + inputs */
-html #app main#main .inline-panel{background:#0B0F10;border:1px dashed #F2A541;color:#F6EBD9}
-html #app main#main .inline-panel .ip-title{color:#F2A541}
-html #app main#main .inline-panel label{color:#19FF9C}
-html #app main#main .field,html #app main#main textarea,html #app main#main select{background-color:#0B0F10;color:#F6EBD9;box-shadow:inset 0 0 0 1px #16B877}
+html #app main#main .inline-panel{background:#0E0C16;border:1px dashed rgba(229,138,166,.55);color:#F3EAF0}
+html #app main#main .inline-panel .ip-title{color:#F8CFDB}
+html #app main#main .inline-panel label{color:#C8EBD5}
+html #app main#main .field,html #app main#main textarea,html #app main#main select{background-color:#0E0C16;color:#F3EAF0;box-shadow:inset 0 0 0 1px #2A9D9F}
 html #app main#main .field::placeholder,html #app main#main textarea::placeholder{color:#A9B4C8;opacity:1}
-html #app main#main :focus-visible{outline-color:#F2A541}
+html #app main#main :focus-visible{outline-color:#8ED3CC}
 /* mail row + music tab panel (inbox-dash) */
-html #app main#main .ibx-mail{background:#161D21;border-color:#16B877;box-shadow:none}
-html #app main#main .ibx-word{color:#19FF9C}
-html #app main#main .ibx-peek,html #app main#main .ibx-fine,html #app main#main .ibx-when{color:#B8CCC0}
-html #app main#main .ibx-count{background:#262E1F;color:#F2A541}
-html #app main#main .ibx-count.on{background:#F2A541;color:#24292E}
-html #app main#main .ibx-chev{color:#19FF9C}
+html #app main#main .ibx-mail{background:#171425;border-color:#2A9D9F;box-shadow:none}
+html #app main#main .ibx-word{color:#C8EBD5}
+html #app main#main .ibx-peek,html #app main#main .ibx-fine,html #app main#main .ibx-when{color:#C9BFD3}
+html #app main#main .ibx-count{background:#1F1B30;color:#F8CFDB}
+html #app main#main .ibx-count.on{background:#E58AA6;color:#24292E}
+html #app main#main .ibx-chev{color:#C8EBD5}
 /* LOCKED age dial panel: never themed. Its inherited text colour is pinned to the value it had before the restyle
    (pink theme berry), so the panel renders exactly as tagged locked-family-silhouette-2026-10-24. Do not change. */
 html #app .agedial{color:#3D1226}   /* the panel moved into the sticky header (02:53), selector widened from main#main */
@@ -303,3 +311,14 @@ html #app .agedial .ad-step{background:#0F5C6E;color:#FFFFFF}
 html #app .agedial .ad-step:hover{background:#0A3F4C}
 html #app .agedial .ad-step:focus-visible{outline:2px solid #0A3F4C;outline-offset:2px}
 /* ===== END COMMAND-CENTRE BODY LAYER ===== */
+
+/* ===== Footer Simmie box in the login pink (Danny t671u, 24 Oct 2026). Dashboard only; the two orange pills (sounds on, sound flavour)
+   are not touched. Frame = gate Unlock pink #E58AA6, fill = login plum #2A1424, title bar a pink wash, prompt + Send in blush/pink.
+   Was: border rgba(42,157,159,.55), fill #0E0C16, bar #1F1B30 + rgba(42,157,159,.35) rule, prompt #F2A541, Send #F2A541. ===== */
+html #app #wx-foot .tty{background:#2A1424;border-color:#E58AA6}
+html #app #wx-foot .tty-bar{background:#3D1E36;border-bottom-color:rgba(229,138,166,.55);color:#F8CFDB}
+html #app #wx-foot .tty-body::before{border-right-color:#E58AA6}
+html #app #wx-foot .tty .tty-p{color:#F8CFDB}
+html #app #wx-foot .tty-send{background:#E58AA6;color:#24292E}
+html #app #wx-foot .tty-line:focus-visible{outline-color:#F8CFDB}
+html #app #wx-foot .tty-form:focus-within{box-shadow:0 0 0 2px #E58AA6}
