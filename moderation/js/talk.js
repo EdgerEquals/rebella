@@ -123,7 +123,7 @@
     var f = $("#tty-form");
     if(p === "input" || p === "key"){
       f.dataset.mode = p;
-      $("#tty-prompt").textContent = p === "key" ? "chat password$" : "bonnie$";
+      $("#tty-prompt").textContent = p === "key" ? "chat password$" : "simmie$";   // label next to the avatar (Danny 03:18 AWST 24 Oct: "Simmie"; live 12:39)
       var i = $("#tty-in"); i.type = p === "key" ? "password" : "text";
       i.setAttribute("aria-label", p === "key" ? "Chat password (kept for this tab only)" : "Message to Simmie");
       i.placeholder = p === "key" ? "same as your chat page" : "type to Simmie\u2026";

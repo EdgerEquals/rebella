@@ -61,7 +61,7 @@ FOOT_VISITOR = (
   '<span class="fb-cursor" aria-hidden="true"></span>'
   '<button type="button" class="fb-pause" aria-pressed="false" data-help="fb-pause"><span aria-hidden="true" class="fb-pi"></span><span class="fb-pl">Pause motion</span></button>'
   '</div></div>'
-  '<script src="js/footbar.js?v=2" defer></script>'
+  '<script src="js/footbar.js?v=3" defer></script>'
 )
 
 # HEADER ITEMS (live 24 Oct 2026, Danny): the public, static items from the dashboard header. Filled on the device by
