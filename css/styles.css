@@ -105,8 +105,9 @@ h1,h2,h3,h4,h5,h6{font-family:var(--f-body);text-transform:uppercase;font-weight
 .burger{display:none}
 .searchbar{display:none;background:#fff;border-top:3px dotted var(--line)}
 .searchbar.open{display:block}
-.searchbar form{display:flex;gap:.5rem;padding:1rem 0}
-.searchbar input{flex:1;font:1.6rem var(--f-body);border:0;border-bottom:2px solid var(--line);background:transparent;padding:.4rem;color:var(--ink)}
+.searchbar form{display:flex;gap:.5rem;padding:1rem 0;min-width:0;max-width:100%}
+.searchbar form .btn{flex:0 0 auto;width:auto} /* iPhone SE: the form is a flex item of the nav .container and grew to the input's intrinsic width + the button, ~70px past a 375px screen */
+.searchbar input{flex:1;min-width:0;font:1.6rem var(--f-body);border:0;border-bottom:2px solid var(--line);background:transparent;padding:.4rem;color:var(--ink)}
 @media(max-width:1229px){.menu a.navlink{padding:1rem .7rem;font-size:1rem}.menu a.navlink::after{left:.7rem;right:.7rem}}
 @media(max-width:991px){
   .js .menu,.js .nav-right .social{display:none}
@@ -214,6 +215,7 @@ h1,h2,h3,h4,h5,h6{font-family:var(--f-body);text-transform:uppercase;font-weight
 .cp-copy h2{font-size:2rem;margin-bottom:.4rem}
 .cp-copy p{margin:0 0 1rem}
 @media(max-width:767px){.cp-inner{flex-direction:column;padding:1.5rem 1rem;text-align:center}.cp-stickers{flex-basis:auto;width:300px;height:210px;transform:scale(.9)}}
+@media(max-width:359px){.cp-stickers{transform:scale(.84)}} /* 320px phones: the top-right sticker ran 2px past the screen */
 
 /* Follow tiles as photos */
 .tiles .tile{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;border-radius:4px}
@@ -322,7 +324,7 @@ figure.feature-art{position:relative;margin:0 0 2rem;overflow:visible;aspect-rat
 .pagination{display:flex;gap:.4rem;justify-content:center;list-style:none;padding:0;margin:1rem 0 3rem;font-family:var(--f-hand)}
 .pagination a,.pagination span{display:block;min-width:44px;padding:.5rem .8rem;border-radius:6px;background:#fff;text-align:center}
 .pagination span{background:var(--cat);color:var(--ink)}
-@media(max-width:575px){.page-title{font-size:2.9rem}.lead-banner{padding:1.2rem 1.5rem;font-size:1rem}}
+@media(max-width:575px){.page-title{font-size:min(2.9rem,11vw);overflow-wrap:break-word}.lead-banner{padding:1.2rem 1.5rem;font-size:1rem}}
 
 /* Article page */
 .entry-title{font-family:var(--f-hand);font-weight:400;letter-spacing:2px;font-size:2.4rem;text-align:center;max-width:900px;margin:0 auto;padding:1.5rem 0 2.5rem}

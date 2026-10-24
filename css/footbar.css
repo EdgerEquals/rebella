@@ -1,7 +1,7 @@
 /* Rebella footer (live): the dashboard footer items in Rebella pinks (visitor theme from css/bars.css).
    Text: #3D1226 / #6B1F3D / #8E2350 on #FDEEF2 or #FFFFFF (all 7:1 or better). Lights also carry their meaning in
    text labels and aria-labels, never colour alone. Nothing moves under reduced motion or Pause motion. */
-#app-foot .fb-lane{position:relative;height:0;overflow:visible;pointer-events:none}
+#app-foot .fb-lane{position:relative;height:0;overflow:visible;overflow-x:clip;pointer-events:none} /* critters start/end 24px off-screen: clip sideways only so they never widen the page */
 #app-foot .fb-actor{position:absolute;top:-1.2rem;left:0;font-size:1rem;line-height:1;will-change:transform;animation:fbCross linear 1 both;
   transform:translateX(var(--from)) scaleX(var(--flip))}
 @keyframes fbCross{from{transform:translateX(var(--from)) scaleX(var(--flip))}to{transform:translateX(var(--to)) scaleX(var(--flip))}}
