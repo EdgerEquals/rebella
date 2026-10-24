@@ -124,7 +124,7 @@
     hp.appendChild(hcb); hp.appendChild(hl);
     hcb.addEventListener("change", function(){ hapOn = hcb.checked; try{ localStorage.setItem(HKEY, hapOn ? "on" : "off"); }catch(e){} });
     [dw, lw, sw, bw, hp].forEach(function(n){ box.appendChild(n); });
-    var ro = $("#wx-readout"); (ro ? ro.parentNode : strip).insertBefore(box, ro || null);
+    var ws = $("#wx-foot .wx-strip"); if(ws) ws.parentNode.insertBefore(box, ws.nextSibling); else strip.appendChild(box);   // right after the status lights (was: before the footer weather readout, removed 24 Oct)
 
     // dial: rotate by dragging round the centre or with arrow keys; drag speed + pressure drive the meter
     var ang = 0, dd = null;

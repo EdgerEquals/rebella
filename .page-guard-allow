@@ -84,3 +84,6 @@ moderation/index.html :: id:reset-q
 moderation/index.html :: id:reset-strip
 moderation/index.html :: id:reset-yes
 moderation/index.html :: role:img
+moderation/index.html :: id:wx-marquee
+moderation/index.html :: id:wx-mq-track
+moderation/index.html :: id:wx-readout

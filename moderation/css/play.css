@@ -42,7 +42,7 @@ html.wx-paused .msg-ring{animation-play-state:paused}
 /* ---------- footer row wrapper: invisible in portrait ---------- */
 .ft-row{display:contents}
 /* short landscape phones (SE, 14 ...): the footer shrinks; the terminal / typing box stays full width at the bottom and the
-   lights, weather, emoji marquee, mission log and play controls sit in ONE horizontally scrollable row just above it.
+   lights, mission log and play controls sit in ONE horizontally scrollable row just above it.
    The animal + space lane stays fixed just above the footer; nothing moves to the header. */
 @media (orientation:landscape) and (max-height:500px){
   #wx-foot.wx-foot{flex-wrap:wrap;row-gap:2px;padding-top:2px;padding-bottom:calc(2px + env(safe-area-inset-bottom));
@@ -53,10 +53,8 @@ html.wx-paused .msg-ring{animation-play-state:paused}
   .ft-row::-webkit-scrollbar{display:none}
   .ft-row > *{flex:none}
   .ft-row .wx-mlog{display:none}
-  .ft-row .wx-marquee{flex:0 0 160px}
   .ft-row .pl-play{order:0;flex:none;border-top:0;padding:0}
-  .wx-foot.tty-open .ft-row .wx-marquee,.wx-foot.tty-open .ft-row .pl-play{display:flex}   /* the row stays while typing */
-  .wx-foot.tty-open .ft-row .wx-marquee{display:block}
+  .wx-foot.tty-open .ft-row .pl-play{display:flex}   /* the row stays while typing */
   .ft-row{height:18px}
   #wx-foot .tty-body{min-height:20px;padding-top:0;padding-bottom:0}
   #wx-foot .tty-cloud{width:20px;height:18px}

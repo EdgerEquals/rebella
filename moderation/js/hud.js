@@ -1,5 +1,5 @@
 // Rebella moderation "HUD": header weather chip + fun-fact ticker, footer status lights / waveform / gauge /
-// weather readout / emoji marquee, and the background layers (space loop + faint drifting code).
+// (footer weather readout + emoji marquee removed 24 Oct 2026), and the background layers (space loop + faint drifting code).
 // Everything starts only after the passcode gate is passed (first "rebella:status" event from app.js).
 // Weather: Open-Meteo with fixed Perth coordinates only (no browser location, no permission prompt), cached 30 min,
 // fails silently. Preview: ?weather=sun|hot|cloud|fog|rain|storm|night, ?age=10..16. No sound, no pop-ups.
@@ -95,12 +95,6 @@
         story(s);
       }
     }
-    var ro = $("#wx-readout"); if(ro){ ro.hidden = !s; ro.textContent = s ? s.icon + t + " Perth" : ""; }
-    var mq = $("#wx-mq-track");
-    if(mq){ mq.textContent = "";
-      if(s){ var flat = [].concat.apply([], s.seq).join(" ") + "  \u00B7  \u2B50  \u00B7  ";
-        for(var k=0;k<2;k++) mq.appendChild(el("span","wx-mq-half", new Array(5).join(flat))); }
-      $("#wx-marquee").hidden = !s; }
     setLight("sky", wx.state === "ok" ? "ok" : wx.state === "fail" ? "warn" : "idle",
       wx.state === "ok" ? "SKY: weather fetched" + (s ? ", " + s.label + (forced ? " (preview)" : "") : "")
       : wx.state === "fail" ? "SKY: weather couldn't be fetched" + (forced ? " (showing the preview mood)" : "") : "SKY: loading the weather");

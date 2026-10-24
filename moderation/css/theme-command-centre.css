@@ -322,3 +322,4 @@ html #app #wx-foot .tty .tty-p{color:#F8CFDB}
 html #app #wx-foot .tty-send{background:#E58AA6;color:#24292E}
 html #app #wx-foot .tty-line:focus-visible{outline-color:#F8CFDB}
 html #app #wx-foot .tty-form:focus-within{box-shadow:0 0 0 2px #E58AA6}
+html #app #wx-foot .tty-form :focus{outline-color:#F8CFDB}   /* was amber var(--hz-amber) from hud.css (missed in v2; added with the footer-weather change) */

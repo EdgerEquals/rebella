@@ -93,7 +93,7 @@ html #app .wx-light b{background:var(--tc-188)}
 html #app .wx-light.ok b{background:var(--nt-line);box-shadow:0 0 4px var(--tc-189)}
 html #app .wx-wave path{stroke:var(--nt-line)}
 html #app .wx-gauge .g-arc{stroke:var(--nt-panel2)} html #app .wx-gauge circle{fill:var(--nt-blush)}
-html #app .wx-readout{color:var(--nt-ink)}
+
 html #app .wx-code{opacity:.12;filter:none}
 /* ---------- Ask Dad: one floating, draggable amber key (fixed; starts beside Lock) ---------- */
 .ad-spot{flex:none;width:98px;height:30px;margin-left:auto;margin-right:.5rem}

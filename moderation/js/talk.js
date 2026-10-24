@@ -130,7 +130,24 @@
       i.autocomplete = p === "key" ? "current-password" : "off";
       $("#tty-send").textContent = p === "key" ? "Unlock" : "Send";
     }
-    document.getElementById("wx-foot").classList.toggle("tty-open", p !== "idle");
+    syncOpen();
+  }
+  // Footer talk mode (tty-open hides the status lights / play controls so the input gets the room) follows FOCUS, not the pane
+  // (Danny 24 Oct 2026). It used to be set for every pane except idle and only cleared by Esc, x or the 30 s empty-input timer,
+  // so tapping elsewhere, closing the keyboard or sending left the footer collapsed.
+  function syncOpen(){
+    var f = $("#tty-form"), a = document.activeElement, foot = document.getElementById("wx-foot");
+    // opens only when the INPUT takes focus (focus moving to Send / x keeps it open, but a tap on Send / x while it's
+    // closed doesn't re-open it, which would move the button out from under the finger before the click lands)
+    foot.classList.toggle("tty-open", !f.hidden && !!a && (a === $("#tty-in") || (f.contains(a) && foot.classList.contains("tty-open"))));
+  }
+  function onFormBlur(){
+    setTimeout(function(){                       // after the tap's click/submit has run
+      var f = $("#tty-form"), a = document.activeElement;
+      if(f.hidden || (a && f.contains(a))) return syncOpen();
+      if(mode === "input" && (f.dataset.mode === "key" || !$("#tty-in").value.trim())) return closeTalk();   // nothing typed (or the chat password): back to idle
+      syncOpen();                                // a draft stays in the box (memory only, never stored); the footer returns to normal
+    }, 60);
   }
   function busyLine(t){ $("#tty-busy-text").textContent = t; }
 
@@ -223,7 +240,7 @@
     var live = $("#tty-live"); if(live) live.textContent = "Simmie: " + text;
     mode = "reply"; showPane("busy"); busyLine("");
     $("#tty-busy").hidden = true; $("#tty-open").hidden = false;   // output line
-    typeLines([text], function(){ openInput(true); }, 1800);
+    typeLines([text], function(){ openInput(false); }, 1800);   // after a send the footer stays in its normal state; tap the box to reply
   }
 
   // ---------- talk mode ----------
@@ -245,6 +262,8 @@
     $("#tty-open").addEventListener("click", function(){ if(mode === "idle" || mode === "reply") openTalk(); });
     $("#tty-x").addEventListener("click", closeTalk);
     $("#tty-form").addEventListener("keydown", function(e){ if(e.key === "Escape"){ e.preventDefault(); closeTalk(); } });
+    $("#tty-form").addEventListener("focusin", syncOpen);
+    $("#tty-form").addEventListener("focusout", onFormBlur);
     $("#tty-in").addEventListener("input", function(){ clearTimeout(afterTimer); });
     $("#tty-form").addEventListener("submit", async function(e){
       e.preventDefault();
