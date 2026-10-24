@@ -215,7 +215,7 @@
         clearInterval(w.spin); setTimeout(function(){ if(mode === "busy") idle(); }, 6000); return; }
       busyLine(sp + (w.typing ? " typing\u2026" : s > 20 ? " SIMMIE IS THINKING\u2026" : ""));
     }
-    tick(); w.spin = setInterval(function(){ if(!document.hidden) tick(); }, RM.matches ? 5000 : 120);
+    tick(); w.spin = setInterval(function(){ if(!document.hidden) tick(); }, RM.matches ? 5000 : Math.round(120 / ((window.RatioPump && window.RatioPump.rate()) || 1)));   // spinner on the ratio pump + dashboard dial
   }
   function showReply(text){
     LOG("talk: reply received");

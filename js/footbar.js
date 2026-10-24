@@ -30,6 +30,9 @@
   function perthHour() { try { return Number(new Intl.DateTimeFormat('en-AU', { timeZone: 'Australia/Perth', hour: 'numeric', hourCycle: 'h23' }).format(new Date())); } catch (e) { return new Date().getHours(); } }
   function sweep() { if (RM.matches || !wxKey) return 0; return perthHour() < 5 ? 2 : (SWEEP[wxKey] || 0); }
   function period(n) { return Math.pow(PHI, n + sweep()); }
+  // JS timers (fact ticker, animal spawns) follow the ratio pump + Rebella's frequency dial (js/ratio-pump.js); CSS durations
+  // stay on period() because the pump already sets their playbackRate (Danny 12:15 AWST 24 Oct: all motion 25% slower)
+  function jt(n) { var r = 1; try { r = (window.RatioPump && window.RatioPump.rate()) || 1; } catch (e) {} return period(n) / r; }
 
   function myName() { try { var r = window.RebellaVisitor && window.RebellaVisitor.load(); return r && r.name ? r.name : ''; } catch (e) { return ''; } }
   function light(name, state, label) { var L = foot.querySelector('[data-l="' + name + '"]'); if (!L) return; L.className = 'fb-light ' + state; L.setAttribute('aria-label', label); }
@@ -130,7 +133,7 @@
       if (RM.matches) showLine(s);
       else { tt.classList.add('fading'); setTimeout(function () { if (!busy()) showLine(s); tt.classList.remove('fading'); }, 618); }
     }
-    tickTimer = setTimeout(cycle, period(long ? 5 : 4) * 1000);
+    tickTimer = setTimeout(cycle, jt(long ? 5 : 4) * 1000);
   }
 
   /* animal lane: one crosses every PHI^5 s, in PHI^4 s (transform only, decorative) */
@@ -146,7 +149,7 @@
       a.addEventListener('animationend', function () { a.remove(); });
       lane.appendChild(a);
     }
-    laneTimer = setTimeout(animal, period(5) * 1000);
+    laneTimer = setTimeout(animal, jt(5) * 1000);
   }
 
   /* Pause motion (WCAG 2.2.2), remembered on this device only if pressed */
@@ -160,12 +163,12 @@
   }
   pb.addEventListener('click', function () {
     paused = !paused; set(KEYS.pause, paused ? '1' : null); applyPause();
-    if (!paused) { tickTimer = setTimeout(cycle, period(4) * 1000 * frac(G)); laneTimer = setTimeout(animal, period(5) * 1000 * frac(G)); }
+    if (!paused) { tickTimer = setTimeout(cycle, jt(4) * 1000 * frac(G)); laneTimer = setTimeout(animal, jt(5) * 1000 * frac(G)); }
   });
 
   /* start */
   clock(); lightSky(); lightRadio(); lightDevice(); wave(); applyPause();
-  if (!paused) { tickTimer = setTimeout(cycle, period(4) * 1000); laneTimer = setTimeout(animal, period(5) * 1000 * frac(G)); }
+  if (!paused) { tickTimer = setTimeout(cycle, jt(4) * 1000); laneTimer = setTimeout(animal, jt(5) * 1000 * frac(G)); }
   loadWx();
   setTimeout(function () { clock(); setInterval(clock, 60000); }, (60 - new Date().getSeconds()) * 1000);
   foot.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('#vn-save,#vn-forget')) setTimeout(lightDevice, 50); });
