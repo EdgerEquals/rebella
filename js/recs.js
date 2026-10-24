@@ -46,6 +46,8 @@ window.REBELLA_RECS = {
   // Anything else I recommend. Copy the { ... } block to add more.
   other: [
     // { title: "", type: "Book", why: "", link: "" }
+    // Bonnie's pick, her own words from the chat (11:14 AWST 24 Oct 2026), approved by Danny 11:35 AWST.
+    { title: "Trying Not to Care (podcast)", type: "", why: "In your spare time listen to “trying not to care” podcast by Ashley Corbo. I highly recommend this podcast it has helped me personally for a while. It is nice to listen too while you do your homework with a cup of tea or just sitting on the couch. New episodes every monday!!", link: "" }
   ],
 
   about: {
