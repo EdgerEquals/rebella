@@ -26,7 +26,7 @@ html #app .lockbtn:hover{color:var(--nt-ink);border-color:var(--nt-aqua)}
 html #app .wx-hud{background:linear-gradient(90deg,var(--nt-bar),var(--nt-teal));border-bottom:1px solid var(--nt-line)}
 html #app .wx-chip{background:var(--nt-bg);border-color:var(--nt-line);color:var(--nt-ink)}
 html #app .tk-k{color:var(--nt-aqua)} html #app .tk-n{color:var(--nt-amber)} html #app .tk-s{color:var(--nt-lav)} html #app .tk-p{color:var(--tc-173)}
-html #app .masthead{background:var(--tc-174);border-bottom:2px dotted var(--nt-line)}
+html #app .masthead{background:var(--tc-174);border-bottom:2px solid transparent}   /* dotted teal line under the header removed (Danny 12:07 AWST 24 Oct; was 2px dotted var(--nt-line)); 2px kept, transparent, so the header height is unchanged */
 html #app .wordmark .script{color:var(--nt-pink)} html #app .wordmark .serif{color:var(--nt-lav)}
 html #app .mod-pill{background:var(--nt-teal);color:var(--nt-mint)}
 html #app .btn-info,html #app .btn-secondary{background:transparent;color:var(--nt-blush);box-shadow:inset 0 0 0 2px var(--nt-pink)}
