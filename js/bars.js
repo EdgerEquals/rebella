@@ -147,6 +147,45 @@
   });
   inp.addEventListener('input', function () { if (note.textContent !== NOTE) note.textContent = NOTE; });
 
+  /* 2b) Name box above the on-screen keyboard (Danny 24 Oct 2026). The footer is position:fixed to the bottom of the LAYOUT
+     viewport, and iOS Safari doesn't shrink that viewport for the keyboard, so the open name box sat behind the keyboard.
+     While the box has focus on a touch screen, the footer is lifted by the keyboard's height, read from window.visualViewport
+     (same approach as the chat page's Ask Dad liftFoot). Blur, Esc or save/Enter -> the footer drops back. Desktop is
+     unchanged (no coarse pointer, and no keyboard inset anyway). Reduced motion: no slide. Only layout numbers are read here:
+     nothing typed is read, logged or stored by this code. */
+  var TOUCH = window.matchMedia ? window.matchMedia('(hover: none) and (pointer: coarse)') : { matches: false };
+  var RMQ = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
+  var vv = window.visualViewport, lifted = false;
+  function kbInset() {
+    if (!vv) return 0;
+    var gap = window.innerHeight - (vv.height + vv.offsetTop);   // layout-viewport bottom hidden under the keyboard
+    return gap > 40 ? Math.round(gap) : 0;                          // ignore toolbar wobble
+  }
+  function fitFoot() {
+    if (!lifted) return;
+    var d = kbInset();
+    foot.style.transition = RMQ.matches ? 'none' : 'transform .382s cubic-bezier(.2,.7,.2,1)';
+    foot.style.transform = d ? 'translateY(' + (-d) + 'px)' : '';
+  }
+  function liftFoot() { if (!TOUCH.matches || !vv) return; lifted = true; fitFoot(); }
+  function dropFoot() {
+    if (!lifted) return; lifted = false;
+    foot.style.transition = RMQ.matches ? 'none' : 'transform .382s cubic-bezier(.2,.7,.2,1)';
+    foot.style.transform = '';
+    setTimeout(function () { if (!lifted) foot.style.transition = ''; }, 420);
+  }
+  if (vv) { vv.addEventListener('resize', fitFoot); vv.addEventListener('scroll', fitFoot); }
+  inp.addEventListener('focus', liftFoot);
+  inp.addEventListener('blur', function () {
+    // after the tap's click (save / skip) has run, so the buttons don't move from under the finger
+    setTimeout(function () {
+      if (document.activeElement === inp) return;
+      dropFoot();
+      // tapped away with nothing typed: close the box (same as skip); a typed name stays in the box until save/skip
+      if (!form.hidden && !form.contains(document.activeElement) && !inp.value.trim()) render(load(), false);
+    }, 60);
+  });
+
   // first paint: no fade, so a returning reader is greeted straight away
   var start = load();
   if (start && greet) greet.textContent = BACK[dayIndex() % BACK.length].replace('{n}', start.name);
