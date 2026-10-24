@@ -1,5 +1,6 @@
-/* Shared bars (Rebella). Two jobs only:
+/* Shared bars (Rebella). Jobs:
    1) Measure the locked header/footer heights so the page content is padded clear of them (never moves the bars).
+   1b) Hide the section menu on scroll down, show it pinned under the header on scroll up (see below).
    2) Visitor audience: the optional nickname. It is stored ONLY in this browser's localStorage under
       'rebella-visitor' as {v:1, name, savedOn:'YYYY-MM-DD'}. It is never sent, logged, fetched, put in a URL or analytics.
       If storage is blocked (eg private mode) it works for this visit only and fails silently. */
@@ -18,6 +19,42 @@
   if ('ResizeObserver' in window) { var ro = new ResizeObserver(measure); ro.observe(head); ro.observe(foot); }
   else window.addEventListener('resize', measure);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure, function () {});
+
+  /* 1b) Section menu + search bar (.mainnav) under the locked header (Danny 12:29 AWST 24 Oct, t599u).
+     It is position:fixed at top = measured header height (css/bars.css), so no ancestor overflow/transform and no
+     short-screen fallback can unstick it. Scrolling DOWN slides it up behind the header; scrolling UP brings it back,
+     pinned to the header's bottom edge. Near the top of the page it always shows. rAF-throttled, with an 8 px
+     direction threshold so small jitters (iOS rubber-band, trackpads) never flip it. It never hides while the
+     search box or a menu link has focus. Reduced motion: no slide, it just appears/disappears (css/bars.css).
+     Tells the help orb where the bar is via the 'rebella:navbar' event. */
+  var nav = document.querySelector('.mainnav');
+  if (nav) {
+    var navH = 0, lastY = window.pageYOffset || 0, acc = 0, ticking = false, hidden = false, TH = 8;
+    var navMeasure = function () { var h = nav.offsetHeight; if (h && h !== navH) { navH = h; root.style.setProperty('--nav-h', h + 'px'); tell(); } };
+    var tell = function () { try { document.dispatchEvent(new CustomEvent('rebella:navbar', { detail: { shown: !hidden, height: navH } })); } catch (e) {} };
+    var setHidden = function (h) {
+      if (h === hidden) return; hidden = h;
+      nav.classList.toggle('nav-hidden', h); document.body.classList.toggle('nav-up', h); tell();
+    };
+    var update = function () {
+      ticking = false;
+      var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+      var max = Math.max(0, (document.documentElement.scrollHeight || 0) - window.innerHeight);
+      if (y < 0 || y > max) { lastY = Math.min(Math.max(y, 0), max); return; }   // iOS rubber-band: ignore
+      var d = y - lastY; lastY = y;
+      if (y <= navH) { acc = 0; setHidden(false); return; }                    // at the top: shown normally
+      var ae = document.activeElement; if (ae && nav.contains(ae) && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName)) { acc = 0; setHidden(false); return; }   // typing in search
+      if ((d > 0) !== (acc > 0)) acc = 0;                                        // direction changed: start counting again
+      acc += d;
+      if (acc > TH) setHidden(true); else if (acc < -TH) setHidden(false);
+    };
+    window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    nav.addEventListener('focusin', function () { acc = 0; setHidden(false); });
+    navMeasure();
+    if ('ResizeObserver' in window) new ResizeObserver(navMeasure).observe(nav); else window.addEventListener('resize', navMeasure);
+    window.RebellaNavbar = { shown: function () { return !hidden; }, height: function () { return navH; } };
+    update();
+  }
 
   if (head.getAttribute('data-audience') !== 'visitor') return;
 

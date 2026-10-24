@@ -20,13 +20,20 @@
   background:var(--bar-mast-bg);max-height:calc(100% - var(--app-foot-h,60px));overflow-y:auto;overscroll-behavior:contain}
 #app-foot.rb-bars{position:fixed;bottom:0;left:0;right:0;z-index:950;transform:none;transition:none;animation:none;
   padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
-body.has-bars{padding-top:var(--app-head-h,190px);padding-bottom:calc(var(--app-foot-h,90px) + 96px)}
+body.has-bars{padding-top:calc(var(--app-head-h,190px) + var(--nav-h,0px));padding-bottom:calc(var(--app-foot-h,90px) + 96px)}
 body.has-bars main,body.has-bars [id]{scroll-margin-top:calc(var(--app-head-h,190px) + 60px)}
-/* Rebella's own section menu stays as page content; it now sticks just under the locked header (not under the glass) */
-body.has-bars .mainnav{top:var(--app-head-h,190px)}
-@media (max-height:540px){body.has-bars .mainnav{position:relative;top:auto}}
-/* Get me out stays visible, just above the locked footer */
-body.has-bars .escape{bottom:calc(var(--app-foot-h,60px) + 12px)}
+/* Rebella's section menu + search bar (t599u): pinned to the header's bottom edge (top = measured header height, js/bars.js).
+   position:fixed instead of sticky, so no ancestor overflow/transform and no short-screen fallback can unstick it
+   (the old max-height:540px rule turned it back into plain page content). Scroll down: it slides up behind the header
+   (header z 950 > menu z 900). Scroll up: it slides back and stays pinned. Slide PHI^-2 = 0.382 s. */
+body.has-bars .mainnav{position:fixed;top:var(--app-head-h,190px);left:0;right:0;z-index:900;transform:translate3d(0,0,0);
+  transition:transform .382s cubic-bezier(.2,.7,.2,1),box-shadow .2s}
+body.has-bars .mainnav.nav-hidden{transform:translate3d(0,calc(-100% - 8px),0);box-shadow:none;
+  transition:transform .382s cubic-bezier(.4,0,.6,1),box-shadow .2s}
+/* still focusable while tucked away: tabbing into it brings it back (js/bars.js focusin) */
+@media (prefers-reduced-motion:reduce){body.has-bars .mainnav,body.has-bars .mainnav.nav-hidden{transition:none}}
+/* Get me out rests on the footer's top edge (t600u): its outer ring touches the footer, layered above it */
+body.has-bars .escape{bottom:calc(var(--app-foot-h,60px) + var(--esc-ring,5.6px))}
 
 /* header: top bar */
 #app-head .topbar{background:var(--bar-top-bg);color:var(--bar-top-ink)}

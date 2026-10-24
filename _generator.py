@@ -149,16 +149,16 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <meta name="referrer" content="no-referrer">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&family=Special+Elite&display=swap">
-<link rel="stylesheet" href="css/styles.css?v=6">
+<link rel="stylesheet" href="css/styles.css?v=7">
 <link rel="stylesheet" href="css/zine.css?v=5">
-<link rel="stylesheet" href="css/bars.css?v=3">
+<link rel="stylesheet" href="css/bars.css?v=4">
 <link rel="stylesheet" href="music/youtube/bonnie-radio.css?v=2">
-<script src="js/main.js?v=2"></script>
+<script src="js/main.js?v=3"></script>
 <script src="js/ratio-pump.js?v=1" data-site="rebella" data-freq="0.75"></script>
-<script src="js/bars.js?v=2" defer></script>
+<script src="js/bars.js?v=3" defer></script>
 <script src="music/youtube/stations.js?v=2" defer></script>
 <script src="music/youtube/bonnie-radio.js?v=3" defer></script>
-<script src="js/help-orb.js?v=4" defer></script>
+<script src="js/help-orb.js?v=5" defer></script>
 <script src="js/help-init.js?v=1" defer></script>
 <script src="js/nav.js?v=3" defer></script>
 <script src="js/quotes.js" defer></script>

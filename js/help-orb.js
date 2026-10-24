@@ -21,11 +21,16 @@
   function css() {
     var s = document.createElement('style'); s.id = 'help-orb-css';
     s.textContent =
-      '.help-orb{position:fixed;right:calc(14px + env(safe-area-inset-right,0px));bottom:calc(var(--app-foot-h,82px) + 84px + env(safe-area-inset-bottom,0px));z-index:960;width:48px;height:48px;border-radius:50%;border:2px solid #fff;' +
+      '.help-orb{position:fixed;right:calc(14px + env(safe-area-inset-right,0px));top:calc(var(--app-head-h,120px) + var(--nav-h,0px) + 10px);bottom:auto;z-index:960;width:48px;height:48px;border-radius:50%;border:2px solid #fff;' +
       'background:radial-gradient(circle at 35% 30%,#FDEEF2,#F48FB1 60%,#8E2350);color:#3D1226;font:700 1.5rem/1 "Alegreya Sans",sans-serif;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;' +
-      'box-shadow:0 2px 10px rgba(61,18,38,.35);padding:0;-webkit-tap-highlight-color:transparent}' +
+      'box-shadow:0 2px 10px rgba(61,18,38,.35);padding:0;-webkit-tap-highlight-color:transparent;' +
+      'transition:top .382s cubic-bezier(.2,.7,.2,1);animation:helpBreathe 6.854s ease-in-out -4.236s infinite}' +
+      // gentle breath (t602u): scale + soft pink halo, PHI^4 = 6.854 s, golden-angle start (k=1); the ratio pump scales it
+      '@keyframes helpBreathe{0%,100%{scale:1;box-shadow:0 2px 10px rgba(61,18,38,.35),0 0 0 0 rgba(244,143,177,0)}50%{scale:1.06;box-shadow:0 2px 12px rgba(61,18,38,.3),0 0 14px 4px rgba(244,143,177,.55)}}' +
+      '.help-orb.dragging,.help-orb.springing,.help-orb[aria-pressed=true]{animation:none}' +
+      'body:has(#app-foot.fb-paused) .help-orb{animation-play-state:paused}' +
       '.help-orb.springing{transition:left .618s cubic-bezier(.34,1.4,.64,1),top .618s cubic-bezier(.34,1.4,.64,1)}' +
-      '.help-orb.dragging{cursor:grabbing;opacity:.92}.help-orb[aria-pressed=true]{outline:3px solid #8E2350;outline-offset:3px}' +
+      '.help-orb.dragging{cursor:grabbing;opacity:.92;transition:none}.help-orb[aria-pressed=true]{outline:3px solid #8E2350;outline-offset:3px}' +
       '.help-orb:focus-visible{outline:3px solid #8E2350;outline-offset:3px}' +
       'html.help-seeking [data-help]{box-shadow:inset 0 0 0 999px rgba(246,201,212,.28);animation:helpGlow 2.618s ease-in-out infinite;animation-delay:var(--help-d,0s)}' +
       'html.help-seeking [data-help].help-hot{outline:3px solid #8E2350;outline-offset:2px;box-shadow:inset 0 0 0 999px rgba(244,143,177,.38),0 0 0 6px rgba(244,143,177,.55);animation:none}' +
@@ -36,7 +41,7 @@
       '.help-pop h2{font:700 1.05rem/1.25 "Alegreya Sans",sans-serif;margin:0 2rem .35rem 0;color:#8E2350}.help-pop p{margin:0 0 .45rem}.help-pop .hp-try{font-style:italic;color:#5B3A50}' +
       '.help-pop .hp-close{position:absolute;top:.4rem;right:.4rem;min-width:44px;min-height:36px;border:2px solid #8E2350;border-radius:999px;background:#FDEEF2;color:#3D1226;font:700 .85rem/1 "Alegreya Sans",sans-serif;cursor:pointer}' +
       '.help-pop .hp-close:focus-visible{outline:3px solid #8E2350;outline-offset:2px}' +
-      '@media (prefers-reduced-motion:reduce){html.help-seeking [data-help]{animation:none!important}.help-orb.springing{transition:none}}';
+      '@media (prefers-reduced-motion:reduce){html.help-seeking [data-help]{animation:none!important}.help-orb,.help-orb.springing{transition:none;animation:none}}';
     document.head.appendChild(s);
   }
   function visible(el) { if (!el.getClientRects().length) return false; var r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight; }
@@ -111,16 +116,23 @@
     } else { o.style.left = ''; o.style.top = ''; o.style.bottom = ''; avoid(); }
     o.classList.remove('dragging');
   }
-  // never sit on a YouTube player or the header radio dial: lift the dock above any it would cover
+  // home (t600u): top-right, tucked just under the header; when the section menu/search bar is showing it sits just
+  // below that bar instead, and follows it up/down (top transition PHI^-2 = 0.382 s, same as the bar's slide).
+  // Never sits on a YouTube player or the open header radio dial: it drops just below any it would cover.
+  function anchor() {
+    var head = document.getElementById('app-head'), y = head ? head.getBoundingClientRect().bottom : 0;
+    var nb = window.RebellaNavbar, nav = document.querySelector('.mainnav');
+    if (nav && (!nb || nb.shown())) { var nr = nav.getBoundingClientRect(); if (getComputedStyle(nav).position === 'fixed' || nr.top <= y + 1) y = Math.max(y, y + (nb ? nb.height() : nr.height)); }
+    return Math.round(y + 10);
+  }
   function avoid() {
     var o = st.orb; if (o.classList.contains('dragging') || o.classList.contains('springing') || o.style.left) return;
-    o.style.bottom = '';
-    var esc = document.querySelector('.escape'), er = esc && esc.getBoundingClientRect();
-    if (er && er.width) o.style.bottom = Math.round(window.innerHeight - er.top + 10) + 'px';
-    var r = o.getBoundingClientRect();
+    o.style.bottom = 'auto';
+    var top = anchor(); o.style.top = top + 'px';
+    var h = o.offsetHeight || 48, w = o.offsetWidth || 48, right = window.innerWidth - 14, left = right - w;
     document.querySelectorAll('iframe[src*="youtube"], .br-panel:not([hidden])').forEach(function (f) {
       var p = f.getBoundingClientRect();
-      if (r.left < p.right && r.right > p.left && r.top < p.bottom && r.bottom > p.top) o.style.bottom = (window.innerHeight - p.top + 12) + 'px';
+      if (left < p.right && right > p.left && top < p.bottom && top + h > p.top) { top = Math.round(p.bottom + 12); o.style.top = top + 'px'; }
     });
   }
   function pick(on) { st.picking = on; st.orb.setAttribute('aria-pressed', on ? 'true' : 'false'); seek(on); if (!on) st.kb = false; }
@@ -137,7 +149,7 @@
     o.type = 'button'; o.className = 'help-orb'; o.id = 'help-orb'; o.textContent = '?'; o.setAttribute('data-help', 'help-orb'); o.setAttribute('aria-pressed', 'false');
     o.setAttribute('aria-label', 'Help orb. Drag me onto anything to find out what it does, or press Enter and then Tab through the things I can explain.');
     document.body.appendChild(o); avoid();
-    window.addEventListener('resize', avoid); window.addEventListener('scroll', function () { avoid(); if (st.hot && st.picking) hot(st.hot); }, { passive: true });
+    window.addEventListener('resize', avoid); document.addEventListener('rebella:navbar', avoid); window.addEventListener('scroll', function () { avoid(); if (st.hot && st.picking) hot(st.hot); }, { passive: true });
     var sx = 0, sy = 0, ox = 0, oy = 0, moved = false, down = false;
     function noScroll(e) { if (down) e.preventDefault(); }
     document.addEventListener('touchmove', noScroll, { passive: false });

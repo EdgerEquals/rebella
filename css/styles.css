@@ -344,20 +344,39 @@ figure.feature-art{position:relative;margin:0 0 2rem;overflow:visible;aspect-rat
 @media(max-width:575px){.entry-title{font-size:1.7rem;padding:1rem 0 1.5rem}.entry .lead{font-size:1.3rem}}
 
 /* ===== EMERGENCY STOP (user requirement): always visible, top of every stacking context ===== */
-.escape{position:fixed;right:16px;bottom:16px;z-index:2147483647;display:flex;align-items:center;gap:.7rem;
-  min-width:64px;min-height:64px;padding:.7rem 1.2rem .7rem .8rem;border-radius:14px;
+.escape{position:fixed;right:16px;bottom:16px;z-index:2147483647;display:flex;align-items:center;gap:.56rem;
+  /* t601u (Danny 12:31 AWST 24 Oct): 80% of the old size (min 64 -> 51.2 px, padding/icon/type x0.8); still >= 44x44 px to tap */
+  min-width:51.2px;min-height:51.2px;padding:.56rem .96rem .56rem .64rem;border-radius:11.2px;box-sizing:border-box;
   background-color:var(--escape-bg);color:#fff;
-  box-shadow:0 0 0 4px #fff,0 0 0 7px var(--escape-ring),0 10px 24px rgba(0,0,0,.35);
+  /* richer, layered colour from Rebella's own pinks: raspberry -> berry -> plum gradient (white label >= 5.1:1 on every stop),
+     a soft pink sheen, inner glow and the original white + dark rings (4/7 px -> 3.2/5.6 px) */
+  --esc-ring:5.6px;--esc-dim:0;--esc-glow:rgba(244,143,177,.42);
+  background-image:linear-gradient(rgba(61,18,38,var(--esc-dim)),rgba(61,18,38,var(--esc-dim))),
+    radial-gradient(120% 90% at 18% 12%,rgba(253,238,242,.08),rgba(253,238,242,0) 55%),
+    linear-gradient(125deg,#C2386F 0%,#B0255B 30%,#9E2A5A 52%,#8E2350 74%,#6B1F3D 100%);
+  background-size:100% 100%,100% 100%,220% 220%;background-position:0 0,0 0,0% 50%;
+  box-shadow:0 0 0 3.2px #fff,0 0 0 var(--esc-ring) var(--escape-ring),inset 0 0 9px rgba(244,143,177,.38),inset 0 -5px 10px rgba(61,18,38,.32),
+    0 0 8px 1px var(--esc-glow),0 8px 19px rgba(0,0,0,.35);
   font-family:var(--f-body);text-decoration:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-.escape::before{content:"";position:absolute;inset:5px;border-radius:9px;pointer-events:none;background-image:url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='9' ry='9' stroke='%23FFFFFF' stroke-width='4' stroke-dasharray='2%2c 6' stroke-linecap='round'/%3e%3c/svg%3e")}
-.escape svg{flex:0 0 40px;width:40px;height:40px}
-.escape .label{display:flex;flex-direction:column;line-height:1.05}
-.escape .label strong{font-family:var(--f-hand);font-weight:400;text-transform:uppercase;letter-spacing:2px;font-size:1.35rem}
-.escape .label small{font-size:.85rem;font-weight:700;letter-spacing:.5px;opacity:.95}
-.escape:hover,.escape:focus-visible{background-color:var(--escape-hover)}
+.escape::before{content:"";position:absolute;inset:4px;border-radius:7.2px;pointer-events:none;background-image:url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='7' ry='7' stroke='%23FFFFFF' stroke-width='3.2' stroke-dasharray='1.6%2c 4.8' stroke-linecap='round'/%3e%3c/svg%3e")}
+.escape svg{flex:0 0 32px;width:32px;height:32px}
+.escape .label{display:flex;flex-direction:column;line-height:1.05;text-shadow:0 1px 1px rgba(61,18,38,.35)}
+.escape .label strong{font-family:var(--f-hand);font-weight:400;text-transform:uppercase;letter-spacing:1.6px;font-size:1.08rem}
+.escape .label small{font-size:.68rem;font-weight:700;letter-spacing:.4px;opacity:.95}
+.escape:hover,.escape:focus-visible{background-color:var(--escape-hover);--esc-dim:.16}
 .escape:focus-visible{outline:4px solid var(--aqua-deep);outline-offset:6px}
 .escape:active{transform:scale(.97)}
-@media(max-width:575px){.escape{right:12px;bottom:12px;padding:.6rem 1rem .6rem .7rem}.escape svg{width:34px;height:34px;flex-basis:34px}.escape .label strong{font-size:1.2rem}}
+@media(max-width:575px){.escape{right:12px;bottom:12px;padding:.48rem .8rem .48rem .56rem}.escape svg{width:27.2px;height:27.2px;flex-basis:27.2px}.escape .label strong{font-size:.96rem}}
+/* breathing life (t601u), the same gentle style as the help orb's breath but its own Bonnie-ladder slot so the two never
+   lock together: breath PHI^6 = 17.94 s (unused elsewhere on Rebella), colour/glow drift PHI^8 = 46.98 s (slow-drift slot).
+   Golden-angle start offsets (k=1, k=2). The site dial / ratio pump (js/ratio-pump.js) scales these via playbackRate, so the
+   durations here are the plain phi values (no double scaling). 'scale' (not transform) so the press feedback still works. */
+@keyframes escBreathe{0%,100%{scale:1;--esc-glow:rgba(244,143,177,.30)}50%{scale:1.035;--esc-glow:rgba(244,143,177,.62)}}
+@keyframes escDrift{0%{background-position:0 0,0 0,0% 40%}100%{background-position:0 0,0 0,100% 60%}}
+@property --esc-glow{syntax:"<color>";inherits:true;initial-value:rgba(244,143,177,.42)}
+html.unlocked .escape{animation:escBreathe 17.944s ease-in-out -11.090s infinite,escDrift 46.979s ease-in-out -11.090s infinite alternate}
+body:has(#app-foot.fb-paused) .escape{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){html.unlocked .escape{animation:none}}
 @media print{.escape{display:none}}
 
 /* Site-wide passcode gate: KEEPS THE ORIGINAL HILDA BROWNS (user request). The variables are re-declared on .gate,

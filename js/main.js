@@ -43,7 +43,7 @@
 
     var nav = document.querySelector('.mainnav');
     if (nav) {
-      var onScroll = function () { nav.classList.toggle('stuck', nav.getBoundingClientRect().top <= 0 && window.scrollY > 0); };
+      var onScroll = function () { nav.classList.toggle('stuck', window.scrollY > 0); /* pinned under the header from the first pixel (was top<=0: never true under the header) */ };
       window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
     }
 
