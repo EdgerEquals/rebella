@@ -8,7 +8,7 @@
   "greeting": {
    "title": "Your hello",
    "text": "This line says hello when you arrive. If you choose a nickname, it greets you by that name.",
-   "try": "Tap 'Want me to call you something?' at the bottom and pick a name that feels like you."
+   "try": "Tap 'Tell me your name if you like' at the bottom and pick a name that feels like you."
   },
   "name-prompt": {
    "title": "Your nickname",

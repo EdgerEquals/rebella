@@ -51,7 +51,7 @@ FOOT_VISITOR = (
   '<div class="fb-tty ft-right">'
   '<span class="fb-p" aria-hidden="true">rebella&gt;</span>'
   '<span class="vn" id="vn" data-help="name-prompt">'
-  '<button class="vn-ask" id="vn-ask" type="button">Want me to call you something?</button>'
+  '<button class="vn-ask" id="vn-ask" type="button">Tell me your name if you like</button>'
   '<span class="vn-known" id="vn-known" hidden>Not <span id="vn-who"></span>? <button class="vn-link" id="vn-change" type="button">change</button> / <button class="vn-link" id="vn-forget" type="button">forget my name</button></span>'
   '<span class="vn-form" id="vn-form" role="group" aria-label="Choose a nickname" hidden>'
   '<label class="sr-only" for="vn-in">Type a name</label>'
