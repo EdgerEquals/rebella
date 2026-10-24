@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="css/sticky-head.css?v=10">
 <link rel="stylesheet" href="css/agedial.css?v=3">
 <link rel="stylesheet" href="css/agedial-btn.css?v=1"><!-- age dial folds into a family button (Danny 11:07 AWST 24 Oct; live 11:35) -->
-<link rel="stylesheet" href="css/dash-foot-lock.css?v=3">
+<link rel="stylesheet" href="css/dash-foot-lock.css?v=4">
 <link rel="stylesheet" href="css/theme-command-centre.css?v=10">
 <script src="js/phi-timing.js?v=9"></script>
 <script src="js/config.js?v=2"></script>
@@ -74,7 +74,8 @@
   <div class="dash-head" id="dash-head">
   <div class="topbar"><div class="container">
     <!-- Rebella logo (the public site's header wordmark in its black-background version, ../img/rebella-wordmark-dark.svg; not a link here, so Bonnie stays in the dashboard). Danny 24 Oct 2026 02:31 AWST: it takes the tagline's old spot; the tagline now sits in the header's bottom row beside Dad's mark (02:59). -->
-    <img class="tb-logo" src="../img/rebella-wordmark-dark.svg" alt="Rebella" width="121" height="47" decoding="async">
+    <!-- Bonnie's logo (Danny 12:06 AWST 24 Oct): the hand-lettered vector signature ../img/bonnies-logo.svg (rebella 1f7d447, same file as the public site + chat header) replaces the typeset wordmark ../img/rebella-wordmark-dark.svg; same 32px (phones 26px) height and spot. Rollback: tag pre-logoswap-2026-10-24. -->
+    <svg class="tb-logo tb-logo-svg" viewBox="413 534 1810 893" role="img" aria-label="Rebella"><use href="../img/bonnies-logo.svg?v=1#bonnies-logo"/></svg>
     <span class="tb-right"><button id="lock" class="lockbtn" type="button" aria-label="Lock dashboard">&#128274; Lock</button>
     <!-- Ask Dad: amber circle pinned top-right of the header, Lock just to its left -->
     <button id="ask-dad" class="ask-dad" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="dad-panel" aria-label="Ask Dad"><span class="ad-orbit" aria-hidden="true"><span class="ad-sat">🛰️</span></span><span class="ad-w" aria-hidden="true">Ask</span><span class="ad-w" aria-hidden="true">Dad</span></button></span>
