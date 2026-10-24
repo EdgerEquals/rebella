@@ -49,3 +49,8 @@ html #app .masthead .mh-tagline{display:block;min-width:0;font-family:var(--f-ha
    insets keep it centred on the page while clearing the folded age dial family button at the right end of this row. */
 html #app .masthead .brand{flex:1 1 auto;justify-content:center;padding:0 56px}
 html #app .masthead .mh-tagline{flex:1 1 auto;text-align:center}
+/* Tagline wider + bigger (Danny 12:10 AWST 24 Oct): side insets 56px -> 48px (the 75% family button is 39px wide), text 16px (phones 12.48px)
+   -> up to 21px, shrinking with the screen so it stays on one line: (100vw - 160px) / 15.4 fits the 31 letters + spacing in the row.
+   Line height 1.2 x 21px = 25.2px, under the 25.5px family button; the 40px row is unchanged, so the header is no taller. */
+html #app .masthead .brand{padding:0 48px}
+html #app .masthead .mh-tagline{font-size:clamp(10px,calc((100vw - 160px) / 15.4),21px)}
