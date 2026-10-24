@@ -9,11 +9,15 @@
 /* collapsed */
 #app .ad-pin.is-collapsed .container{position:relative;height:0;padding-top:0;padding-bottom:0}
 #app .ad-pin.is-collapsed .agedial{position:absolute;z-index:2;right:max(var(--gutter,15px),env(safe-area-inset-right));
-  bottom:calc((var(--ad-mh,42px) - 36px) / 2);display:block;padding:1px 5px}
+  bottom:calc((var(--ad-mh,42px) - 27px) / 2);display:block;padding:.25px 3.25px}
 #app .ad-pin.is-collapsed .agedial .ad-row,#app .ad-pin.is-collapsed .agedial .ad-note{display:none}
-#app .ad-pin.is-collapsed .agedial .ad-family{width:38px;height:28px}
+#app .ad-pin.is-collapsed .agedial .ad-family{width:28.5px;height:21px}
 #app .ad-pin.is-collapsed .agedial .ad-fam:focus-visible{outline-color:#D6ECEF;outline-offset:3px}
-@media (orientation:landscape) and (max-height:500px){#app .ad-pin.is-collapsed .agedial{padding:1px 5px}#app .ad-pin.is-collapsed .agedial .ad-family{width:38px;height:28px}}
+/* 75% size (Danny 12:09 AWST 24 Oct): box 52x34 -> 39x25.5 (family 38x28 -> 28.5x21, padding 1/5 -> .25/3.25px, same 2px dotted border; the
+   bottom offset formula scaled 36 -> 27px). Invisible hit area around it (44px wide, 40px tall = most of the 42px row) keeps it easy to tap. */
+#app .ad-pin.is-collapsed .agedial .ad-fam{position:relative}
+#app .ad-pin.is-collapsed .agedial .ad-fam::after{content:"";position:absolute;top:-9.5px;bottom:-9.5px;left:-7.75px;right:-7.75px}
+@media (orientation:landscape) and (max-height:500px){#app .ad-pin.is-collapsed .agedial{padding:.25px 3.25px}#app .ad-pin.is-collapsed .agedial .ad-family{width:28.5px;height:21px}}
 /* expanded layout (Danny 11:12 AWST): ONE row = [AGE DIAL: 13] ... [-][+][family], + stays at the right end beside the family,
    - sits just left of it; the "curated for a reader" line runs full width underneath. Family drawn at button size so the
    expanded strip is shorter. */
