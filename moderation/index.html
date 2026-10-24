@@ -23,6 +23,7 @@
 <link rel="stylesheet" href="css/agedial.css?v=3">
 <link rel="stylesheet" href="css/agedial-btn.css?v=2"><!-- age dial folds into a family button (Danny 11:07 AWST 24 Oct; live 11:35) -->
 <link rel="stylesheet" href="css/dash-foot-lock.css?v=7">
+<link rel="stylesheet" href="css/tide-swell.css?v=1">
 <link rel="stylesheet" href="css/theme-command-centre.css?v=13">
 <script src="js/phi-timing.js?v=9"></script>
 <script src="../js/ratio-pump.js?v=1" data-site="dashboard" data-freq="0.75"></script><!-- ratio pump + Bonnie's Dashboard frequency dial 0.75 (all motion 25% slower; Danny 12:15 AWST 24 Oct) -->
@@ -43,6 +44,7 @@
 <script src="js/sticky-head.js?v=9" defer></script>
 <script src="js/agedial.js?v=2" defer></script>
 <script src="js/agedial-btn.js?v=1" defer></script><!-- age dial folds into a family button (Danny 11:07 AWST 24 Oct; live 11:35) -->
+<script src="js/tide-swell.js?v=1" defer></script>
 <link rel="stylesheet" href="css/tagline-breathe.css?v=1"><!-- tagline breathing + wave (Danny 12:11 AWST 24 Oct) -->
 </head>
 <body class="locked">
@@ -198,6 +200,9 @@
         <svg id="wx-gauge" class="wx-gauge" viewBox="0 0 32 18" role="img" aria-label="Decided"><path class="g-arc" d="M3 16 A13 13 0 0 1 29 16"/><line class="g-needle" x1="16" y1="16" x2="16" y2="5"/><circle cx="16" cy="16" r="1.8"/></svg>
       </div>
       <!-- footer weather (readout "16° Perth" + weather emoji marquee) removed 24 Oct 2026 (Danny); the header weather chip is unchanged -->
+      <!-- tide + swell and Moon phase where the weather was (Danny 24 Oct 2026 14:52 AWST; js/tide-swell.js; Open-Meteo Marine, CC BY 4.0) -->
+      <span id="wx-tide" class="tsw" data-ts-key="rebella.dash.tide" hidden></span>
+      <span id="wx-moon" class="wx-moon" hidden></span>
     </div>
   </div>
 </div>

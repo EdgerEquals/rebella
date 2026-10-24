@@ -1,0 +1,23 @@
+/* Tide + swell strip and Moon icon, Bonnie's Dashboard footer only (js/tide-swell.js; Danny 24 Oct 2026 14:52 AWST, ported from held
+   69b0779 / a193c39). They sit where the footer weather was: right of the status lights, at the right end of the footer row.
+   Fixed 16px tall so the footer row height doesn't move. Hidden while the Simmie box has focus (talk mode), back on blur.
+   Colours from the footer's own palette (no new literals): tide line/area = the footer wave's teal, "now" dot = the gauge's amber. */
+.tsw{display:inline-flex;align-items:center;gap:.15em;flex:0 0 auto;height:16px;line-height:1;vertical-align:middle;white-space:nowrap;
+  letter-spacing:0;text-transform:none;overflow:visible}
+.tsw[hidden],.tsw .tsw-dol[hidden],.wx-moon[hidden]{display:none!important}
+.tsw .tsw-tide{display:block;width:36px;height:14px;flex:0 0 auto;overflow:visible}
+.tsw .tsw-area{fill:var(--tsw-area,currentColor);opacity:.35;stroke:none}
+.tsw .tsw-line{fill:none;stroke:var(--tsw-line,currentColor);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.tsw .tsw-nowl{stroke:var(--tsw-now,currentColor);stroke-width:.8;stroke-dasharray:1.4 1.4;opacity:.7}
+.tsw .tsw-nowd{fill:var(--tsw-now,currentColor)}
+.tsw .tsw-dol{display:inline-flex;height:16px;align-items:flex-end;font-size:12px;line-height:14px}
+.tsw .tsw-dol>span{display:inline-block;margin-left:-1px;animation:tswLeap 11.09s ease-in-out infinite;transform-origin:50% 80%;will-change:transform}
+@keyframes tswLeap{0%,58%,100%{transform:translateY(0) rotate(0)}68%{transform:translateY(var(--tsw-amp,-3px)) rotate(-18deg)}
+  76%{transform:translateY(calc(var(--tsw-amp,-3px) * 1.15)) rotate(0)}86%{transform:translateY(0) rotate(16deg)}}
+@media (prefers-reduced-motion:reduce){.tsw .tsw-dol>span{animation:none!important}}
+html.wx-paused #app .tsw .tsw-dol>span{animation-play-state:paused!important}
+#wx-foot .tsw{--tsw-line:var(--nt-line,var(--hz-teal-hi));--tsw-area:var(--nt-line,var(--hz-teal-hi));--tsw-now:var(--hz-amber,var(--nt-ink,currentColor));opacity:.85}
+.wx-moon{flex:0 0 auto;display:inline-block;height:16px;font-size:13px;line-height:16px;vertical-align:middle}
+/* talk mode (Simmie box focused): hidden so the input gets the room; the short-landscape row keeps them, like the play controls */
+.wx-foot.tty-open .tsw,.wx-foot.tty-open .wx-moon{display:none}
+@media (orientation:landscape) and (max-height:500px){.wx-foot.tty-open .ft-row .tsw{display:inline-flex}.wx-foot.tty-open .ft-row .wx-moon{display:inline-block}}
