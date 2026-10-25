@@ -21,3 +21,5 @@ html.wx-paused #app .tsw .tsw-dol>span{animation-play-state:paused!important}
 /* talk mode (Simmie box focused): hidden so the input gets the room; the short-landscape row keeps them, like the play controls */
 .wx-foot.tty-open .tsw,.wx-foot.tty-open .wx-moon{display:none}
 @media (orientation:landscape) and (max-height:500px){.wx-foot.tty-open .ft-row .tsw{display:inline-flex}.wx-foot.tty-open .ft-row .wx-moon{display:inline-block}}
+/* narrow phones (<400px): dolphins hidden so the Simmie box keeps room for its title-bar mission log; tide curve + Moon stay (Danny 25 Oct 12:26 AWST) */
+@media(max-width:399px){#wx-foot .tsw .tsw-dol{display:none!important}}

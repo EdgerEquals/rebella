@@ -318,8 +318,13 @@ html #app .agedial .ad-step:focus-visible{outline:2px solid #0A3F4C;outline-offs
 html #app #wx-foot .tty{background:#2A1424;border-color:#E58AA6}
 html #app #wx-foot .tty-bar{background:#3D1E36;border-bottom-color:rgba(229,138,166,.55);color:#F8CFDB}
 html #app #wx-foot .tty-body::before{border-right-color:#E58AA6}
-html #app #wx-foot .tty .tty-p{color:#F8CFDB}
+html #app #wx-foot .tty .tty-p{color:#F2A541}   /* simmie> / simmie$ prompt back to amber for contrast on the plum fill (was blush #F8CFDB in v2; Danny 25 Oct 12:26 AWST) */
 html #app #wx-foot .tty-send{background:#E58AA6;color:#24292E}
 html #app #wx-foot .tty-line:focus-visible{outline-color:#F8CFDB}
 html #app #wx-foot .tty-form:focus-within{box-shadow:0 0 0 2px #E58AA6}
 html #app #wx-foot .tty-form :focus{outline-color:#F8CFDB}   /* was amber var(--hz-amber) from hud.css (missed in v2; added with the footer-weather change) */
+/* Compact Simmie box (Danny 25 Oct 2026 12:26 AWST, 'fix both'): desktop box back to its pre-24-Oct-14:43 width (~240px, was 417px) and the
+   freed room goes to the mission log column; phones: the title-bar mission log gets the bar (window title label hidden <576px). */
+@media(min-width:900px){html #app #wx-foot .tty{max-width:240px}html #app #wx-foot.tty-open .tty{max-width:620px}html #app #wx-foot .tty-hint{display:none}}   /* typing (focus) keeps the full-width box as before; the "tap to talk" hint hides (as on phones) so Simmie's line has the compact box */
+@media(min-width:1200px){html #app #wx-foot .wx-mlog{flex:1 1 230px;max-width:380px}}
+@media(max-width:575px){html #app #wx-foot .tty-bar>span:not([class]){display:none}html #app #wx-foot .tty-mlog{max-width:none;margin-left:6px;letter-spacing:0}}
