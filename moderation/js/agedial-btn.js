@@ -10,7 +10,7 @@
   function still(){ return !box.animate || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches); }
   function mh(){ if(mast) root.style.setProperty("--ad-mh", mast.getBoundingClientRect().height.toFixed(1) + "px"); }
   mh(); window.addEventListener("resize", mh); if(window.ResizeObserver && mast) new ResizeObserver(mh).observe(mast);
-  function label(){ var a = box.getAttribute("data-age") || ""; btn.setAttribute("aria-label", "Age dial, age " + a + (open ? ", hide" : ", show")); }
+  function label(){ var a = box.getAttribute("data-age") || ""; btn.setAttribute("aria-label", "Age dial, content age threshold " + a + "+" + (open ? ", hide" : ", show")); }
   document.addEventListener("rebella:age", label); label();
   function setState(o){ // o = expanded
     pin.classList.toggle("is-collapsed", !o); box.classList.toggle("is-collapsed", !o); }

@@ -294,7 +294,7 @@
     Object.keys(counts).forEach(function(k){ $("#c-"+k).textContent = counts[k]; });
     document.querySelectorAll(".tab").forEach(function(t){ t.setAttribute("aria-selected", t.dataset.filter===filter ? "true":"false"); });
     emitStatus(counts);
-    $("#queue-meta").textContent = "Queue updated " + new Date(Q.updated*1000).toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"}) + ". Highest score first. Showing age " + dialAge() + (hid ? " (" + hid + " for older readers hidden)." : ".");
+    $("#queue-meta").textContent = "Queue updated " + new Date(Q.updated*1000).toLocaleString("en-AU",{dateStyle:"medium",timeStyle:"short"}) + ". Highest score first. Content age threshold " + dialAge() + "+" + (hid ? " (" + hid + " above it hidden)." : ".");
     if(keepFocus){   // don't rebuild the cards while someone is typing in an open panel; just refresh the counts
       return;
     }

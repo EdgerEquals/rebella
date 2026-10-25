@@ -58,7 +58,7 @@
       if(ps.oldest_waiting_found_at) L.push("oldest waiting: " + ago(Date.now() - Date.parse(ps.oldest_waiting_found_at)));
       if(ps.last_scan_at) L.push("last scan: " + perth(Date.parse(ps.last_scan_at), true));
     }
-    if(h){ var a = h.age(); L.push("age dial: " + a.age + (a.src === "default" ? " (default; age-dial.json not published)" : a.src === "?age" ? " (link)" : ""));
+    if(h){ var a = h.age(); L.push("age threshold: " + a.age + "+" + (a.src === "default" ? " (default; age-dial.json not published)" : a.src === "?age" ? " (link)" : ""));
       var w = h.weather(); L.push(w && w.ok ? "weather: " + w.label + (w.temp != null ? " " + w.temp + "\u00B0" : "") + " Perth (Open-Meteo " + perth(w.at) + ")" + (w.forced ? "" : "")
         : w ? "weather: n/a (fetch failed; showing default mood)" : "weather: n/a (Open-Meteo not reachable)"); }
     return L;
