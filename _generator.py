@@ -154,7 +154,7 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <link rel="stylesheet" href="css/bars.css?v=6">
 <link rel="stylesheet" href="music/youtube/bonnie-radio.css?v=2">
 <script src="js/main.js?v=3"></script>
-<script src="js/ratio-pump.js?v=1" data-site="rebella" data-freq="0.75"></script>
+<script src="js/ratio-pump.js?v=2" data-site="rebella" data-freq="0.75"></script>
 <script src="js/bars.js?v=4" defer></script>
 <script src="music/youtube/stations.js?v=2" defer></script>
 <script src="music/youtube/bonnie-radio.js?v=3" defer></script>
