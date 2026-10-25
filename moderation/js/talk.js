@@ -1,5 +1,8 @@
-// LIVE DASHBOARD COPY, SENDING OFF (needs Danny's yes): the talk box and Ask Dad never touch the chat relay or ntfy.
-// They play the animation, then say "coming soon". No chat password is asked for or stored. (PREVIEW flag = no-send mode.)
+// LIVE DASHBOARD COPY. Ask Dad SENDS (Danny 25 Oct 2026, card 'Fix the phone-ping gaps?': "turn on the dashboard Ask Dad
+// live"; ASKDAD_LIVE): the window's message goes encrypted (type ask-dad) on the chat relay, the box relay pings Dad's
+// phone (generic text only) and the chat routine shows it to Dad. Needs the chat password once per tab (derived key in
+// sessionStorage only, as on the chat page). The talk box is still in no-send mode (PREVIEW): it plays the animation, then
+// says "coming soon".
 // Rebella moderation: the "simmie - tty" terminal in the footer.
 // Idle: types short scripts, and every 4th cycle a SYSTEM REPORT of real dashboard data or a FACT.
 // Tap: talk to Simmie inline. Uses the SAME channel as the Simmie chat page (EdgerEquals/simmie-chat js/app.js):
@@ -12,7 +15,7 @@
   "use strict";
   var CHAT = "https://edgerequals.github.io/simmie-chat/";
   var SKEY = "simmie-chat-key";            // same sessionStorage name the chat page uses (same origin)
-  var SC = window.SimmieCrypto, PREVIEW = true;
+  var SC = window.SimmieCrypto || window.RebellaCrypto, PREVIEW = true, ASKDAD_LIVE = true;   // PREVIEW: talk box only; Ask Dad follows ASKDAD_LIVE. RebellaCrypto (js/crypto.js) = the chat page crypto
   var RM = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : {matches:false};
   var $ = function(s){ return document.querySelector(s); };
   var H = function(){ return window.RebellaHud || null; };
@@ -157,8 +160,8 @@
     var r = await fetch(CHAT + "config.enc.json?t=" + Date.now(), {cache:"no-store", credentials:"omit"});
     if(!r.ok) throw new Error("no chat config"); chat.meta = await r.json(); return chat.meta;
   }
-  async function ensureKey(){
-    if(PREVIEW) return true;
+  async function ensureKey(live){
+    if(PREVIEW && !live) return true;   // talk box in no-send mode needs no key; Ask Dad (live) does
     if(chat.key && chat.cfg) return true;
     await loadMeta();
     var saved = sessionStorage.getItem(SKEY);
@@ -308,7 +311,7 @@
     function open(){
       clearTimeout(closeT); panel.hidden = false; panel.classList.remove("sent","closing"); placePanel(); void panel.offsetWidth; panel.classList.add("opening");
       btn.setAttribute("aria-expanded","true"); st.textContent = "";
-      ensureKey().catch(function(){ return false; }).then(function(ok){ keyRow.hidden = !!ok; placePanel(); });
+      ensureKey(ASKDAD_LIVE).catch(function(){ return false; }).then(function(ok){ keyRow.hidden = !!ok; placePanel(); });
       setTimeout(function(){ ta.focus({preventScroll:true}); }, RM.matches ? 0 : 280);
     }
     function close(){
@@ -354,8 +357,8 @@
       var text = ta.value.trim(); if(!text){ st.textContent = "type something first"; return; }
       var sendBtn = $("#dp-send"); sendBtn.disabled = true; st.textContent = "transmitting\u2026";
       try{
-        if(PREVIEW){ await new Promise(function(r){ setTimeout(r, 400); }); LOG("send off: coming soon"); sent("Coming soon: Ask Dad doesn't send from here yet"); return; }
-        if(!(await ensureKey())){
+        if(!ASKDAD_LIVE){ await new Promise(function(r){ setTimeout(r, 400); }); LOG("send off: coming soon"); sent("Coming soon: Ask Dad doesn't send from here yet"); return; }
+        if(!(await ensureKey(true))){
           if(!key.value.trim()){ keyRow.hidden = false; placePanel(); key.focus(); st.textContent = "chat password needed once for this tab"; return; }
           try{ await unlock(key.value); }catch(err){ key.value = ""; st.textContent = "that password didn't open your chat"; key.focus(); return; }
           key.value = ""; keyRow.hidden = true;
