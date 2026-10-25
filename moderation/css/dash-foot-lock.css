@@ -59,3 +59,18 @@ html #app .masthead .mh-tagline{flex:1 1 auto;text-align:center}
    Line height 1.2 x 21px = 25.2px, under the 25.5px family button; the 40px row is unchanged, so the header is no taller. */
 html #app .masthead .brand{padding:0 48px}
 html #app .masthead .mh-tagline{font-size:clamp(10px,calc((100vw - 160px) / 15.4),21px)}
+/* Bonnie's logo bigger, lifted off the line, pink neon glow (Danny t689u 11:42 AWST 25 Oct; dashboard only).
+   Layout box unchanged (81x40 / 65x32) so the header keeps its height; the drawing is scaled with transform only, lifted so its ink
+   clears the top bar's bottom line by ~4-5px, and shifted right so its left edge stays where it was. -5.5deg levelling kept.
+   Phones (<=575px): x1.30 (ink ~29 -> ~38px tall). Wider: x1.17 (ink ~37 -> ~43px; the 50px bar has no more room above it).
+   Neon = the questionnaire Start button's recipe (css/quiz-dad-head.css: --dpc-glow 0 0 2px .9 + 0 0 7px .55, --dpc-bloom 0 0 18px .28
+   + 0 0 44px .14, dpcBreathe 11.090s ease-in-out -0.910s, bloom x0.8 <-> x1.2) in pink, as drop-shadows because the logo is an SVG:
+   tight core in blush #F8CFDB, glow + bloom in the login pink #E58AA6; the drawing keeps its #F48FB1. No pulse under reduced motion. */
+html #app .topbar .tb-logo.tb-logo-svg{position:relative;z-index:1;transform:translate(6px,-4px) rotate(-5.5deg) scale(1.17);
+  filter:drop-shadow(0 0 2px rgba(248,207,219,.9)) drop-shadow(0 0 7px rgba(229,138,166,.55)) drop-shadow(0 0 18px rgba(229,138,166,.28)) drop-shadow(0 0 44px rgba(229,138,166,.14));
+  animation:tbNeon 11.090s ease-in-out -0.910s infinite}
+@media (max-width:575px){ html #app .topbar .tb-logo.tb-logo-svg{transform:translate(9px,-3px) rotate(-5.5deg) scale(1.3)} }
+@keyframes tbNeon{
+  0%,100%{filter:drop-shadow(0 0 2px rgba(248,207,219,.9)) drop-shadow(0 0 7px rgba(229,138,166,.55)) drop-shadow(0 0 18px rgba(229,138,166,.224)) drop-shadow(0 0 44px rgba(229,138,166,.112))}
+  50%{filter:drop-shadow(0 0 2px rgba(248,207,219,.9)) drop-shadow(0 0 7px rgba(229,138,166,.55)) drop-shadow(0 0 18px rgba(229,138,166,.336)) drop-shadow(0 0 44px rgba(229,138,166,.168))}}
+@media (prefers-reduced-motion:reduce){ html #app .topbar .tb-logo.tb-logo-svg{animation:none} }
