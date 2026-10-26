@@ -52,3 +52,6 @@
   #app-foot .fb-light b,#app-foot .fb-wave path,#app-foot .fb-tick-t.fb-pan,#app-foot .fb-cursor{animation:none!important}
   #app-foot .fb-lane{display:none}#app-foot .ft-line{transition:none}
 }
+/* smallfit (15:53 AWST 26 Oct 2026): the name prompt ends in an ellipsis when the row is narrower than the label, instead of being cut
+   mid-letter (the full label stays its accessible name) */
+#app-foot .fb-tty .vn-ask{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:top}
