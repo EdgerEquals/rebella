@@ -158,7 +158,7 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <script src="js/phi-b.js?v=1"></script>
 <script src="js/phi-pause.js?v=1"></script>
 <script src="js/ratio-pump.js?v=6" data-site="rebella" data-rung="-1"></script>
-<script src="js/bars.js?v=5" defer></script>
+<script src="js/bars.js?v=6" defer></script>
 <script src="music/youtube/stations.js?v=2" defer></script>
 <script src="music/youtube/bonnie-radio.js?v=3" defer></script>
 <script src="js/help-orb.js?v=5" defer></script>

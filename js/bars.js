@@ -201,7 +201,7 @@
 (function () {
   var me = document.currentScript; if (!me || window.KidLogo) return;
   var s = document.createElement('script');
-  s.src = me.src.replace(/bars\.js[^\/]*$/, 'kid-logo.js?v=2');
+  s.src = me.src.replace(/bars\.js[^\/]*$/, 'kid-logo.js?v=3');
   s.async = true;
   s.setAttribute('data-site', 'rebella');
   s.setAttribute('data-logo', '#app-head .wm-logo .bl-head, .drawer .bl-wordmark .bl-drawer');
