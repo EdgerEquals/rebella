@@ -34,7 +34,7 @@ RADIO_MINI = ('<span class="br-mini-host" data-radio-mini data-help="radio-mini"
               '<a class="br-mini-link" href="music/playground/#radio" aria-label="Rebella radio">&#128251; Radio</a></span>')
 
 FOOT_VISITOR = (
-  '<link rel="stylesheet" href="css/footbar.css?v=2">'
+  '<link rel="stylesheet" href="css/footbar.css?v=3">'
   '<div class="fb-lane" aria-hidden="true"></div>'
   '<div class="container fb-wrap">'
   '<div class="fb-row" data-help="fb-status">'
@@ -60,8 +60,10 @@ FOOT_VISITOR = (
   '<small class="vn-note" id="vn-note" aria-live="polite">Stays on this device only</small></span></span>'
   '<span class="fb-cursor" aria-hidden="true"></span>'
   '<button type="button" class="fb-pause" aria-pressed="false" data-help="fb-pause"><span aria-hidden="true" class="fb-pi"></span><span class="fb-pl">Pause motion</span></button>'
+  '<button type="button" class="fb-reset" data-phi-reset title="Reset what this page learned"><span aria-hidden="true" class="fb-ri">\u21BA</span><span class="fb-pl">Reset what this page learned</span></button>'
   '</div></div>'
-  '<script src="js/footbar.js?v=3" defer></script>'
+  '<script src="js/footbar.js?v=4" defer></script>'
+  '<script src="js/phi-reset.js?v=1" defer></script>'
 )
 
 # HEADER ITEMS (live 24 Oct 2026, Danny): the public, static items from the dashboard header. Filled on the device by
@@ -74,7 +76,7 @@ HEAD_ITEMS = (
   '<span class="db-chip db-hello" data-help="db-hello" hidden></span>'
   '<a class="db-chip db-wx" data-help="db-weather" href="https://www.bom.gov.au/places/wa/perth/forecast/" target="_blank" rel="noopener noreferrer" hidden>Perth weather</a>'
   '</div>'
-  '<script src="js/dashbars.js?v=1" defer></script>'
+  '<script src="js/dashbars.js?v=2" defer></script>'
 )
 
 WORDING = {

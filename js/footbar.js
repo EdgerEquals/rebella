@@ -16,7 +16,9 @@
   if (!foot || !foot.querySelector('.fb-row') || foot.getAttribute('data-fb')) return;
   foot.setAttribute('data-fb', '1');
   var KEYS = { wx: 'rebella.footer.weather', pause: 'rebella.footer.pause' };
-  var PHI = 1.6180339887, G = 0.6180339887, TTL = 30 * 60 * 1000;
+  var PHI = 1.6180339887, G = 0.6180339887, SEC = 1000;   // unit: ms per second (Open-Meteo current.interval is in seconds)
+  // Weather cache (Rule phi row 'weather cache' = U x PHI^0): the cache lives exactly the feed's own update period U, read from each
+  // response (current.interval) and stored with the cache as u; a response without it keeps the last known u. No u known: refetch.
   var WX_URL = 'https://api.open-meteo.com/v1/forecast?latitude=-31.95&longitude=115.86&current=weather_code,temperature_2m,is_day&timezone=Australia%2FPerth';
   var RM = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : { matches: false };
   var $ = function (s) { return foot.querySelector(s); };
@@ -55,10 +57,10 @@
   function applyWx(c) { wxState = 'ok'; wxTemp = Math.round(c.temp); wxKey = mood(c.code, c.isDay, c.temp); lightSky(); document.dispatchEvent(new CustomEvent('rebella:weather', { detail: { key: wxKey, temp: wxTemp } })); }
   function loadWx() {
     var c = null; try { c = JSON.parse(get(KEYS.wx)); } catch (e) {}
-    if (c && Date.now() - c.t < TTL) { applyWx(c); return; }
+    if (c && c.u > 0 && Date.now() - c.t < c.u * SEC) { applyWx(c); return; }
     if (!window.fetch) { wxState = 'fail'; lightSky(); return; }
     fetch(WX_URL, { cache: 'no-store', credentials: 'omit', referrerPolicy: 'no-referrer' }).then(function (r) { if (!r.ok) throw 0; return r.json(); })
-      .then(function (j) { var cur = j && j.current; if (!cur) throw 0; var d = { t: Date.now(), code: cur.weather_code, temp: cur.temperature_2m, isDay: cur.is_day }; set(KEYS.wx, JSON.stringify(d)); applyWx(d); })
+      .then(function (j) { var cur = j && j.current; if (!cur) throw 0; var d = { t: Date.now(), u: +cur.interval || (c && +c.u) || 0, code: cur.weather_code, temp: cur.temperature_2m, isDay: cur.is_day }; set(KEYS.wx, JSON.stringify(d)); applyWx(d); })
       .catch(function () { wxState = 'fail'; lightSky(); });
   }
 

@@ -196,3 +196,9 @@ body:not(.locked){background:var(--pk-pale,var(--tc-118));color:var(--tc-122)}
 .inline-msg{flex-basis:100%;margin:0;font-size:.95rem;min-height:0}
 .inline-msg:empty{display:none}
 @media(max-width:575px){.ip-btns .btn,.cs-btns .btn{flex:1}}
+
+/* Reset what this page learned (js/phi-reset.js, Danny 10:06 AWST 26 Oct 2026): a quiet link-style button at the end of the queue,
+   outside the locked header and footer. */
+#app .pr-row{text-align:center;margin:1.5rem 0 0}
+#app .pr-btn{background:none;border:0;padding:.6rem .9rem;min-height:44px;font:inherit;font-size:.9rem;color:inherit;opacity:.85;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+#app .pr-btn:hover,#app .pr-btn:focus-visible{opacity:1}

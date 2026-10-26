@@ -35,8 +35,9 @@
 #app-foot .fb-p{font:400 .85rem/1 "Special Elite","Courier New",monospace;color:#8E2350;flex:0 0 auto}
 #app-foot .fb-tty .vn{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 #app-foot .fb-cursor{width:.5rem;height:1rem;background:#B4436C;flex:0 0 auto;animation:fbBlink 2.618s steps(2,jump-none) infinite;margin-right:auto}
-#app-foot .fb-pause{flex:0 0 auto;display:inline-flex;align-items:center;gap:.35rem;min-height:32px;min-width:32px;justify-content:center;padding:.25rem .6rem;border-radius:999px;cursor:pointer;
+#app-foot .fb-pause,#app-foot .fb-reset{flex:0 0 auto;display:inline-flex;align-items:center;gap:.35rem;min-height:32px;min-width:32px;justify-content:center;padding:.25rem .6rem;border-radius:999px;cursor:pointer;
   background:#fff;color:#6B1F3D;border:1px dotted #8E2350;font:700 .7rem/1 var(--f-body);letter-spacing:1px;text-transform:uppercase}
+#app-foot .fb-ri{font:700 .85rem/1 var(--f-body);letter-spacing:0}   /* reset what this page learned (js/phi-reset.js): same pill as Pause motion */
 #app-foot .fb-pi{width:.6rem;height:.6rem;background:linear-gradient(90deg,#6B1F3D 0 35%,transparent 35% 65%,#6B1F3D 65%)}
 #app-foot .fb-pause[aria-pressed=true] .fb-pi{background:#6B1F3D;clip-path:polygon(0 0,100% 50%,0 100%)}
 @media(max-width:649px){

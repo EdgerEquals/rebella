@@ -56,7 +56,7 @@
     paintEmoji();
   }
   document.addEventListener('rebella:weather', function (e) { if (e.detail) paintWx(e.detail.key, e.detail.temp); });
-  try { var c = JSON.parse(localStorage.getItem('rebella.footer.weather')); if (c && Date.now() - c.t < 30 * 60 * 1000) paintWx(mood(c.code, c.isDay, c.temp), Math.round(c.temp)); } catch (e) {}
+  try { var c = JSON.parse(localStorage.getItem('rebella.footer.weather')); if (c && c.u > 0 && Date.now() - c.t < c.u * 1000) paintWx(mood(c.code, c.isDay, c.temp), Math.round(c.temp)); } catch (e) {} // unit: ms per second; u = the feed's own update period (stored by footbar.js)
   paint();
   setTimeout(function () { paint(); setInterval(paint, 60000); }, (60 - new Date().getSeconds()) * 1000);
   document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('#vn-save,#vn-forget')) setTimeout(paint, 50); });

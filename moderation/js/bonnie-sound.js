@@ -5,7 +5,7 @@
    (FM chime), send-whoosh, biplane-buzz, passcode-tick + unlock + nope, dial-click, approve / reject.
    Timing follows /home/box/.config/phi-timing-rules.md: every repeat is PHI^n s (swept by the weather when the page has
    PhiTiming), first ticks at golden-angle offsets, Simmie-palette sounds 1.5 steps faster (x PHI^-1.5).
-   Nothing sounds until the first tap or key press (autoplay rules). Choices are saved in localStorage (preview keys).
+   Nothing sounds until the first tap or click after the gate (autoplay rules; no key press counts). Choices are saved in localStorage (preview keys).
    Hook: <link rel="stylesheet" href=".../bonnie-sound.css"> + <script src=".../bonnie-sound.js" data-page="chat|dash|quiz"></script>
    data-default="off" (questionnaire): off until the first tap on the switch, remembered under its own key.
    data-slot="#id": put the switch row inside that element. Test hook: every played cue dispatches
@@ -56,7 +56,7 @@
     s.textContent = FLAV[id].label; l.appendChild(i); l.appendChild(s); fs.appendChild(l);
     i.addEventListener('change', function () { if (!i.checked) return; flavour = id; store(K_FLAV, id); rebuildBed(); cue('dial-click', 0.55); });
   });
-  if (!NO_TOG) row.appendChild(tog);   // without the pill a saved 'off' is ignored (no way to turn it back on); still silent until her first tap / key
+  if (!NO_TOG) row.appendChild(tog);   // without the pill a saved 'off' is ignored (no way to turn it back on); still silent until her first tap / click
   row.appendChild(fs);
   function paintToggle() {
     var avail = !!AC;
@@ -105,7 +105,7 @@
     o.start(t); o.stop(t + a + d + r + 0.05);
   }
   function trace(kind) { try { document.dispatchEvent(new CustomEvent('bonnie-sound:cue', { detail: { kind: kind } })); } catch (e) {} }
-  var gest = false;                                   // nothing sounds (or is even built) before her first tap / key press
+  var gest = false;                                   // nothing sounds (or is even built) before her first tap / click after unlock
   function cue(kind, level) {
     if (!gest || !ensure() || !on) return;
     var now = performance.now();
@@ -219,13 +219,19 @@
   function rebuildBed() { if (bed) { stopBed(); setTimeout(startBed, 300); } }
 
   // ---------- inputs ----------
-  function firstGesture() {
+  // Rule phi pending item (Danny 10:06 AWST 26 Oct 2026): sound only after her first TAP or CLICK, never a key press, and never
+  // from the passcode gate (typing or tapping the gate builds no audio context). 'click' also covers Enter/Space on a focused
+  // button after unlock, so keyboard use still works without a key listener.
+  function firstGesture(e) {
+    var t = e && e.target;
+    if (document.body && document.body.classList.contains('locked')) return;      // gate still up: nothing counts yet
+    if (t && t.closest && t.closest('#gate, #gate-form')) return;
     gest = true;
     if (!on || ctx) return;
-    if (ensure()) { try { ctx.resume && ctx.resume(); } catch (e) {} startBed(); }
+    if (ensure()) { try { ctx.resume && ctx.resume(); } catch (e2) {} startBed(); }
   }
   document.addEventListener('pointerdown', firstGesture, true);
-  document.addEventListener('keydown', firstGesture, true);
+  document.addEventListener('click', firstGesture, true);
 
   // press model / meters: the chat preview reports levels as 'simmie:meter'; the dashboard gets a light local model
   var meterSeen = 0;
