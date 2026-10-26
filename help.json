@@ -360,7 +360,7 @@
   },
   "help-orb": {
    "title": "The help orb",
-   "text": "That's me. Drag me onto anything with a glow and I'll explain it in a little box. Or tap me, then tap the thing you're curious about.",
+   "text": "That's me. Drag me onto anything with a glow and I'll explain it in a little box. Or tap me, then tap the thing you're curious about. You can change how I look, too: tap 'Change how I look' in any help box and pick an owl, a car, a moon or any emoji you like.",
    "try": "Drag me onto the radio dial."
   },
   "fb-status": {
@@ -378,7 +378,7 @@
   },
   "fb-pause": {
    "title": "Pause motion",
-   "text": "Stops everything moving at the bottom of the page: the facts, the animals, the lights and the wave. Your device remembers your choice.",
+   "text": "Stops things moving all over the page: the facts, the animals, the lights, the wave and the slow background animations. Your device remembers your choice.",
    "try": "Press it again to start things moving."
   },
   "hd-emoji": {
@@ -393,6 +393,84 @@
    "title": "Perth weather",
    "text": "The weather in Perth right now, where Rebella is made. It comes from Open-Meteo, for Perth only. Rebella never asks where you are. Tap it to open the Bureau of Meteorology's Perth forecast in a new tab.",
    "try": "Check if it's a hoodie day or an ice-cream day."
+  },
+  "_tuning": {
+   "title": "Still being tuned",
+   "text": "This one is still being tuned. Its proper help words are on the way. You can still try it, or ask Simmie what it does."
+  },
+  "skip": {
+   "title": "Skip to the reading",
+   "text": "Jumps straight past the menu to the page's main reading. Handy if you use a keyboard or a screen reader."
+  },
+  "kid-logo": {
+   "title": "The logo",
+   "text": "Tap it to see it big, with its own music and little birds. Tap it again, or tap Edit, to change how it looks. Your changes stay on this device.",
+   "try": "Tap it and listen for the music."
+  },
+  "menu-close": {
+   "title": "Close the menu",
+   "text": "Folds the section menu away again so you can get back to reading."
+  },
+  "join-preview": {
+   "title": "Newsletter and magazine",
+   "text": "These buttons are still being tuned. They're a preview, so they don't sign you up or send anything yet."
+  },
+  "featured": {
+   "title": "Featured story",
+   "text": "The story picked for the top of the page right now. Tap the picture or Read it to open the whole article."
+  },
+  "pillars": {
+   "title": "Explore by interest",
+   "text": "Each bubble is one Rebella section. Tap the one that sounds most like you today."
+  },
+  "music-teaser": {
+   "title": "Music",
+   "text": "Opens Rebella's music page: free songs you can play right here, and the Music Playground where you make your own band."
+  },
+  "follow-soon": {
+   "title": "Follow buttons",
+   "text": "These are placeholders and are still being tuned. They don't go anywhere yet, and Rebella has no comments or followers."
+  },
+  "issue-preview": {
+   "title": "Rebella in print",
+   "text": "A preview of a printed Rebella magazine. These buttons are still being tuned and don't do anything yet."
+  },
+  "credits": {
+   "title": "Photo credits",
+   "text": "Every photo on Rebella is free to share. The credits page says who took each one and where it came from."
+  },
+  "photo-credit": {
+   "title": "Photo credit",
+   "text": "Says who took this photo and where it's shared from. The link opens that source in a new page."
+  },
+  "related": {
+   "title": "Keep reading",
+   "text": "More articles like this one. The coloured label shows which section each one is from."
+  },
+  "back-links": {
+   "title": "More from this section",
+   "text": "Takes you back to the list of every article in this section."
+  },
+  "inline-link": {
+   "title": "A link",
+   "text": "A link to another page, on Rebella or a trusted site, with more about what you're reading."
+  },
+  "phi-reset": {
+   "title": "Reset what this page learned",
+   "text": "The page learns your pace on this device only, like how quickly you tap. This wipes it and reloads the page. Nothing was ever sent anywhere."
+  },
+  "mu-track": {
+   "title": "A song",
+   "text": "Press play to listen right here. The slider moves through the song. The links say who made it and the free licence that lets Rebella share it.",
+   "try": "Drag the slider to jump to the middle."
+  },
+  "mu-pg-link": {
+   "title": "Music Playground",
+   "text": "Opens the Playground, where you build your own little band and play along with the radio."
+  },
+  "cat-chip": {
+   "title": "Section label",
+   "text": "Shows which Rebella section this article belongs to. Tap it to see more from that section."
   }
  },
  "targets": [
@@ -499,6 +577,110 @@
   [
    "#help-orb",
    "help-orb"
+  ],
+  [
+   ".skip",
+   "skip"
+  ],
+  [
+   ".kl-tap, .wm-logo, .bl-wordmark",
+   "kid-logo"
+  ],
+  [
+   "[data-close-drawer]",
+   "menu-close"
+  ],
+  [
+   ".drawer-sub",
+   "join-preview"
+  ],
+  [
+   ".hero-art, .hero-text",
+   "featured"
+  ],
+  [
+   ".pillars",
+   "pillars"
+  ],
+  [
+   ".mu-teaser",
+   "music-teaser"
+  ],
+  [
+   ".cp-inner",
+   "create-pill"
+  ],
+  [
+   ".all-link",
+   "all-articles"
+  ],
+  [
+   ".follow",
+   "follow-soon"
+  ],
+  [
+   ".newsletter",
+   "newsletter"
+  ],
+  [
+   ".copy .btns, .issue-btns",
+   "issue-preview"
+  ],
+  [
+   ".site-end .strip",
+   "submit"
+  ],
+  [
+   ".legal",
+   "credits"
+  ],
+  [
+   ".photo-credit",
+   "photo-credit"
+  ],
+  [
+   ".related",
+   "related"
+  ],
+  [
+   ".back-links",
+   "back-links"
+  ],
+  [
+   "main p a",
+   "inline-link"
+  ],
+  [
+   "[data-phi-reset]",
+   "phi-reset"
+  ],
+  [
+   ".mu-row",
+   "mu-track"
+  ],
+  [
+   ".mu-pg-link",
+   "mu-pg-link"
+  ],
+  [
+   "#bg-custom",
+   "create-bg"
+  ],
+  [
+   ".mu-seek",
+   "mu-track"
+  ],
+  [
+   ".navlink",
+   "nav"
+  ],
+  [
+   "#drawer, .drawer",
+   "nav"
+  ],
+  [
+   ".cat-chip",
+   "cat-chip"
   ]
  ]
 }

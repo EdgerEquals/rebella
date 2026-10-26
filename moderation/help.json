@@ -1,0 +1,192 @@
+{
+ "v": 1,
+ "entries": {
+  "_miss": {
+   "title": "Drop me on something",
+   "text": "Drag me onto anything you're curious about, like a button, a dial or a light."
+  },
+  "_tuning": {
+   "title": "Still being tuned",
+   "text": "This one is still being tuned. Its proper help words are on the way. You can still try it, or ask Simmie what it does."
+  },
+  "help-orb": {
+   "title": "Your helper",
+   "text": "That's me. Drag me onto anything and I'll explain it in plain words. Or tap me, then tap the thing you're curious about. Tap 'Change how I look' in any help box to make me an owl, a car, a moon or any emoji you like."
+  },
+  "gate-passcode": {
+   "title": "Your passcode",
+   "text": "Type your secret passcode here to open your dashboard. Only you and Dad know it. Never tell it to anyone online, and I never look at what you type."
+  },
+  "gate-unlock": {
+   "title": "Unlock",
+   "text": "Opens your dashboard once your passcode is typed in. If it says no, check for a typo and try again."
+  },
+  "kid-logo": {
+   "title": "Your logo",
+   "text": "Tap it to see it big, with its own music and little birds. Tap it again, or tap Edit, to change it. Changes go straight onto your page.",
+   "try": "Tap it and listen."
+  },
+  "music": {
+   "title": "Your music",
+   "text": "Plays music made right here in the browser, in your own sound. Tap again to stop it."
+  },
+  "lock": {
+   "title": "Lock",
+   "text": "Closes your dashboard and asks for the passcode again. Use it when you walk away from the screen."
+  },
+  "ask-dad": {
+   "title": "Ask Dad",
+   "text": "Opens a little window to send Dad a message. His phone buzzes so he knows you want him. Nobody else sees it."
+  },
+  "agedial": {
+   "title": "The age dial",
+   "text": "Sets how old the readers are that new stories are picked for. Minus and plus move it one year at a time, and the queue and fun facts change to match."
+  },
+  "mail": {
+   "title": "Mail",
+   "text": "Messages and music ideas for you, always checked before they reach you. Nobody you don't know can write to you here. It's still being tuned, so it shows examples for now and nothing you tap here is sent."
+  },
+  "tabs": {
+   "title": "Filters",
+   "text": "Choose which stories to see: waiting for you, ones you approved, ones you rejected, everything, or music ideas. The number shows how many are in each."
+  },
+  "queue": {
+   "title": "Your queue",
+   "text": "Stories, photos and videos found for Rebella. Approve sends one to be published, Reject means it's never suggested again. Nothing goes on Rebella unless you approve it."
+  },
+  "notice": {
+   "title": "How approving works",
+   "text": "A reminder that every item here is real, and only goes on Rebella if you say yes."
+  },
+  "phi-reset": {
+   "title": "Reset what this page learned",
+   "text": "The page learns your pace on this device only, like how quickly you tap. This wipes it and reloads the page. Nothing was ever sent anywhere."
+  },
+  "phi-pause": {
+   "title": "Pause motion",
+   "text": "Stops things moving all over the page. Press it again to start them. Your device remembers your choice."
+  },
+  "tty": {
+   "title": "Simmie's terminal",
+   "text": "Simmie says hi and shows fun facts here. Tap it to type a message to Simmie."
+  },
+  "sound": {
+   "title": "Sounds on or off",
+   "text": "Turns the page's little generated sounds on or off. Your device volume is the overall control."
+  },
+  "weather": {
+   "title": "The weather",
+   "text": "The weather outside in Perth right now, as a little picture."
+  },
+  "ticker": {
+   "title": "Fun facts",
+   "text": "Quick, true facts that slide past, picked for the age on the age dial."
+  },
+  "lights": {
+   "title": "Status lights",
+   "text": "Little lights that show how things are going, like whether your choices reached Simmie and whether the page is up to date."
+  },
+  "tide": {
+   "title": "Tide and moon",
+   "text": "Shows the sea and the moon near Perth. The page's slow rhythms follow them."
+  },
+  "footer": {
+   "title": "Footer",
+   "text": "Your choices are sent safely to Simmie, who publishes the ones you approve."
+  },
+  "dad-panel": {
+   "title": "Message to Dad",
+   "text": "Pick a quick message or type your own, then tap Transmit. Close it with the X if you change your mind."
+  }
+ },
+ "targets": [
+  [
+   "#passcode",
+   "gate-passcode"
+  ],
+  [
+   "#gate-form button[type=submit]",
+   "gate-unlock"
+  ],
+  [
+   "#dash-head .tb-logo",
+   "kid-logo"
+  ],
+  [
+   ".bm-pill, .bm",
+   "music"
+  ],
+  [
+   "#lock",
+   "lock"
+  ],
+  [
+   "#ask-dad",
+   "ask-dad"
+  ],
+  [
+   "#agedial, #ad-fam",
+   "agedial"
+  ],
+  [
+   "#ibx-mail, .ibx-line",
+   "mail"
+  ],
+  [
+   ".tabs",
+   "tabs"
+  ],
+  [
+   "#queue",
+   "queue"
+  ],
+  [
+   "#main .notice",
+   "notice"
+  ],
+  [
+   "[data-phi-reset]",
+   "phi-reset"
+  ],
+  [
+   "[data-phi-pause]",
+   "phi-pause"
+  ],
+  [
+   "#tty, #tty-open",
+   "tty"
+  ],
+  [
+   ".bs-toggle, .bs-row",
+   "sound"
+  ],
+  [
+   "#wx-chip",
+   "weather"
+  ],
+  [
+   "#wx-ticker",
+   "ticker"
+  ],
+  [
+   ".wx-strip, #ft-row",
+   "lights"
+  ],
+  [
+   "#wx-tide, #wx-moon, #wx-gauge",
+   "tide"
+  ],
+  [
+   "#app-foot",
+   "footer"
+  ],
+  [
+   "#dad-panel",
+   "dad-panel"
+  ],
+  [
+   "#help-orb",
+   "help-orb"
+  ]
+ ]
+}
