@@ -191,6 +191,7 @@
   function schedule(period) { clearTimeout(clock); var P = period * 1000, now = Date.now(); clock = setTimeout(boundary, P - ((now - T0()) % P) + 5); }
 
   function start(sp) {
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}   // Safari 16.4+: the silent switch doesn't mute the music
     if (!ensure()) { paint(); return; }
     try { if (ctx.resume) ctx.resume(); } catch (e) {}
     playing = true; pend = null; var c = compute(), t = ctx.currentTime;

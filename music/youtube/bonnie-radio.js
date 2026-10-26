@@ -49,6 +49,7 @@
   var AC = window.AudioContext || window.webkitAudioContext, ac = null, sGain = null, master = null, muted = false;
   try { muted = localStorage.getItem('rebella.radio.muted') === '1'; } catch (e) {}
   function audio() {
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}   // Safari 16.4+: the silent switch doesn't mute the radio
     if (ac || !AC) return ac;
     try {
       ac = new AC();
@@ -229,8 +230,9 @@
     return Math.atan2(e.clientX - cx, cy - e.clientY) * 180 / Math.PI;
   }
   var drag = null, lastTap = 0;
+  function unlock() { audio(); if (ac && ac.resume) try { ac.resume(); } catch (x) {} }   // iOS: only on finger lift (pointerup), or pointerdown for a mouse
   dial.addEventListener('pointerdown', function (e) {
-    audio(); if (ac && ac.resume) try { ac.resume(); } catch (x) {}
+    if (e.pointerType === 'mouse') unlock();
     drag = { id: e.pointerId, a0: angleFrom(e), ang0: angle, moved: false };
     try { dial.setPointerCapture(e.pointerId); } catch (x) {}
     e.preventDefault();
@@ -243,6 +245,7 @@
   });
   function endDrag(e) {
     if (!drag || (e && e.pointerId !== drag.id)) return;
+    if (e && e.type === 'pointerup' && e.pointerType !== 'mouse') unlock();
     var moved = drag.moved; drag = null;
     if (moved) { land(nearest(angle)); return; }
     var now = performance.now();
