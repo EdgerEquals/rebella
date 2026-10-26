@@ -195,3 +195,16 @@
 
   window.RebellaVisitor = { check: check, load: load }; // read-only helpers for tests
 })();
+
+/* 3) Her logo, tap to open (Danny 13:08 AWST 26 Oct 2026; Kids Club logo standards). Only adds js/kid-logo.js, which applies this site's
+   saved logo look and makes the header logo tappable; the view, editor and sound load on the first tap. Site state key: kidlogo.v1.rebella. */
+(function () {
+  var me = document.currentScript; if (!me || window.KidLogo) return;
+  var s = document.createElement('script');
+  s.src = me.src.replace(/bars\.js[^\/]*$/, 'kid-logo.js?v=1');
+  s.async = true;
+  s.setAttribute('data-site', 'rebella');
+  s.setAttribute('data-logo', '#app-head .wm-logo .bl-head, .drawer .bl-wordmark .bl-drawer');
+  s.setAttribute('data-tone', 'music/playground/vendor/tone/Tone.js?v=15.1.22');
+  document.head.appendChild(s);
+})();
