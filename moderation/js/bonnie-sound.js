@@ -227,10 +227,17 @@
     if (document.body && document.body.classList.contains('locked')) return;      // gate still up: nothing counts yet
     if (t && t.closest && t.closest('#gate, #gate-form')) return;
     gest = true;
-    if (!on || ctx) return;
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e3) {}   // Safari 16.4+: the silent switch doesn't mute the page
+    if (!on) return;
+    if (ctx) { if (ctx.state !== 'running') try { ctx.resume(); } catch (e4) {} return; }   // a context made too early still unlocks on the next lift
     if (ensure()) { try { ctx.resume && ctx.resume(); } catch (e2) {} startBed(); }
   }
+  // iOS unlocks audio on finger lift (shared.md resume dial, S-0017, 17:04 AWST), so pointerup / touchend try again there; the press
+  // stays a try too, because a touch that scrolls ends in pointercancel / touchcancel with no lift (guard 17:31). click also covers
+  // Enter/Space on a focused button.
   document.addEventListener('pointerdown', firstGesture, true);
+  document.addEventListener('pointerup', firstGesture, true);
+  document.addEventListener('touchend', firstGesture, true);
   document.addEventListener('click', firstGesture, true);
 
   // press model / meters: the chat preview reports levels as 'simmie:meter'; the dashboard gets a light local model
