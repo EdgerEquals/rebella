@@ -21,7 +21,7 @@ html[data-msg="urgent"]{--msg-c:var(--tc-203)}
 .pl-dial i::after{content:"";position:absolute;left:50%;top:1px;width:2px;height:5px;margin-left:-1px;border-radius:1px;background:var(--tc-5)}
 .pl-lever{position:relative;width:36px;height:10px;border-radius:5px;cursor:grab;touch-action:none;background:var(--tc-195);border:1px dotted var(--tc-189);box-sizing:border-box}
 .pl-lever i{position:absolute;left:1px;top:1px;width:6px;height:6px;border-radius:50%;background:var(--tc-16);box-shadow:0 0 3px var(--tc-207)}
-.pl-lever.spring i{transition:transform .618s cubic-bezier(.3,1.6,.5,1)}
+.pl-lever.spring i{transition:transform var(--b-m6,.618s) cubic-bezier(.3,1.6,.5,1)}
 .pl-dial:focus-visible,.pl-lever:focus-visible,.pl-switch:focus-visible,.pl-hap input:focus-visible{outline:2px solid var(--tc-51);outline-offset:2px}
 .pl-switch{margin:0;accent-color:var(--tc-89);width:22px;height:13px;cursor:pointer}
 .pl-meter{position:relative;display:inline-grid;grid-auto-flow:column;align-items:end;gap:1px;height:12px}

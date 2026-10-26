@@ -27,9 +27,9 @@ body.has-bars main,body.has-bars [id]{scroll-margin-top:calc(var(--app-head-h,19
    (the old max-height:540px rule turned it back into plain page content). Scroll down: it slides up behind the header
    (header z 950 > menu z 900). Scroll up: it slides back and stays pinned. Slide PHI^-2 = 0.382 s. */
 body.has-bars .mainnav{position:fixed;top:var(--app-head-h,190px);left:0;right:0;z-index:900;transform:translate3d(0,0,0);
-  transition:transform .382s cubic-bezier(.2,.7,.2,1),box-shadow .2s}
+  transition:transform var(--b-m7,.382s) cubic-bezier(.2,.7,.2,1),box-shadow var(--b-m8,.2s)}
 body.has-bars .mainnav.nav-hidden{transform:translate3d(0,calc(-100% - 8px),0);box-shadow:none;
-  transition:transform .382s cubic-bezier(.4,0,.6,1),box-shadow .2s}
+  transition:transform var(--b-m7,.382s) cubic-bezier(.4,0,.6,1),box-shadow var(--b-m8,.2s)}
 /* still focusable while tucked away: tabbing into it brings it back (js/bars.js focusin) */
 @media (prefers-reduced-motion:reduce){body.has-bars .mainnav,body.has-bars .mainnav.nav-hidden{transition:none}}
 /* Get me out rests on the footer's top edge (t600u): its outer ring touches the footer, layered above it */
@@ -38,7 +38,7 @@ body.has-bars .escape{bottom:calc(var(--app-foot-h,60px) + var(--esc-ring,5.6px)
 /* header: top bar */
 #app-head .topbar{background:var(--bar-top-bg);color:var(--bar-top-ink)}
 #app-head .topbar .container{display:flex;justify-content:space-between;align-items:center;gap:1rem;min-height:44px;font:inherit;letter-spacing:normal;text-transform:none}
-#app-head .tagline{font-family:var(--f-hand);font-size:1rem;letter-spacing:1.5px;color:var(--bar-tag);text-transform:uppercase;font-weight:400;transition:opacity .618s ease}
+#app-head .tagline{font-family:var(--f-hand);font-size:1rem;letter-spacing:1.5px;color:var(--bar-tag);text-transform:uppercase;font-weight:400;transition:opacity var(--b-m6,.618s) ease}
 #app-head .tagline.fading{opacity:0}
 #app-head .lockbtn{font:700 .8rem/1 var(--f-body);letter-spacing:1.4px;text-transform:uppercase;background:transparent;color:var(--bar-link);border:2px dotted var(--bar-link);border-radius:6px;padding:.45rem .8rem;cursor:pointer}
 #app-head .bar-links a{font:700 .8rem/1 var(--f-body);letter-spacing:1.4px;text-transform:uppercase;color:var(--bar-link);margin-left:1.25rem;text-decoration:none;opacity:1}
@@ -61,7 +61,7 @@ body.has-bars .escape{bottom:calc(var(--app-foot-h,60px) + var(--esc-ring,5.6px)
 #app-foot.rb-bars{background:var(--bar-foot-bg);color:var(--bar-foot-ink);border-top:3px dotted var(--bar-foot-border);font-size:.9rem}
 #app-foot .container{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;padding-top:1.1rem;padding-bottom:1.1rem}
 #app-foot a,#app-foot .vn-link,#app-foot .vn-ask{color:var(--bar-foot-link);text-decoration:underline;text-underline-offset:2px}
-#app-foot .ft-line{transition:opacity .618s ease}
+#app-foot .ft-line{transition:opacity var(--b-m6,.618s) ease}
 #app-foot .ft-line.fading{opacity:0}
 /* optional nickname: lives inside the footer line, inline, no box and no added height */
 #app-foot .vn-ask,#app-foot .vn-link{font:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;line-height:inherit}

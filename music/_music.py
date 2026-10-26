@@ -66,7 +66,7 @@ TEASER = '''<section class="container mu-teaser" aria-labelledby="mu-teaser-titl
   <div><h2 id="mu-teaser-title" class="hand">New: Music</h2><p>Free tracks by local and independent artists, starting with a Perth composer.</p></div>
   <a class="btn btn-info dots-aqua" href="music/index.html">Have a listen</a>
 </div></section>'''
-SITE_CSS = '<link rel="stylesheet" href="music/music-site.css">'
+SITE_CSS = '<link rel="stylesheet" href="music/music-site.css?v=2">'
 
 def install(PAGES, page, G):
     """Add the music page to PAGES and return a wrapped page() that adds the nav link, drawer link,
@@ -80,7 +80,7 @@ def install(PAGES, page, G):
     b = body(tracks).replace('src="audio/', 'src="music/audio/')
     PAGES.append(('music/index.html', 'Music by local and independent artists | Rebella', b,
         'Free music on Rebella: openly licensed tracks by local Perth and Australian artists and other independent musicians, with full credits.',
-        'music', '\n<link rel="stylesheet" href="music/music.css">\n<script src="music/music.js" defer></script>',
+        'music', '\n<link rel="stylesheet" href="music/music.css?v=2">\n<script src="music/music.js" defer></script>',
         'img/articles/reading.jpg', 'website', None, 'free music, local artists, Perth music, independent artists, ' + G['KEYWORDS'], '', True, '0.6'))
     def wrapped(path, title, bdy, desc, active=None, *a, **kw):
         out = page(path, title, bdy, desc, active, *a, **kw)

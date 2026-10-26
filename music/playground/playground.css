@@ -7,7 +7,7 @@
 .pg-small{font-size:1rem;color:#5E4A56}
 .pg-soon{font-style:italic}
 .pg-row{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin:.5rem 0}
-.pg-btn{font:inherit;font-size:1rem;min-height:44px;padding:.35rem .9rem;border-radius:999px;border:0;background:var(--butter);color:var(--ink);cursor:pointer;box-shadow:inset 0 0 0 2px rgba(91,58,80,.18);transition:background .382s,transform .382s;touch-action:manipulation}
+.pg-btn{font:inherit;font-size:1rem;min-height:44px;padding:.35rem .9rem;border-radius:999px;border:0;background:var(--butter);color:var(--ink);cursor:pointer;box-shadow:inset 0 0 0 2px rgba(91,58,80,.18);transition:background var(--b-m7,.382s),transform var(--b-m7,.382s);touch-action:manipulation}
 .pg-btn:hover{background:var(--peach)}.pg-btn:active{transform:translateY(1px)}
 .pg-btn[aria-pressed="true"]{background:var(--accent);color:#fff}
 .pg-btn:disabled{opacity:.5;cursor:default}

@@ -68,7 +68,7 @@ html #app .masthead .mh-tagline{font-size:clamp(10px,calc((100vw - 160px) / 15.4
    tight core in blush #F8CFDB, glow + bloom in the login pink #E58AA6; the drawing keeps its #F48FB1. No pulse under reduced motion. */
 html #app .topbar .tb-logo.tb-logo-svg{position:relative;z-index:1;transform:translate(6px,-4px) rotate(-5.5deg) scale(1.17);
   filter:drop-shadow(0 0 2px rgba(248,207,219,.9)) drop-shadow(0 0 7px rgba(229,138,166,.55)) drop-shadow(0 0 18px rgba(229,138,166,.28)) drop-shadow(0 0 44px rgba(229,138,166,.14));
-  animation:tbNeon 11.090s ease-in-out -0.910s infinite}
+  animation:tbNeon var(--b-p0,11.090s) ease-in-out calc(-1 * var(--b-m5,0.910s)) infinite}
 @media (max-width:575px){ html #app .topbar .tb-logo.tb-logo-svg{transform:translate(9px,-3px) rotate(-5.5deg) scale(1.3)} }
 @keyframes tbNeon{
   0%,100%{filter:drop-shadow(0 0 2px rgba(248,207,219,.9)) drop-shadow(0 0 7px rgba(229,138,166,.55)) drop-shadow(0 0 18px rgba(229,138,166,.224)) drop-shadow(0 0 44px rgba(229,138,166,.112))}

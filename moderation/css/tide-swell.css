@@ -11,7 +11,7 @@
 .tsw .tsw-nowl{stroke:var(--tsw-now,currentColor);stroke-width:.8;stroke-dasharray:1.4 1.4;opacity:.7}
 .tsw .tsw-nowd{fill:var(--tsw-now,currentColor)}
 .tsw .tsw-dol{display:inline-flex;height:16px;align-items:flex-end;font-size:12px;line-height:14px}
-.tsw .tsw-dol>span{display:inline-block;margin-left:-1px;animation:tswLeap 11.09s ease-in-out infinite;transform-origin:50% 80%;will-change:transform}
+.tsw .tsw-dol>span{display:inline-block;margin-left:-1px;animation:tswLeap var(--b-p0,11.09s) ease-in-out infinite;transform-origin:50% 80%;will-change:transform}
 @keyframes tswLeap{0%,58%,100%{transform:translateY(0) rotate(0)}68%{transform:translateY(var(--tsw-amp,-3px)) rotate(-18deg)}
   76%{transform:translateY(calc(var(--tsw-amp,-3px) * 1.15)) rotate(0)}86%{transform:translateY(0) rotate(16deg)}}
 @media (prefers-reduced-motion:reduce){.tsw .tsw-dol>span{animation:none!important}}

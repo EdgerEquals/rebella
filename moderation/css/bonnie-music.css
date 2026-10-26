@@ -9,8 +9,8 @@
 .bm-pill:focus-visible{outline:3px solid var(--tc-5);outline-offset:2px}
 .bm-pill-ico{font-size:1.05em;color:var(--tc-5)}
 .bm[data-state="unset"] .bm-pill{opacity:.7;border-style:dashed;cursor:help}
-.bm[data-state="playing"] .bm-pill-ico{animation:bm-note 3.4s ease-in-out infinite}
-.bm.bm-remembered[data-state="idle"] .bm-pill{animation:bm-nudge 5.39s ease-in-out infinite}
+.bm[data-state="playing"] .bm-pill-ico{animation:bm-note var(--b-m3,3.4s) ease-in-out infinite}
+.bm.bm-remembered[data-state="idle"] .bm-pill{animation:bm-nudge var(--b-m2,5.39s) ease-in-out infinite}
 @keyframes bm-note{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
 @keyframes bm-nudge{0%,100%{box-shadow:0 0 0 2px var(--tc-6)}50%{box-shadow:0 0 0 5px var(--tc-8)}}
 @media (max-width:480px){.bm-chat .bm-pill-txt,.bm-dash .bm-pill-txt{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

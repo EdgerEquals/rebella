@@ -17,7 +17,7 @@
 .br-tick{stroke:#F8CFDB;stroke-width:3;stroke-linecap:round}
 .br-knob{fill:#14555A;stroke:#F8CFDB;stroke-width:2}
 .br-needle{transform-origin:60px 60px;transform-box:view-box}
-.br-sway{transform-origin:60px 60px;transform-box:view-box;animation:br-sway 6.854s ease-in-out infinite}
+.br-sway{transform-origin:60px 60px;transform-box:view-box;animation:br-sway var(--b-m1,6.854s) ease-in-out infinite}
 .br-nd{stroke:#F2A541;stroke-width:3.5;stroke-linecap:round}
 .br-hub{fill:#F2A541}
 @keyframes br-sway{0%,100%{transform:rotate(-1.2deg)}50%{transform:rotate(1.2deg)}}

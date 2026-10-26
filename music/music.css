@@ -44,7 +44,7 @@
 .is-playing .mu-eq{opacity:1}
 .is-playing .mu-eq i{animation:mu-bar var(--mu-blink) ease-in-out infinite}
 /* golden-angle offsets: bar k starts at -2.618*frac(k*0.618) */
-.mu-eq i:nth-child(1){animation-delay:-1.618s}.mu-eq i:nth-child(2){animation-delay:-0.618s}.mu-eq i:nth-child(3){animation-delay:-2.236s}
+.mu-eq i:nth-child(1){animation-delay:calc(-1 * var(--b-m4,1.618s))}.mu-eq i:nth-child(2){animation-delay:calc(-1 * var(--b-m6,0.618s))}.mu-eq i:nth-child(3){animation-delay:calc(-1 * var(--b-m3,2.236s))}
 @keyframes mu-bar{0%,100%{transform:scaleY(.382)}25%{transform:scaleY(1)}50%{transform:scaleY(.618)}75%{transform:scaleY(.854)}}
 .mu-featured{border-top:8px solid var(--butter-deep);background-image:repeating-linear-gradient(transparent 0 33px,rgba(91,58,80,.06) 33px 34px)}
 .mu-featured a{color:#7A2448;text-decoration:underline}

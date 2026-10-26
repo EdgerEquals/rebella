@@ -9,7 +9,7 @@
 .mu-teaser p{margin:0;font-size:1.1rem}
 .mu-teaser .btn{margin-left:auto;white-space:nowrap}
 .mu-teaser-note{flex:0 0 auto;width:52px;height:52px;padding:10px;border-radius:50%;background:var(--accent);
-  animation:mu-sway 29.034s ease-in-out infinite;animation-delay:-17.944s}
+  animation:mu-sway var(--b-p2,29.034s) ease-in-out infinite;animation-delay:calc(-1 * var(--b-p1,17.944s))}
 @keyframes mu-sway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
 @media(max-width:575px){.mu-teaser-in{flex-wrap:wrap;padding:1rem}.mu-teaser .btn{margin-left:0;width:100%;text-align:center}}
 @media(prefers-reduced-motion:reduce){.mu-teaser-note{animation:none}}

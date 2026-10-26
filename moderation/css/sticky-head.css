@@ -8,7 +8,7 @@
 html #app .dash-head .topbar,html #app .dash-head .wx-hud,html #app .dash-head .masthead{background:var(--tc-12)}
 html #app .dad-panel{z-index:49}
 /* compact once scrolled */
-.dash-head .masthead .container,.dash-head .wordmark .script,.dash-head .wordmark .serif{transition:padding .236s ease,font-size .236s ease,width .236s ease,height .236s ease}
+.dash-head .masthead .container,.dash-head .wordmark .script,.dash-head .wordmark .serif{transition:padding var(--b-m8,.236s) ease,font-size var(--b-m8,.236s) ease,width var(--b-m8,.236s) ease,height var(--b-m8,.236s) ease}
 html #app .dash-head.is-scrolled .masthead .container{padding-top:.25rem;padding-bottom:.25rem;row-gap:.25rem}
 html #app .dash-head.is-scrolled .wordmark.small .script{font-size:1.9rem}
 html #app .dash-head.is-scrolled .wordmark.small .serif{font-size:1.6rem}

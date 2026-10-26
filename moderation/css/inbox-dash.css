@@ -12,7 +12,7 @@
 #app .ibx-chev{flex:none;color:var(--nt-line,var(--tc-89))}
 #app .ibx-list{border-top:2px dotted var(--nt-line,var(--tc-89));padding:.4rem .5rem .6rem}
 #app .ibx-mock{margin:.2rem .3rem .5rem;font-size:.85rem;color:var(--nt-butter,var(--tc-88))}
-#app .ibx-item{border-radius:8px;margin:.3rem 0;background:var(--nt-panel2,var(--tc-86));transition:background-color .618s}
+#app .ibx-item{border-radius:8px;margin:.3rem 0;background:var(--nt-panel2,var(--tc-86));transition:background-color var(--b-m6,.618s)}
 #app .ibx-item.done{opacity:.72}
 #app .ibx-head{all:unset;box-sizing:border-box;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"k w" "s s";gap:.15rem .6rem;width:100%;padding:.55rem .7rem;cursor:pointer}
 #app .ibx-head:focus-visible{outline:3px solid var(--nt-amber,var(--tc-5));outline-offset:-3px;border-radius:8px}

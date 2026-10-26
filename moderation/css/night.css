@@ -119,7 +119,7 @@ html #app .dp-status{color:var(--tc-51)} html #app .dad-panel.sent .dp-status{co
 html #app .dad-panel.sent .dp-ripple,html #app .dad-panel.sent .dp-sat{animation:none;opacity:0}   /* the biplane replaces the zip + ripple */
 /* biplane + smoke (appended to body while flying) */
 .biplane{position:fixed;left:0;top:0;z-index:70;pointer-events:none;will-change:transform,opacity}
-.biplane .bp-prop{transform-box:fill-box;transform-origin:50% 50%;animation:bp-spin .12s linear infinite}
+.biplane .bp-prop{transform-box:fill-box;transform-origin:50% 50%;animation:bp-spin var(--b-m10,.12s) linear infinite}
 @keyframes bp-spin{0%{transform:scaleY(1)}50%{transform:scaleY(.15)}100%{transform:scaleY(1)}}
 .bp-smoke{position:fixed;inset:0;z-index:69;pointer-events:none;overflow:hidden}
 .bp-puff{position:absolute;left:0;top:0;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:radial-gradient(circle,var(--tc-196),var(--tc-197) 60%,var(--tc-186) 72%);will-change:transform,opacity}

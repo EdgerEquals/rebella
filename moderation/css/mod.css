@@ -34,7 +34,7 @@ h1,h2,h3{font-family:var(--f-body);text-transform:uppercase;font-weight:700;line
 .dots-aqua{background-image:var(--tc-112)}
 
 /* Buttons */
-.btn{display:inline-block;font-family:var(--f-hand);text-transform:uppercase;letter-spacing:1.5px;font-size:1.1rem;line-height:1.4;padding:.5rem 1.3rem .4rem;border-radius:6px;border:0;cursor:pointer;color:var(--brown);background-color:transparent;transition:filter .15s,transform .15s;text-align:center}
+.btn{display:inline-block;font-family:var(--f-hand);text-transform:uppercase;letter-spacing:1.5px;font-size:1.1rem;line-height:1.4;padding:.5rem 1.3rem .4rem;border-radius:6px;border:0;cursor:pointer;color:var(--brown);background-color:transparent;transition:filter var(--b-m9,.15s),transform var(--b-m9,.15s);text-align:center}
 .btn:hover{filter:brightness(.95);transform:translateY(-1px)}
 .btn:disabled{opacity:.5;cursor:default;transform:none}
 .btn-primary{background-color:var(--brick-tint);color:var(--brick)}
@@ -217,3 +217,8 @@ body:not(.locked){background:var(--pk-pale,var(--tc-118));color:var(--tc-122)}
   .il-lane,.wx-code{display:none!important}
   *{animation-iteration-count:1!important}
 }
+
+/* Rule phi B: Pause motion in the locked 22 px footer line (link-style, no height change) */
+html #app #app-foot .pp-btn{pointer-events:auto;position:relative;margin-right:auto;background:none;border:0;padding:0 .4rem 0 0;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer;white-space:nowrap;flex:0 0 auto;line-height:inherit;height:100%}
+html #app #app-foot .pp-btn+span{margin-left:.6rem}
+html.phi-paused *,html.phi-paused *::before,html.phi-paused *::after{animation-play-state:paused!important}   /* Pause motion, page-wide (js/phi-pause.js, WCAG 2.2.2) */
