@@ -232,10 +232,11 @@
     if (ctx) { if (ctx.state !== 'running') try { ctx.resume(); } catch (e4) {} return; }   // a context made too early still unlocks on the next lift
     if (ensure()) { try { ctx.resume && ctx.resume(); } catch (e2) {} startBed(); }
   }
-  // iOS unlocks audio on finger lift, not touch-down (shared.md resume dial, S-0017, 17:04 AWST): pointerup / touchend for touch and pen,
-  // pointerdown only for a mouse, plus click (which also covers Enter/Space on a focused button).
-  document.addEventListener('pointerdown', function (e) { if (e.pointerType === 'mouse') firstGesture(e); }, true);
-  document.addEventListener('pointerup', function (e) { if (e.pointerType !== 'mouse') firstGesture(e); }, true);
+  // iOS unlocks audio on finger lift (shared.md resume dial, S-0017, 17:04 AWST), so pointerup / touchend try again there; the press
+  // stays a try too, because a touch that scrolls ends in pointercancel / touchcancel with no lift (guard 17:31). click also covers
+  // Enter/Space on a focused button.
+  document.addEventListener('pointerdown', firstGesture, true);
+  document.addEventListener('pointerup', firstGesture, true);
   document.addEventListener('touchend', firstGesture, true);
   document.addEventListener('click', firstGesture, true);
 
