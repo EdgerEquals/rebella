@@ -149,12 +149,12 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <meta name="referrer" content="no-referrer">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&family=Special+Elite&display=swap">
-<link rel="stylesheet" href="css/styles.css?v=8">
+<link rel="stylesheet" href="css/styles.css?v=9">
 <link rel="stylesheet" href="css/zine.css?v=5">
 <link rel="stylesheet" href="css/bars.css?v=6">
-<link rel="stylesheet" href="music/youtube/bonnie-radio.css?v=2">
+<link rel="stylesheet" href="music/youtube/bonnie-radio.css?v=3">
 <script src="js/main.js?v=3"></script>
-<script src="js/ratio-pump.js?v=4" data-site="rebella" data-freq="0.75"></script>
+<script src="js/ratio-pump.js?v=5" data-site="rebella" data-freq="0.75"></script>
 <script src="js/bars.js?v=4" defer></script>
 <script src="music/youtube/stations.js?v=2" defer></script>
 <script src="music/youtube/bonnie-radio.js?v=3" defer></script>
@@ -413,7 +413,7 @@ for a in ARTICLES:
     PAGES.append((ahref(a),f'{a["title"]} | Rebella',article_page(a),a['desc'],a['cat'],'','img/articles/'+a['img']+'.jpg','article',a.get('canonical'),f'{strip(a["title"])}, {strip(CATNAME[a["cat"]])}, '+KEYWORDS,article_jsonld(a),True,'0.6'))
 PAGES.append(('recommendations.html','Recommendations: song, quote and goal of the week | Rebella',RECS_BODY.replace('{ABOUT_P}',''.join(f'<p>{_html.escape(l)}</p>' for l in ABOUT_ME)),'Rebella Recommendations: song of the week, Rightfully Famous (someone famous for the right reasons), quote of the week, a goal for everyone and more picks.','recs','\n<script src="js/recs.js" defer></script>\n<script src="js/recs-render.js" defer></script>','img/articles/reading.jpg','website',None,'recommendations, song of the week, quote of the week, '+KEYWORDS,'',True,'0.7'))
 PAGES.append(('submit.html','Share your work with Your Voice | Rebella',SUBMIT.replace('{SIDEBAR}',sidebar(False)),'How sharing your art, writing and projects with Rebella\'s Your Voice section will work, safely and with an adult editor checking everything.','voice','','img/articles/art-wall.jpg','website',None,KEYWORDS,'',True,'0.4'))
-PAGES.append(('create.html','Create a mood board, collage or vision board | Rebella',CREATE_BODY,'Make mood boards, collages and vision boards with stickers and photos, add your own words, and save it as a picture. Free and private on Rebella.','create','\n<link rel="stylesheet" href="css/create.css">\n<script src="js/library.js" defer></script>\n<script src="js/create.js" defer></script>','img/library/tulips.jpg','website',None,'mood board maker, vision board, collage, '+KEYWORDS,'',True,'0.7'))
+PAGES.append(('create.html','Create a mood board, collage or vision board | Rebella',CREATE_BODY,'Make mood boards, collages and vision boards with stickers and photos, add your own words, and save it as a picture. Free and private on Rebella.','create','\n<link rel="stylesheet" href="css/create.css?v=2">\n<script src="js/library.js" defer></script>\n<script src="js/create.js?v=2" defer></script>','img/library/tulips.jpg','website',None,'mood board maker, vision board, collage, '+KEYWORDS,'',True,'0.7'))
 PAGES.append(('credits.html','Photo credits | Rebella',credits_page(),'Credits for the CC0 and public domain photos used on Rebella (Wikimedia Commons, NASA, museum open access) and for republished articles.',None,'','img/library/sunflower.jpg','website',None,KEYWORDS,'',True,'0.3'))
 PAGES.append(('article.html','This page has moved | Rebella',MOVED,'This page has moved. Rebella now has a page for every article.',None,'','img/articles/moon.jpg','website',ahref(moon),KEYWORDS,f'\n<meta http-equiv="refresh" content="0; url={ahref(moon)}">',False,None))
 

@@ -202,3 +202,18 @@ body:not(.locked){background:var(--pk-pale,var(--tc-118));color:var(--tc-122)}
 #app .pr-row{text-align:center;margin:1.5rem 0 0}
 #app .pr-btn{background:none;border:0;padding:.6rem .9rem;min-height:44px;font:inherit;font-size:.9rem;color:inherit;opacity:.85;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 #app .pr-btn:hover,#app .pr-btn:focus-visible{opacity:1}
+
+/* ---------- Rule phi: tap target (Danny, build C, 26 Oct 2026) ----------
+   --tap = S x PHI^-4 (S = the screen's shorter side), never below WCAG 2.5.5's 44 px; touch screens only. The LOCKED header
+   (#dash-head), the age-dial pin (.ad-pin), the footer (#app-foot) and the simmie tty footer (#wx-foot) keep their silhouette,
+   and the passcode gate is untouched: none of them is resized here. Below S = 302 px: the light reduced view. */
+:root{--tap:max(44px, calc(min(100vw, 100vh) / (1.6180339887 * 1.6180339887 * 1.6180339887 * 1.6180339887)))}   /* phi: PHI^-4; cite: WCAG 2.5.5 */
+@media (any-pointer:coarse){
+  #app main button:not(.ad-pin *),#app main [role=tab]:not(.ad-pin *),#app main select,
+  #app main input:not([type=checkbox]):not([type=radio]):not([type=hidden]):not([type=range]):not(.ad-pin *){min-height:var(--tap)}
+  #app main button:not(.ad-pin *),#app main [role=tab]:not(.ad-pin *){min-width:var(--tap)}
+}
+@media (max-width:301.9px),(max-height:301.9px){   /* S < 302 px: the light reduced view (decorative lanes and loops off; no content hidden) */
+  .il-lane,.wx-code{display:none!important}
+  *{animation-iteration-count:1!important}
+}

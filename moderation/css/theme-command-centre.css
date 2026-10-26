@@ -177,7 +177,7 @@
   --tc-170:rgba(42,157,159,.25); /* night.css html .gate-card; night.css html #app main#main */
   --tc-171:rgba(0,0,0,.5); /* night.css html .gate-card; night.css html #app .ask-dad.dragging */
   --tc-172:#9E95AA; /* night.css html .gate .field::placeholder */
-  --tc-173:#8C849A; /* night.css html #app .tk-p */
+  --tc-173:#9891A4; /* night.css html #app .tk-p (Rule phi: 6.9:1 on the black tty, was #8C849A 5.9:1) */
   --tc-174:rgba(23,20,37,.97); /* night.css html #app .masthead */
   --tc-175:#10261B; /* night.css html #app .btn-approve */
   --tc-176:rgba(14,12,22,.78); /* night.css html #app main#main */
@@ -242,7 +242,7 @@ html #app main#main h1,html #app main#main h2,html #app main#main h3{color:#F3EA
 /* notice: slate panel, amber hairline */
 html #app main#main .notice{background-color:#1F1B30;border:1px dashed #E58AA6;color:#F3EAF0}
 html #app main#main .notice strong{color:#C8EBD5}
-html #app main#main .example{background:#E58AA6;color:#24292E}
+html #app main#main .example{background:#E58AA6;color:#191C20}   /* Rule phi: 6.9:1 (was #24292E 5.95:1) */
 html #app main#main .queue-meta{color:#C9BFD3}
 /* tabs + counts */
 html #app main#main .tabs{border-bottom:1px solid #2A9D9F}

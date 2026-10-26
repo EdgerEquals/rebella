@@ -9,7 +9,7 @@
   var TXT_COLS = [['#3A2B35', 'Ink'], ['#B4436C', 'Raspberry'], ['#5A4291', 'Violet'], ['#22696A', 'Teal'], ['#94461A', 'Toffee'], ['#FFFFFF', 'White']];
   var FONT_STACK = { 'Gochi Hand': '"Gochi Hand", cursive', 'Kaushan Script': '"Kaushan Script", cursive', 'Lora': 'Lora, Georgia, serif', 'Alegreya Sans': '"Alegreya Sans", Helvetica, Arial, sans-serif' };
   var STARTERS = {
-    mood: [{ kind: 'text', text: 'my mood', font: 'Kaushan Script', color: '#B4436C', size: 96, cx: 600, cy: 110, rot: -3 }],
+    mood: [{ kind: 'text', text: 'my mood', font: 'Kaushan Script', color: '#732B45', size: 96, cx: 600, cy: 110, rot: -3 }],
     collage: [],
     vision: [{ kind: 'text', text: 'My vision board', font: 'Gochi Hand', color: '#3A2B35', size: 84, cx: 450, cy: 110, rot: 0 }]
   };

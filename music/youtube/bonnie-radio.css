@@ -7,7 +7,7 @@
   background:#F8CFDB;color:#2A1424;border:2px solid #E58AA6;font:700 1rem/1.1 "Alegreya Sans",system-ui,sans-serif}
 .br-play:hover{background:#FBE0E8}
 .br-play:focus-visible,.br-mute:focus-visible,.br-btn:focus-visible{outline:3px solid #B0416A;outline-offset:2px}
-.br-play-ico{color:#B0416A}
+.br-play-ico{color:#732B46}
 .br-tuner{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
 .br-dial{width:132px;height:132px;border-radius:50%;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
 .br-dial:active{cursor:grabbing}

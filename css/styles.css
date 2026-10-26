@@ -1,14 +1,15 @@
 /* Rebella. Site palette = soft pastels (see :root). The passcode gate keeps the ORIGINAL Hilda browns (see "Site-wide passcode gate" block, scoped to .gate). */
 :root{
-  /* Pastel palette (Oct 2026). Body text --ink on --bg = 12.7:1; all button/label pairs >= 4.5:1 (WCAG AA). */
+  /* Pastel palette (Oct 2026). Body text --ink on --bg = 12.7:1. Rule phi contrast (Danny, build C, 26 Oct 2026): every text colour
+     is at least PHI^4 = 6.85:1 on the background it sits on (darkened along its own hue just enough; WCAG 2.2 AAA is 7:1). */
   --blush:#F8CFDB; --peach:#FCD9C0; --butter:#FBE7B0; --mint:#C8EBD5; --aqua:#B5E3E0; --lavender:#DCD0F2;
   --bg:#FFF8F4;          /* page background (warm off-white) */
   --ink:#3A2B35;         /* body text (deep plum-brown) */
-  --heading:#5B3A50;     /* headings, icons, button text (plum) */
-  --accent:#B4436C;      /* raspberry: wordmark script, hovers, focus ring (5.1:1 on bg) */
+  --heading:#57384D;     /* headings, icons, button text (plum; Rule phi: >= PHI^4 = 6.85:1 on lavender, was #5B3A50) */
+  --accent:#923658;      /* raspberry: wordmark script, hovers, focus ring (Rule phi: 6.9:1 on white/bg, was #B4436C 5.1:1) */
   --accent-tint:var(--blush);
-  --aqua-tint:#E6F6F4; --aqua-deep:#22696A;
-  --butter-deep:#E9C25A; --butter-text:#745800;
+  --aqua-tint:#E6F6F4; --aqua-deep:#1F5F60;
+  --butter-deep:#E9C25A; --butter-text:#614900;
   --line:#EBCFC2;        /* dotted rules, field underlines */
   --footer-bg:#EFE6F8; --footer-ink:#3A2B35; --strip-bg:var(--blush);
   --shadow:58,43,53;     /* rgb for shadows */
@@ -40,12 +41,12 @@ h1,h2,h3,h4,h5,h6{font-family:var(--f-body);text-transform:uppercase;font-weight
 .skip:focus{left:1rem}
 
 /* Category colours: --cat = pastel band/background (ink text on it), --cat-text = darker shade for text on white/bg (all >= 6:1) */
-.c-make{--cat:#FCD5B5;--cat-text:#94461A}
-.c-questions{--cat:#B5E3E0;--cat-text:#22696A}
-.c-mind{--cat:#C6E9D2;--cat-text:#2E6B47}
+.c-make{--cat:#FCD5B5;--cat-text:#904419}
+.c-questions{--cat:#B5E3E0;--cat-text:#1F5F60}
+.c-mind{--cat:#C6E9D2;--cat-text:#2B6443}
 .c-world{--cat:#DCD0F2;--cat-text:#5A4291}
-.c-rwl{--cat:#FBE6A2;--cat-text:#745800}
-.c-voice{--cat:#F8C8D5;--cat-text:#A2355D}
+.c-rwl{--cat:#FBE6A2;--cat-text:#614900}
+.c-voice{--cat:#F8C8D5;--cat-text:#9C335A}
 
 /* Dotted motif (rounded, chunky dots: SVG rect, stroke 4, dasharray 2,4) */
 .dots-brick{background-image:var(--dots-blush)}
@@ -226,7 +227,7 @@ h1,h2,h3,h4,h5,h6{font-family:var(--f-body);text-transform:uppercase;font-weight
 figure.feature-art{position:relative;margin:0 0 2rem;overflow:visible;aspect-ratio:auto}
 .feature-art .photo{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:3px 3px 0 0}
 .feature-art .band{position:static;border-radius:0 0 3px 3px;box-shadow:none}
-.photo-credit{font-size:.85rem;color:#6A5560;margin-top:.4rem;text-align:right}
+.photo-credit{font-size:.85rem;color:#4D3D45;margin-top:.4rem;text-align:right}
 .photo-credit a{text-decoration:underline}
 
 /* Credits page */
@@ -291,7 +292,7 @@ figure.feature-art{position:relative;margin:0 0 2rem;overflow:visible;aspect-rat
 .newsletter h2{font-family:var(--f-hand);font-weight:400;letter-spacing:3px;font-size:2rem;color:var(--butter-text);margin-bottom:.6rem}
 .newsletter .row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .newsletter .field{border-bottom:2px solid var(--line);border-radius:0;background:transparent}
-.newsletter small{display:block;margin-top:.8rem;font-size:.9rem;color:#6A5560}
+.newsletter small{display:block;margin-top:.8rem;font-size:.9rem;color:#4D3D45}
 @media(max-width:575px){.newsletter .row{grid-template-columns:1fr;gap:0}}
 
 /* 12. Footer */
@@ -312,8 +313,8 @@ figure.feature-art{position:relative;margin:0 0 2rem;overflow:visible;aspect-rat
 .footer-cols ul{list-style:none;margin:0;padding:0}
 .footer-cols li a{display:inline-block;padding:.25rem 1rem;opacity:.9}
 .footer-cols li a:hover{color:var(--accent);opacity:1}
-.legal{text-align:center;color:#5E4A56;font-size:.95rem;margin-top:3rem;padding-bottom:1rem}
-.legal a{color:#5E4A56;text-decoration:underline}
+.legal{text-align:center;color:#5C4854;font-size:.95rem;margin-top:3rem;padding-bottom:1rem}
+.legal a{color:#5C4854;text-decoration:underline}
 @media(max-width:767px){.footer-cols{grid-template-columns:1fr}.footer-dark{padding:3rem 1rem 2rem}}
 
 /* Category page */
@@ -431,11 +432,11 @@ html:not(.unlocked) body{background:#E3CFA6;padding-bottom:0}
 .recs-pill .long{display:none}
 @media(max-width:420px){.recs-pill svg{display:none}}
 .recs-ad{background-color:var(--butter)!important}
-.crumbs{font-size:1rem;margin:1rem 0 0;text-align:center;color:#6A5560}
+.crumbs{font-size:1rem;margin:1rem 0 0;text-align:center;color:#4D3D45}
 .crumbs a{text-decoration:underline;color:var(--cat-text)}
 .entry a:not(.btn):not(.cat-chip){color:var(--cat-text);text-decoration:underline}
 .support-box{background:#fff;border-left:8px solid var(--mint);border-radius:6px;padding:1.4rem 1.6rem;margin:2.5rem 0}
-.support-box h2{margin-top:0!important;font-size:1.35rem;color:#2E6B47}
+.support-box h2{margin-top:0!important;font-size:1.35rem;color:#2B6443}
 .support-box ul{padding-left:1.2rem}
 .support-box .small{font-size:1rem;margin-bottom:0}
 .related{background:#fff;border-radius:6px;padding:1.4rem 1.6rem;margin-bottom:3rem}
@@ -454,18 +455,18 @@ html:not(.unlocked) body{background:#E3CFA6;padding-bottom:0}
 .rec h2,.about-me h2{font-size:1.25rem;color:var(--cat-text);margin-bottom:.9rem}
 .rec-body p{margin:0 0 .6rem}
 .rec-title{font-weight:700;font-size:1.3rem;color:var(--heading)}
-.rec-sub{font-style:italic;color:#6A5560}
+.rec-sub{font-style:italic;color:#4D3D45}
 .rec-quote{margin:0 0 .5rem;font-family:var(--f-serif);font-size:1.35rem;color:var(--heading)}
 .rec-link{display:inline-block;margin-top:.3rem;color:var(--accent);text-decoration:underline}
 .rec-list{list-style:none;padding:0;margin:0;display:grid;gap:1rem}
 .rec-list li{background:var(--bg);border-radius:6px;padding:.8rem 1rem}
 .rec-type{display:inline-block;background:var(--cat);border-radius:999px;font-family:var(--f-hand);text-transform:uppercase;letter-spacing:1px;font-size:.85rem;padding:.1rem .6rem;margin-right:.5rem}
-.placeholder{color:#6A5560;font-style:italic}
+.placeholder{color:#4D3D45;font-style:italic}
 .ph-chip{display:inline-block;font:700 .7rem/1 var(--f-body);font-style:normal;letter-spacing:1px;text-transform:uppercase;background:var(--butter);color:var(--butter-text);padding:.3rem .5rem;border-radius:3px;margin-right:.4rem;vertical-align:middle}
 .about-me{max-width:700px;margin:0 auto 2rem;text-align:center}
 .interest-chips{list-style:none;padding:0;margin:.5rem 0 0;display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center}
 .interest-chips li{background:var(--cat);border-radius:999px;padding:.2rem .9rem}
-.recs-note{text-align:center;font-size:1rem;color:#6A5560;margin:0 auto 3rem;max-width:700px}
+.recs-note{text-align:center;font-size:1rem;color:#4D3D45;margin:0 auto 3rem;max-width:700px}
 @media(max-width:767px){.recs-grid{grid-template-columns:1fr}}
 /* room for the Picks pill */
 .menu{flex-shrink:0}
@@ -488,3 +489,24 @@ html:not(.unlocked) body{background:#E3CFA6;padding-bottom:0}
 @media(min-width:992px){.mainnav .container{max-width:1000px}}
 @media(min-width:1230px){.mainnav .container{max-width:1230px}}
 /* ===== END CONTENT WIDTH ===== */
+
+/* ---------- Rule phi: tap target (Danny, build C, 26 Oct 2026) ----------
+   --tap = S x PHI^-4, S = the screen's shorter side measured on the device (min(100vw, 100vh)); 56.9 px at 390, 54.7 px at 375.
+   Never below WCAG 2.2 SC 2.5.5's 44 px (cite: safe-side floor; S x PHI^-4 passes 44 px from S = 302 px up).
+   Used as the minimum size of buttons, inputs and button-style links on touch screens (a tap target is a touch target; mouse
+   pointers keep today's sizes). Plain text links inside sentences are left alone (WCAG inline exception).
+   Below S = 302 px: the light reduced view (decorative lanes and loops off, same content). */
+:root{--tap:max(44px, calc(min(100vw, 100vh) / (1.6180339887 * 1.6180339887 * 1.6180339887 * 1.6180339887)))}   /* phi: PHI^-4; cite: WCAG 2.5.5 */
+@media (any-pointer:coarse){
+  button:not(#gate *),[role=button]:not(#gate *),select,
+  input:not([type=checkbox]):not([type=radio]):not([type=hidden]):not([type=range]):not(#gate *),
+  a.btn,a.tag,a.cat-chip,a.rec-link,a.db-chip,a.escape,.icon-btn{min-height:var(--tap)}
+  button:not(#gate *),[role=button]:not(#gate *),a.btn,a.tag,a.cat-chip,a.db-chip,.icon-btn{min-width:var(--tap)}
+  a.btn,a.tag,a.cat-chip,a.rec-link,a.db-chip,a.escape{display:inline-flex;align-items:center;justify-content:center}
+  html #app-foot .fb-pause,html #app-foot .fb-reset{min-height:var(--tap);min-width:var(--tap)}   /* footer pills (footbar.css sets 32 px) */
+  input[type=checkbox],input[type=radio]{width:calc(var(--tap) / (1.6180339887 * 1.6180339887));height:calc(var(--tap) / (1.6180339887 * 1.6180339887))}   /* phi: PHI^-2 of --tap (21.7 px at 390) inside its label row */
+}
+@media (max-width:301.9px),(max-height:301.9px){   /* S < 302 px: the light reduced view */
+  #app-foot .fb-lane,#app-foot .fb-wave,#app-foot .fb-gauge{display:none!important}   /* decorative only; no content hidden */
+  *{animation-iteration-count:1!important}
+}
