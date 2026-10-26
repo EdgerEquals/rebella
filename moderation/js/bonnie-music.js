@@ -12,7 +12,16 @@
      track       = PHI^(9 + s) s, then a new piece crossfades in   volume = 0.5 x PHI^(-s/4), clamped 0.25-0.6 (quieter at night)
      first tap   = PHI^1 s fade-in; tap again = PHI^0 s fade-out    boundaries on multiples of the crossfade period from
                    PhiTiming.T0; s is re-read only at a boundary, never mid-fade.
-   Starts only from a tap on the button (autoplay rules); pauses while the tab is hidden; nothing is stored.
+   Starts only from a tap on the button (autoplay rules).
+   CONTINUITY (Kids Club "Rhythms keep going while you're away", 26 Oct 2026; js/rhythm-continuity.js owns the store, cadence and hooks):
+     save + restore  on/off, the genre rotation and the playing piece (genre, BPM, seed, birth time) go in the device-only snapshot
+                     'kidRhythm.dashboard.v1' (entry 'music'). After a reload or an iOS discard the button shows 'on' at once and waits
+                     for ONE tap anywhere after the gate (autoplay rule), then picks up where the piece would be now.
+     arrangement     a piece's position is a function of wall-clock time since its birth (sixteenths = age x BPM x 4 / 60): the seed rebuilds
+                     the same melody and progression, whole piece lengths that passed while away advance the rotation, the rest sets the step.
+     keep alive      the mix goes through the page's media bridge (hidden <audio> + Media Session, lock-screen play / pause), keeps playing
+                     while hidden (the scheduler looks PHI^3 s ahead) and resumes on return; if the phone still wants a gesture, one gentle
+                     'tap to resume', never a reset. Not playing: the context still rests while hidden.
    While it plays <html data-bm="playing"> is set, so the generated sound layer (bonnie-sound.js) ducks under it.
    Test hook: window.BonnieMusic.level() (output RMS), .graph, .playing. */
 (function () {
@@ -49,18 +58,19 @@
 
   // ---------- audio graph (built on the first tap) ----------
   var AC = window.AudioContext || window.webkitAudioContext;
-  var ctx = null, master = null, bus = null, revIn = null, noise = null, meter = null;
+  var ctx = null, master = null, bus = null, revIn = null, noise = null, meter = null, hub = null, dipN = null, dipF = 1, MASTER = 0.8;   // MASTER: the existing modest overall level (legacy, listed for Danny; not a control)
+  function outNode() { try { if (window.RhythmContinuity) { hub = RhythmContinuity.media(ctx); return hub.input; } } catch (e) {} return ctx.destination; }   // keep-alive bridge
   function ensure() {
     if (ctx || !AC) return ctx;
     try {
       ctx = new AC();
-      master = ctx.createGain(); master.gain.value = 0.8;                  // modest overall level
+      master = ctx.createGain(); master.gain.value = MASTER;               // modest overall level
       bus = ctx.createGain(); bus.gain.value = 0.0001;                     // the pump volume
       var comp = ctx.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 3;
       var conv = ctx.createConvolver(), L = Math.floor(ctx.sampleRate * 2.2), ir = ctx.createBuffer(2, L, ctx.sampleRate);
       for (var c = 0; c < 2; c++) { var d = ir.getChannelData(c); for (var i = 0; i < L; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / L, 3); }
       conv.buffer = ir; revIn = ctx.createGain(); revIn.gain.value = 0.35; revIn.connect(conv); conv.connect(bus);
-      bus.connect(master); master.connect(comp); comp.connect(ctx.destination);
+      bus.connect(master); dipN = ctx.createGain(); dipN.gain.value = dipF; master.connect(dipN); dipN.connect(comp); comp.connect(outNode());   // dipN: the dip under the logo (Loudness)
       meter = ctx.createAnalyser(); meter.fftSize = 2048; comp.connect(meter);                 // level read-out for tests only
       var n = ctx.sampleRate, b = ctx.createBuffer(1, n, n), nd = b.getChannelData(0); for (var j = 0; j < n; j++) nd[j] = Math.random() * 2 - 1; noise = b;
     } catch (e) { ctx = null; }
@@ -119,7 +129,7 @@
     var out = ctx.createGain(); out.gain.value = 0.0001; out.connect(bus);
     var wet = ctx.createGain(); wet.gain.value = 0.0001; wet.connect(revIn);
     var rv = ctx.createGain(); rv.gain.value = g.rev; rv.connect(wet);
-    return { genre: genre, bpm: bpm, g: g, sc: sc, root: root, prog: prog, mel: mel, r: r, out: out, wet: wet, rev: rv, step: 0, next: ctx.currentTime + 0.06, born: Date.now() };
+    return { genre: genre, bpm: bpm, seed: seed, g: g, sc: sc, root: root, prog: prog, mel: mel, r: r, out: out, wet: wet, rev: rv, step: 0, next: ctx.currentTime + 0.06, born: Date.now() };
   }
   function playStep(tr, t) {
     var g = tr.g, st = tr.step, s16 = st % 16, bar = Math.floor(st / 16), dur16 = 60 / tr.bpm / 4, v;
@@ -143,7 +153,7 @@
   var tracks = [], sched = 0;
   function tick() {
     if (!ctx) return;
-    var horizon = ctx.currentTime + 0.15;
+    var horizon = ctx.currentTime + (document.hidden ? Math.pow(PHI, 3) : 0.15);   // hidden (kept alive): look PHI^3 s ahead past throttled timers
     tracks.forEach(function (tr) {
       if (tr.next < ctx.currentTime - 0.5) tr.next = ctx.currentTime + 0.02;   // resumed after being hidden
       while (tr.next < horizon && !tr.dead) { playStep(tr, tr.next); tr.next += stepLen(tr); tr.step++; }
@@ -156,12 +166,13 @@
   var playing = false, cur = null, fadingUntil = 0, clock = 0, flip = 0;
   function T0() { return (window.PhiTiming && window.PhiTiming.T0) || 0; }
   function kill(tr) { tr.dead = true; tracks = tracks.filter(function (x) { return x !== tr; }); setTimeout(function () { try { tr.out.disconnect(); tr.wet.disconnect(); tr.rev.disconnect(); } catch (e) {} }, 400); }
-  function startTrack(c, fade) {
-    var genre = c.pool[(flip++) % c.pool.length], tr = makeTrack(genre, c.bpm, (Math.random() * 1e9) | 0), t = ctx.currentTime + 0.05;
+  function startTrack(c, fade, sp) {
+    var genre = sp ? sp.genre : c.pool[(flip++) % c.pool.length], tr = makeTrack(genre, sp ? sp.bpm : c.bpm, sp ? sp.seed : (Math.random() * 1e9) | 0), t = ctx.currentTime + 0.05;
+    if (sp) { tr.born = sp.born; tr.step = stepsIn((Date.now() - sp.born) / SEC, tr.bpm); }   // continuity: the piece carries on where it would be now
     var old = tracks.filter(function (x) { return !x.dead && !x.leaving; }), len = fade || c.fade;
     fadeTrack(tr, true, t, len);
     old.forEach(function (o) { o.leaving = true; fadeTrack(o, false, t, len); setTimeout(function () { kill(o); }, len * 1000 + 300); });
-    tracks.push(tr); tr.trackLen = c.trackLen; fadingUntil = Date.now() + len * 1000;
+    tracks.push(tr); tr.trackLen = sp && sp.len > 0 ? sp.len : c.trackLen; fadingUntil = Date.now() + len * 1000;
     return tr;
   }
   function boundary() {
@@ -174,41 +185,77 @@
     if (changed || old) tr = startTrack(c);
     bus.gain.setTargetAtTime(c.vol, ctx.currentTime, c.fade / 3);
     cur = c; cur.genre = tr.genre; paint();
+    if (window.RhythmContinuity && RhythmContinuity.loud) RhythmContinuity.loud.changed();   // the logo follows the music's new level
     schedule(c.fade);
   }
   function schedule(period) { clearTimeout(clock); var P = period * 1000, now = Date.now(); clock = setTimeout(boundary, P - ((now - T0()) % P) + 5); }
 
-  function start() {
+  function start(sp) {
     if (!ensure()) { paint(); return; }
     try { if (ctx.resume) ctx.resume(); } catch (e) {}
-    playing = true; var c = compute(), t = ctx.currentTime;
+    playing = true; pend = null; var c = compute(), t = ctx.currentTime;
     bus.gain.cancelScheduledValues(t); bus.gain.setValueAtTime(c.vol, t);
-    var tr = startTrack(c, PHI); cur = c; cur.genre = tr.genre;           // first tap: PHI^1 s fade-in
+    sp = sp && sp.genre && GEN[sp.genre] ? advance(sp, c) : null;
+    var tr = startTrack(c, PHI, sp); cur = c; cur.genre = tr.genre;       // first tap: PHI^1 s fade-in (also when picking up a saved piece)
+    if (hub) hub.play('music', { title: TITLE, play: function () { if (!playing) start(held); }, pause: function () { if (playing) stop(); } });
     if (!sched) sched = setInterval(tick, 25); tick();
     document.documentElement.setAttribute('data-bm', 'playing');          // the sound layer ducks under the music
-    paint(); schedule(c.fade);
+    paint(); schedule(c.fade); save();
   }
   function stop() {
-    playing = false; clearTimeout(clock);
+    held = spec(); playing = false; pend = null; clearTimeout(clock);
+    if (hub) setTimeout(function () { if (!playing && hub) hub.rest('music'); }, PHI * SEC);   // phi: the bridge rests after the PHI^1 s fade
     if (ctx) { var t = ctx.currentTime, len = Math.pow(PHI, 0); tracks.forEach(function (o) { o.leaving = true; fadeTrack(o, false, t, len); setTimeout(function () { kill(o); }, len * 1000 + 300); }); }
     document.documentElement.setAttribute('data-bm', 'idle');
-    fadingUntil = 0; paint();
+    fadingUntil = 0; paint(); save();
   }
+
+  // ---------- continuity: arrangement position from wall-clock time (js/rhythm-continuity.js) ----------
+  var SEC = 1e3, SPM = 60, SPB = 4, GA = 0x9E3779B9;   // unit: ms per s, seconds per minute, sixteenths per beat; phi: golden-ratio hash (2^32 / PHI) steps the seed per skipped piece
+  var me2 = document.querySelector('script[src*="rhythm-continuity.js"]'), TITLE = (me2 && me2.getAttribute('data-title')) || '';
+  var pend = null, held = null, RC = null;
+  function stepsIn(sec, bpm) { return Math.max(0, Math.floor(sec * bpm / SPM * SPB)); }
+  function spec() { var tr = tracks.filter(function (x) { return !x.leaving && !x.dead; })[0];
+    return tr ? { genre: tr.genre, bpm: tr.bpm, seed: tr.seed, born: tr.born, len: tr.trackLen } : (pend || held); }
+  function advance(sp, c) {                                               // whole piece lengths that passed while away, then the remainder
+    if (!(sp.len > 0) || !isFinite(sp.born)) return null;
+    var age = (Date.now() - sp.born) / SEC; if (age < sp.len) return sp;
+    var k = Math.floor(age / sp.len); flip += k;
+    return { genre: c.pool[(flip - 1) % c.pool.length], bpm: c.bpm, seed: (sp.seed + Math.imul(k, GA)) | 0, born: sp.born + k * sp.len * SEC, len: c.trackLen };
+  }
+  function save() { if (RC) RC.save(); }
+  // Loudness (shared.md, Danny 14:23 / 14:26 AWST): the logo reads this music's UNDIPPED level (the level it has now, or would have
+  // now when it isn't playing); while the logo sounds, the dip stage glides to the factor js/rhythm-continuity.js asks for and back.
+  function level() { var c = playing && cur ? cur : compute(); return c.vol * MASTER; }
+  function dip(f, tau) { dipF = f; if (dipN && ctx) try { dipN.gain.setTargetAtTime(f, ctx.currentTime, tau); } catch (e) {} }
+  function snapshot() { return { on: playing || !!pend, flip: flip, tr: playing ? spec() : pend }; }
+  function resume() { if (!pend || playing) return; var sp = pend; start(sp.genre ? sp : null); }
+  function resumeTap(e) { if (e && e.target && pill.contains(e.target)) return; resume(); }   // a tap on the button itself is handled by its own click
+  function catchUp(e, s, mode) {
+    if (mode === 'return') { if (playing && hub) hub.wake(); return; }
+    if (!s || !s.on || !AC) return;
+    if (isFinite(s.flip)) flip = s.flip;
+    pend = mode === 'restart' || !s.tr ? {} : s.tr;                       // a new solar day: still on (her choice), a fresh piece
+    window.RhythmContinuity.tap(resumeTap); paint();
+  }
+  function reset() { flip = 0; held = null; if (pend) pend = {}; tracks.forEach(function (tr) { tr.born = Date.now() - tr.trackLen * SEC; }); }   // the next boundary starts a fresh piece
 
   // ---------- the button (same .bm / .bm-pill markup and spot as before, so styling and the glow are unchanged) ----------
   function el(tag, cls, txt) { var n = document.createElement(tag); if (cls) n.className = cls; if (txt != null) n.textContent = txt; return n; }
   var root = el('div', 'bm bm-' + PAGE), pill = el('button', 'bm-pill'), ico = el('span', 'bm-pill-ico', '\u266A'), txt = el('span', 'bm-pill-txt');
   pill.type = 'button'; ico.setAttribute('aria-hidden', 'true'); pill.appendChild(ico); pill.appendChild(txt); root.appendChild(pill);
   function paint() {
-    var label = !AC ? 'music: no sound in this browser' : playing ? "Bonnie's music on (tap to stop)" : "tap for Bonnie's music";
-    root.setAttribute('data-state', !AC ? 'unset' : playing ? 'playing' : 'idle');
+    var wait = !!pend && !playing;
+    var label = !AC ? 'music: no sound in this browser' : wait ? "Bonnie's music on (tap anywhere to bring the sound back)" : playing ? "Bonnie's music on (tap to stop)" : "tap for Bonnie's music";
+    root.setAttribute('data-state', !AC ? 'unset' : playing ? 'playing' : wait ? 'resuming' : 'idle');
     if (cur && playing) root.setAttribute('data-genre', cur.genre); else root.removeAttribute('data-genre');
-    txt.textContent = playing ? "Bonnie's music on" : !AC ? 'music: no sound here' : "tap for Bonnie's music";
-    pill.setAttribute('aria-pressed', playing ? 'true' : 'false'); pill.setAttribute('aria-label', label); pill.title = label;
+    txt.textContent = wait ? "Bonnie's music \u00B7 tap to resume" : playing ? "Bonnie's music on" : !AC ? 'music: no sound here' : "tap for Bonnie's music";
+    pill.setAttribute('aria-pressed', playing || wait ? 'true' : 'false'); pill.setAttribute('aria-label', label); pill.title = label;
     pill.disabled = !AC;
   }
-  pill.addEventListener('click', function () { if (playing) stop(); else start(); });
-  document.addEventListener('visibilitychange', function () { if (!ctx) return; try { if (document.hidden) ctx.suspend(); else if (playing) ctx.resume(); } catch (e) {} });
+  pill.addEventListener('click', function (e) { if (pend && !playing) { e.stopPropagation(); resume(); return; } if (playing) stop(); else start(held); });
+  // hidden: keep playing if the music is on (the media bridge keeps it alive), otherwise rest the context; on return the bridge wakes it
+  document.addEventListener('visibilitychange', function () { if (!ctx) return; try { if (document.hidden) { if (!playing) ctx.suspend(); } else if (playing) { if (hub) hub.wake(); else ctx.resume(); } } catch (e) {} });
 
   function mount() {
     var tb = document.querySelector('.tb-right'), lk = document.querySelector('#lock');
@@ -218,9 +265,13 @@
   }
   function boot() {
     if (!mount()) return;
+    if (window.RhythmContinuity) { RC = RhythmContinuity.register('music', { save: snapshot, catchUp: catchUp, reset: reset });
+      if (RhythmContinuity.loud) RhythmContinuity.loud.music({ level: level, dip: dip }); }
     paint();
     window.BonnieMusic = {
-      open: start, close: stop, get playing() { return playing; }, get now() { return cur; }, compute: compute, GEN: Object.keys(GEN),
+      open: function () { start(held); }, close: stop, get playing() { return playing; }, get pending() { return !!pend && !playing; }, get now() { return cur; }, compute: compute, GEN: Object.keys(GEN),
+      get track() { var t = spec(); var a = tracks.filter(function (x) { return !x.dead && !x.leaving; })[0]; return t ? { genre: t.genre, bpm: t.bpm, seed: t.seed, born: t.born, len: t.len, step: a ? a.step : null } : null; },
+      get bridge() { return hub ? hub.info() : null; }, snapshot: snapshot, musicLevel: level, get dip() { return dipN ? dipN.gain.value : dipF; },
       level: function () { if (!meter) return 0; var a = new Float32Array(meter.fftSize); meter.getFloatTimeDomainData(a); var q = 0; for (var i = 0; i < a.length; i++) q += a[i] * a[i]; return Math.sqrt(q / a.length); },
       get graph() { return ctx ? { state: ctx.state, tracks: tracks.length, bus: bus.gain.value, master: master.gain.value, sampleRate: ctx.sampleRate } : null; }
     };

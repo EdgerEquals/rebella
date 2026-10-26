@@ -400,6 +400,21 @@
   if (PG) host.id = host.id || 'radio';
   var i1 = chParam ? idxOfKey(chParam) : -1; if (i1 >= 0) angle = A0 + i1 * STEP;
   setNeedle(angle, false); landed = nearest(angle); paintTuned(landed, false); paintMute(); curGenre = genreAt(landed);
+  // Loudness (shared.md, Danny 14:23 / 14:26 AWST 26 Oct 2026; js/rhythm-continuity.js): the logo reads the radio's UNDIPPED level
+  // (the player's own volume, which is full until she changes it on the player; muted or not started = the level it would have), and
+  // while the logo sounds the radio glides down x the factor asked for and back (free-wheel glide, rule 6: exponential steps).
+  var PCT = 100, dipF = 1, dipV = 1, baseVol = null, dipT = 0;                    // unit: YouTube's volume scale is 0..100 percent
+  function undipped() { if (player && ready && dipV === 1 && player.getVolume) try { var v = +player.getVolume(); if (isFinite(v)) baseVol = v; } catch (e) {}
+    return baseVol == null ? 1 : baseVol / PCT; }
+  function dip(f, tau) {
+    undipped(); dipF = f; clearInterval(dipT);
+    var dt = tau * Math.pow(PHI, -3), k = 1 - Math.exp(-Math.pow(PHI, -3));      // phi: a step every tau x PHI^-3, exponential approach
+    dipT = setInterval(function () {
+      dipV += (dipF - dipV) * k; if (Math.abs(dipF - dipV) < Math.pow(PHI, -8)) { dipV = dipF; clearInterval(dipT); }   // phi: settled within PHI^-8
+      if (player && ready && baseVol != null && player.setVolume) try { player.setVolume(Math.round(baseVol * dipV)); } catch (e) {}
+    }, dt * 1e3);                                                                 // unit: ms per s
+  }
+  if (window.RhythmContinuity && RhythmContinuity.loud) RhythmContinuity.loud.music({ level: undipped, dip: dip });
   window.BonnieRadio = { get order() { return order.map(function (i) { return GEN[i].label; }); }, get genre() { return curGenre && curGenre.label; },
     get station() { return curGenre ? station(curGenre, true) : null; }, reroll: reroll, land: land, select: select, playReading: playReading, setMuted: setMuted };
   if (PG && location.hash === '#radio') { var foc = function () { select(curGenre.key, true); }; if (document.readyState === 'complete') setTimeout(foc, 50); else addEventListener('load', function () { setTimeout(foc, 50); }); }

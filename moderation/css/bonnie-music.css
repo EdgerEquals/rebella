@@ -11,6 +11,10 @@
 .bm[data-state="unset"] .bm-pill{opacity:.7;border-style:dashed;cursor:help}
 .bm[data-state="playing"] .bm-pill-ico{animation:bm-note var(--b-m3,3.4s) ease-in-out infinite}
 .bm.bm-remembered[data-state="idle"] .bm-pill{animation:bm-nudge var(--b-m2,5.39s) ease-in-out infinite}
+/* continuity (Kids Club "Rhythms keep going while you're away"): on, waiting for one tap anywhere to bring the sound back; the
+   existing nudge ring breathes on B x PHI^2 (Rule phi B), and on small screens the words show so she knows why */
+.bm[data-state="resuming"] .bm-pill{animation:bm-nudge var(--b-p2) ease-in-out infinite}
+@media (max-width:480px){.bm[data-state="resuming"] .bm-pill-txt{position:static;width:auto;height:auto;clip:auto}}
 @keyframes bm-note{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}
 @keyframes bm-nudge{0%,100%{box-shadow:0 0 0 2px var(--tc-6)}50%{box-shadow:0 0 0 5px var(--tc-8)}}
 @media (max-width:480px){.bm-chat .bm-pill-txt,.bm-dash .bm-pill-txt{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
