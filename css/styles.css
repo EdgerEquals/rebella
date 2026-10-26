@@ -511,3 +511,12 @@ html:not(.unlocked) body{background:#E3CFA6;padding-bottom:0}
   *{animation-iteration-count:1!important}
 }
 html.phi-paused *,html.phi-paused *::before,html.phi-paused *::after{animation-play-state:paused!important}   /* Pause motion, page-wide (footer button + js/phi-pause.js, WCAG 2.2.2) */
+
+/* smallfit (Kids Club 'every screen fits the smallest phone, in its measured space', 15:53 AWST 26 Oct 2026). Ratios only:
+   1rem is the browser's measured reader anchor, 1.6180339887 is phi. */
+/* the source links under quotes keep their look and line, and gain an invisible tap area 1rem x PHI tall (WCAG 2.5.8 floor is 24px) */
+a.rq-src{position:relative}
+a.rq-src::after{content:"";position:absolute;left:0;right:0;top:50%;height:max(100%,calc(1rem * 1.6180339887));transform:translateY(-50%)}
+/* credits tables: long file names and links wrap inside their cell, so the table fits its column instead of scrolling sideways */
+.credits th,.credits td{overflow-wrap:anywhere}
+.credits td img{max-width:100%;height:auto}

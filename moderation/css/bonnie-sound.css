@@ -25,3 +25,17 @@ html.bs-ready #wx-foot{flex-wrap:wrap;row-gap:1px}
   .ft-row .bs-dash .bs-toggle{min-height:18px;padding:0 .45rem}
   .ft-row .bs-dash .bs-flav span{padding:0 .4rem}
 }
+/* smallfit (Kids Club 'every screen fits the smallest phone', 15:53 AWST 26 Oct 2026): portrait footer line - the flavour chips wrap onto
+   a second line inside the measured footer width instead of running off the right edge behind a hidden scrollbar */
+@media not all and (orientation:landscape) and (max-height:500px){
+  .bs-dash.bs-row{flex-wrap:wrap;white-space:normal;overflow-x:visible;row-gap:calc(1px * 1.6180339887)}
+  .bs-dash .bs-flav{flex:1 1 0;min-width:0;flex-wrap:wrap;row-gap:calc(1px * 1.6180339887)}
+}
+/* smallfit, short landscape (the same phones turned sideways, 548 and 629 wide): the footer strip uses the same compact forms as the
+   portrait phone (letter lights, no wave or gauge), and the flavour legend is read out but not drawn, so the chips sit inside the
+   strip's locked line instead of being cut off under the terminal box */
+@media (orientation:landscape) and (max-height:500px){
+  #wx-foot .wx-wave,#wx-foot .wx-gauge{display:none}
+  #wx-foot .wx-light .lg{display:none}#wx-foot .wx-light .sm{display:inline}
+  .ft-row .bs-dash .bs-flav legend{position:absolute;width:1px;height:1px;margin:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+}
