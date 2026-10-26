@@ -48,4 +48,4 @@ def section():
 
 HEAD = ('\n<link rel="stylesheet" href="music/youtube/bonnie-radio.css?v=1">'
         '\n<script src="music/youtube/stations.js?v=1" defer></script>'
-        '\n<script src="music/youtube/bonnie-radio.js?v=1" defer></script>')
+        '\n<script src="music/youtube/bonnie-radio.js?v=5" defer></script>')

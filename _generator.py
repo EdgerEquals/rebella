@@ -149,7 +149,7 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <meta name="referrer" content="no-referrer">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:ital,wght@0,300;0,400;0,700;1,400&family=Gochi+Hand&family=Kaushan+Script&family=Lora:wght@500&family=Special+Elite&display=swap">
-<link rel="stylesheet" href="css/styles.css?v=10">
+<link rel="stylesheet" href="css/styles.css?v=11">
 <link rel="stylesheet" href="css/zine.css?v=5">
 <link rel="stylesheet" href="css/bars.css?v=7">
 <link rel="stylesheet" href="music/youtube/bonnie-radio.css?v=4">
@@ -157,11 +157,11 @@ def page(path,title,body,desc,active=None,extra_head='',og_img='img/articles/moo
 <script src="js/season-pumps.js?v=2"></script>
 <script src="js/phi-b.js?v=2"></script>
 <script src="js/phi-pause.js?v=1"></script>
-<script src="js/ratio-pump.js?v=7" data-site="rebella" data-rung="-1"></script><script src="js/rhythm-continuity.js?v=1" data-site="rebella" data-title="Rebella"></script><!-- rhythms keep going while you're away (Kids Club standard, 26 Oct 2026): saved on this device only -->
-<script src="js/bars.js?v=8" defer></script>
+<script src="js/ratio-pump.js?v=7" data-site="rebella" data-rung="-1"></script><script src="js/rhythm-continuity.js?v=2" data-site="rebella" data-title="Rebella"></script><!-- rhythms keep going while you're away (Kids Club standard, 26 Oct 2026): saved on this device only -->
+<script src="js/bars.js?v=9" defer></script>
 <script src="music/youtube/stations.js?v=2" defer></script>
-<script src="music/youtube/bonnie-radio.js?v=4" defer></script>
-<script src="js/help-orb.js?v=6" defer></script>
+<script src="music/youtube/bonnie-radio.js?v=5" defer></script>
+<script src="js/help-orb.js?v=7" defer></script>
 <script src="js/help-init.js?v=2" defer></script>
 <script src="js/nav.js?v=3" defer></script>
 <script src="js/quotes.js" defer></script>
