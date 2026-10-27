@@ -34,7 +34,7 @@ RADIO_MINI = ('<span class="br-mini-host" data-radio-mini data-help="radio-mini"
               '<a class="br-mini-link" href="music/playground/#radio" aria-label="Rebella radio">&#128251; Radio</a></span>')
 
 FOOT_VISITOR = (
-  '<link rel="stylesheet" href="css/footbar.css?v=5">'
+  '<link rel="stylesheet" href="css/footbar.css?v=6">'
   '<div class="fb-lane" aria-hidden="true"></div>'
   '<div class="container fb-wrap">'
   '<div class="fb-row" data-help="fb-status">'

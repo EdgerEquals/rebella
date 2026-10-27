@@ -1,17 +1,18 @@
+/* Less pink (2026-10-27, Bonnie asked, Danny approved): pink-family colours here are derived from the previous palette by lesspink.py: OKLCH lightness and hue kept, chroma × φ⁻³ on light surfaces, × φ⁻¹ on accents and text; any text colour that then fell under φ⁴ : 1 is darkened along its own hue just enough to reach it. */
 /* ===== SHARED BARS (Rebella public pages). Same static locked bars as Bonnie's Dashboard (moderation/css/mod.css,
    STATIC BARS block, commit 8eee909): true black header, 'rebel' #F48FB1 + 'la' #FDEEF2, plum footer, position:fixed
    top/bottom with safe-area insets, no sticky/transform/transition/scroll JS on the bars. js/bars.js only measures
    their heights so the page content is padded clear of them. Only the wording differs per audience (_bars.py). ===== */
-.rb-bars{--pk-light:#F6C9D4;--pk-pale:#FDEEF2;--pk-soft:#F9DDE4;--pk-mid:#EFA9BB;--pk-plum:#6B1F3D;--pk-berry:#3D1226;--pk-raspberry:#8E2350;
+.rb-bars{--pk-light:#DED4D6;--pk-pale:#FDEEF2;--pk-soft:#EAE3E5;--pk-mid:#CCBBBE;--pk-plum:#5C2F3E;--pk-berry:#351A25;--pk-raspberry:#7A3C51;
   --f-body:"Alegreya Sans",Helvetica,Arial,sans-serif;--f-hand:"Gochi Hand","Patrick Hand",cursive;--f-script:"Kaushan Script",cursive;--f-serif:"Lora",Georgia,serif;
   font-family:var(--f-body);line-height:1.55}
 /* one component, two themes: audience-scoped custom properties */
 .rb-bars[data-audience=bonnie]{--bar-top-bg:#000;--bar-top-ink:var(--pk-light);--bar-tag:#fff;--bar-link:var(--pk-light);--bar-hover:#fff;
-  --bar-mast-bg:#000;--bar-mast-border:var(--pk-mid);--bar-script:#F48FB1;--bar-serif:#FDEEF2;--bar-focus:var(--pk-light);
+  --bar-mast-bg:#000;--bar-mast-border:var(--pk-mid);--bar-script:#DD9EB2;--bar-serif:#FDEEF2;--bar-focus:var(--pk-light);
   --bar-foot-bg:var(--pk-plum);--bar-foot-border:transparent;--bar-foot-ink:var(--pk-light);--bar-foot-link:#fff;--bar-ph:var(--pk-light);--bar-ph-o:.75}
-.rb-bars[data-audience=visitor]{--bar-top-bg:#F8CFDB;--bar-top-ink:#3A2B35;--bar-tag:#5B3A50;--bar-link:#5B3A50;--bar-hover:#B4436C;
-  --bar-mast-bg:#FFFFFF;--bar-mast-border:#EFA9BB;--bar-script:#B4436C;--bar-serif:#5B3A50;--bar-focus:#8E2350;
-  --bar-foot-bg:#FDEEF2;--bar-foot-border:#EFA9BB;--bar-foot-ink:#3D1226;--bar-foot-link:#8E2350;--bar-ph:#5B3A50;--bar-ph-o:.7}
+.rb-bars[data-audience=visitor]{--bar-top-bg:#E3D9DB;--bar-top-ink:#362D33;--bar-tag:#543F4C;--bar-link:#543F4C;--bar-hover:#9D596E;
+  --bar-mast-bg:#FFFFFF;--bar-mast-border:#CCBBBE;--bar-script:#9D596E;--bar-serif:#543F4C;--bar-focus:#7A3C51;
+  --bar-foot-bg:#FDEEF2;--bar-foot-border:#CCBBBE;--bar-foot-ink:#351A25;--bar-foot-link:#7A3C51;--bar-ph:#543F4C;--bar-ph-o:.7}
 .rb-bars .container{width:100%;max-width:1230px;margin:0 auto;padding:0 15px}
 
 /* lock: header pinned to the top, footer pinned to the bottom */
@@ -93,8 +94,8 @@ body.has-bars .escape{bottom:calc(var(--app-foot-h,60px) + var(--esc-ring,5.6px)
 #app-head .head-actions:empty{display:none}
 #app-head .bar-right{display:flex;align-items:center;gap:.9rem;flex:0 0 auto}
 /* header radio dial (mounted by music/youtube/bonnie-radio.js): compact, pinks, AA in both themes */
-.rb-bars[data-audience=visitor]{--mini-ring:#8E2350;--mini-knob:#FFFFFF;--mini-needle:#8E2350;--mini-ink:#5B3A50}
-.rb-bars[data-audience=bonnie]{--mini-ring:#F6C9D4;--mini-knob:#FFFFFF;--mini-needle:#8E2350;--mini-ink:#F6C9D4}
+.rb-bars[data-audience=visitor]{--mini-ring:#7A3C51;--mini-knob:#FFFFFF;--mini-needle:#7A3C51;--mini-ink:#543F4C}
+.rb-bars[data-audience=bonnie]{--mini-ring:#DED4D6;--mini-knob:#FFFFFF;--mini-needle:#7A3C51;--mini-ink:#DED4D6}
 #app-head .br-mini-link{font:700 .8rem/1 var(--f-body);letter-spacing:1.2px;text-transform:uppercase;color:var(--mini-ink);text-decoration:none;white-space:nowrap}
 /* ===== END SHARED BARS ===== */
 /* Logo levelled (Danny 13:11 AWST 24 Oct 2026, t633u/t634u, live): Bonnie's hand-lettered logo slopes downhill in the drawing itself

@@ -1,3 +1,4 @@
+/* Less pink (2026-10-27, Bonnie asked, Danny approved): pink-family colours here are derived from the previous palette by lesspink.py: OKLCH lightness and hue kept, chroma × φ⁻³ on light surfaces, × φ⁻¹ on accents and text; any text colour that then fell under φ⁴ : 1 is darkened along its own hue just enough to reach it. */
 /* Rebella footer (live): the dashboard footer items in Rebella pinks (visitor theme from css/bars.css).
    Text: #3D1226 / #6B1F3D / #8E2350 on #FDEEF2 or #FFFFFF (all 7:1 or better). Lights also carry their meaning in
    text labels and aria-labels, never colour alone. Nothing moves under reduced motion or Pause motion. */
@@ -10,20 +11,20 @@
 #app-foot .fb-row{font:700 .72rem/1 var(--f-body);letter-spacing:1px;text-transform:uppercase;color:var(--bar-foot-ink)}
 #app-foot .fb-lights{display:flex;gap:.5rem;flex:0 0 auto}
 #app-foot .fb-light{display:inline-flex;align-items:center;gap:.25rem}
-#app-foot .fb-light b{width:.6rem;height:.6rem;border-radius:50%;background:#C9A9B6;box-shadow:0 0 0 1px #6B1F3D inset;animation:fbBlink var(--b-m2,2.618s) ease-in-out infinite}
+#app-foot .fb-light b{width:.6rem;height:.6rem;border-radius:50%;background:#C1ADB5;box-shadow:0 0 0 1px #5C2F3E inset;animation:fbBlink var(--b-m2,2.618s) ease-in-out infinite}
 #app-foot .fb-light.idle b{animation:none}
 #app-foot .fb-light.ok b{background:#2E8B57}#app-foot .fb-light.warn b{background:#D98A1F}
 #app-foot .fb-light.t-morning b{background:#F2A541}#app-foot .fb-light.t-afternoon b{background:#2A9D9F}
-#app-foot .fb-light.t-evening b{background:#B4436C}#app-foot .fb-light.t-night b{background:#5B3A8E}
+#app-foot .fb-light.t-evening b{background:#9D596E}#app-foot .fb-light.t-night b{background:#5B3A8E}
 #app-foot .fb-light .sm{display:none}
 @keyframes fbBlink{0%,100%{opacity:1}50%{opacity:.45}}
 #app-foot .fb-wave{width:40px;height:16px;flex:0 0 auto;overflow:hidden}
-#app-foot .fb-wave path{fill:none;stroke:#B4436C;stroke-width:1.6;stroke-linecap:round;animation:fbWave var(--fb-wave-t,11.09s) linear infinite}
+#app-foot .fb-wave path{fill:none;stroke:#9D596E;stroke-width:1.6;stroke-linecap:round;animation:fbWave var(--fb-wave-t,11.09s) linear infinite}
 @keyframes fbWave{from{transform:translateX(0)}to{transform:translateX(-20px)}}
 #app-foot .fb-gauge{width:30px;height:17px;flex:0 0 auto}
-#app-foot .fb-gauge .g-arc{fill:none;stroke:#EFA9BB;stroke-width:2.4;stroke-linecap:round}
-#app-foot .fb-gauge .g-needle{stroke:#6B1F3D;stroke-width:1.8;stroke-linecap:round}
-#app-foot .fb-gauge circle{fill:#6B1F3D}
+#app-foot .fb-gauge .g-arc{fill:none;stroke:#CCBBBE;stroke-width:2.4;stroke-linecap:round}
+#app-foot .fb-gauge .g-needle{stroke:#5C2F3E;stroke-width:1.8;stroke-linecap:round}
+#app-foot .fb-gauge circle{fill:#5C2F3E}
 #app-foot .fb-tick{flex:1 1 auto;min-width:0;overflow:hidden;white-space:nowrap;text-transform:none;letter-spacing:.2px;font:400 .9rem/1.35 var(--f-body)}
 #app-foot .fb-tick-t{display:inline-block}
 #app-foot .fb-tick-t.fb-pan{animation:fbPan var(--fb-pan-t,4.236s) ease-in-out var(--b-m4,1.618s) 1 both}
@@ -32,14 +33,14 @@
 #app-foot.help-answering .fb-tick{white-space:normal}
 #app-foot.help-answering .fb-tick-t{display:inline;animation:none;transform:none}
 #app-foot .fb-tty{margin-top:.2rem;font-size:.9rem}
-#app-foot .fb-p{font:400 .85rem/1 "Special Elite","Courier New",monospace;color:#8E2350;flex:0 0 auto}
+#app-foot .fb-p{font:400 .85rem/1 "Special Elite","Courier New",monospace;color:#7A3C51;flex:0 0 auto}
 #app-foot .fb-tty .vn{min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-#app-foot .fb-cursor{width:.5rem;height:1rem;background:#B4436C;flex:0 0 auto;animation:fbBlink var(--b-m2,2.618s) steps(2,jump-none) infinite;margin-right:auto}
+#app-foot .fb-cursor{width:.5rem;height:1rem;background:#9D596E;flex:0 0 auto;animation:fbBlink var(--b-m2,2.618s) steps(2,jump-none) infinite;margin-right:auto}
 #app-foot .fb-pause,#app-foot .fb-reset{flex:0 0 auto;display:inline-flex;align-items:center;gap:.35rem;min-height:32px;min-width:32px;justify-content:center;padding:.25rem .6rem;border-radius:999px;cursor:pointer;
-  background:#fff;color:#6B1F3D;border:1px dotted #8E2350;font:700 .7rem/1 var(--f-body);letter-spacing:1px;text-transform:uppercase}
+  background:#fff;color:#5C2F3E;border:1px dotted #7A3C51;font:700 .7rem/1 var(--f-body);letter-spacing:1px;text-transform:uppercase}
 #app-foot .fb-ri{font:700 .85rem/1 var(--f-body);letter-spacing:0}   /* reset what this page learned (js/phi-reset.js): same pill as Pause motion */
-#app-foot .fb-pi{width:.6rem;height:.6rem;background:linear-gradient(90deg,#6B1F3D 0 35%,transparent 35% 65%,#6B1F3D 65%)}
-#app-foot .fb-pause[aria-pressed=true] .fb-pi{background:#6B1F3D;clip-path:polygon(0 0,100% 50%,0 100%)}
+#app-foot .fb-pi{width:.6rem;height:.6rem;background:linear-gradient(90deg,#5C2F3E 0 35%,transparent 35% 65%,#5C2F3E 65%)}
+#app-foot .fb-pause[aria-pressed=true] .fb-pi{background:#5C2F3E;clip-path:polygon(0 0,100% 50%,0 100%)}
 @media(max-width:649px){
   #app-foot .fb-light .lg{display:none}#app-foot .fb-light .sm{display:inline}
   #app-foot .fb-pl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
